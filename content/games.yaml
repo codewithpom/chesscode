@@ -1,0 +1,28 @@
+# Shorts use game_no + 5000 in video IDs (for example, game 42 uses 5042).
+- game_no: 1
+  series: legendary_games
+  tier: floor
+  source: local
+  source_id: opera-game
+  pgn_file: pipeline/tests/golden/pgn/opera.pgn
+  white_country: null
+  black_country: null
+  notes: Morphy's Opera Game; classic game source supplied with the golden PGNs.
+- game_no: 2
+  series: legendary_games
+  tier: floor
+  source: local
+  source_id: immortal-game
+  pgn_file: pipeline/tests/golden/pgn/immortal.pgn
+  white_country: null
+  black_country: null
+  notes: Anderssen's Immortal Game; classic game source supplied with the golden PGNs.
+- game_no: 3
+  series: legendary_games
+  tier: floor
+  source: local
+  source_id: evergreen-game
+  pgn_file: pipeline/tests/golden/pgn/evergreen.pgn
+  white_country: null
+  black_country: null
+  notes: Anderssen's Evergreen Game; classic game source supplied with the golden PGNs.
