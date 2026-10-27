@@ -19,3 +19,4 @@ token*.json
 *.onnx
 *.mp4
 graphify-out/cache/
+graphify-out/
