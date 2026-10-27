@@ -27,7 +27,10 @@ class Session:
 
 
 def ctx(tmp_path, game):
-    return Context("cc-2026-0001-en", tmp_path / "spec", tmp_path, game, "en", "studio")
+    spec_dir = tmp_path / "spec"
+    spec_dir.mkdir(parents=True, exist_ok=True)
+    (spec_dir / "game.json").write_text(json.dumps(game))
+    return Context("cc-2026-0001-en", spec_dir, tmp_path, game, "en", "studio")
 
 
 def test_429_sleeps_60_then_succeeds(tmp_path, monkeypatch):
@@ -63,6 +66,15 @@ def test_local_pgn_copied(tmp_path):
 def test_missing_source_raises_stage_error(tmp_path):
     with pytest.raises(StageError):
         fetch.run(ctx(tmp_path, {"source": "local", "pgn_file": "absent.pgn", "source_id": "absent"}))
+
+
+def test_fetch_uses_selected_game_json(tmp_path):
+    source = tmp_path / "selected.pgn"
+    source.write_text("from selected entry")
+    context = ctx(tmp_path, {"source": "local", "pgn_file": str(source), "source_id": "selected"})
+    context.game = {"source": "invalid"}
+    fetch.run(context)
+    assert (context.spec_dir / "game.pgn").read_text() == "from selected entry"
 
 
 def test_next_unrendered_respects_tier_and_order():

@@ -1,3 +1,4 @@
+import json
 import shutil
 import time
 from pathlib import Path
@@ -14,7 +15,13 @@ sleep = time.sleep
 
 
 def run(ctx) -> None:
-    game = ctx.game
+    game_path = ctx.spec_dir / "game.json"
+    try:
+        game = json.loads(game_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise StageError(ctx.video_id, "fetch", f"cannot read game.json: {exc}") from exc
+    if not isinstance(game, dict):
+        raise StageError(ctx.video_id, "fetch", "game.json must contain an object")
     source = game.get("source")
     source_id = game.get("source_id")
     if source == "local":
