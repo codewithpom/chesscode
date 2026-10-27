@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Test / cache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Logs & runtime output
+*.log
+logs/
+output/
+
+# Secrets & credentials (NEVER commit)
+.env
+client_secret.json
+youtube_token.pickle
+*.pickle
+
+# Large model blobs
+*.onnx
+voices-*.bin
+
+# Font files
+assets/fonts/*.ttf
+
+# Vendored / third-party heavy dirs
+SadTalker/
+
+# Scratch media (debug frames / temp renders)
+*TEMP_MPY*.mp4
+arrow_legend_crop*.png
+arrow_legend_test.png
+arrow_key_display.png
+final_arrow_legend.png
+sidebar_legend.png
+legend_bottom.png
+legend_zoomed.png
+scene_1080p_*.png
+test_mouth_compare.png
+test_*.wav
+video_frame_*.png
+
+# OS
+.DS_Store
+Thumbs.db

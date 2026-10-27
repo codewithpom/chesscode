@@ -1,0 +1,21 @@
+# build outputs and local state
+build/
+.worktrees/
+node_modules/
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+data/*.sqlite
+data/pgn/
+data/secrets/
+# secrets: never commit
+.env
+*.pickle
+client_secret*.json
+token*.json
+# large binaries
+*.exe
+*.onnx
+*.mp4
+graphify-out/cache/

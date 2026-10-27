@@ -1,0 +1,28 @@
+[project]
+name = "chesscode"
+version = "2.0.0"
+requires-python = ">=3.12"
+dependencies = [
+  "python-chess>=1.999",
+  "jsonschema>=4.21",
+  "pyyaml>=6.0",
+  "requests>=2.31",
+  "anthropic>=0.39",
+  "google-api-python-client>=2.100",
+  "google-auth-oauthlib>=1.2",
+  "google-auth>=2.30",
+  "imageio-ffmpeg>=0.4.9",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["chesscode*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
