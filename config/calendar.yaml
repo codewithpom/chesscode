@@ -1,0 +1,11 @@
+start: 2026-11-16
+end: 2027-02-15
+slots:
+  - {weekday: mon, kind: short, game: A, lang: en, time: "12:30", tier: floor}
+  - {weekday: tue, kind: long, game: A, lang: en, time: "18:30", tier: floor}
+  - {weekday: wed, kind: short, game: A, lang: hi, time: "12:30", tier: floor}
+  - {weekday: thu, kind: long, game: A, lang: hi, time: "13:30", tier: floor}
+  - {weekday: fri, kind: short, game: A, lang: alternating, time: "12:30", tier: floor}
+  - {weekday: sat, kind: long, game: B, lang: en, time: "18:30", tier: target}
+  - {weekday: sun, kind: long, game: B, lang: hi, time: "13:30", tier: target}
+  - {weekday: sun, kind: short, game: B, lang: alternating, time: "12:30", tier: target}
