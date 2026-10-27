@@ -12,3 +12,7 @@ IBM Plex, copyright IBM Corp., Reserved Font Name "Plex". License: SIL Open Font
 | IBMPlexSansCondensed-SemiBold | @ibm/plex-sans-condensed 2.0.0 |
 | IBMPlexMono-Regular, -Medium | @ibm/plex-mono 2.5.0 |
 | IBMPlexSansDevanagari-Regular, -Medium, -SemiBold | @ibm/plex-sans-devanagari 1.1.0 |
+
+## Chess pieces (`src/assets/pieces/`)
+
+rhosgfx piece set (wK, wQ, wR, wB, wN, wP, bK, bQ, bR, bB, bN, bP .svg), by RhosGFX (https://rhosgfx.itch.io/). License: CC0 1.0 (https://creativecommons.org/publicdomain/zero/1.0/). Source files: https://github.com/lichess-org/lila/tree/master/public/piece/rhosgfx; license confirmed in https://raw.githubusercontent.com/lichess-org/lila/master/COPYING.md (line "public/piece/rhosgfx | RhosGFX | CC0 1.0").
