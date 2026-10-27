@@ -5,7 +5,7 @@ import type { VideoSpec } from "../spec/schema";
 import { frameToMs } from "../spec/time";
 import { fontFor, useFonts } from "../theme/fonts";
 import { tokens } from "../theme/tokens";
-import { captionPages } from "./captions";
+import { captionPages } from "./captionPages";
 
 // A page stays up this long after its last word, unless the next page starts first.
 const LINGER_MS = 250;

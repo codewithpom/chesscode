@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { NarrationSegment } from "../spec/schema";
-import { captionPages, toCaptions } from "./captions";
+import { captionPages, toCaptions } from "./captionPages";
 
 const seg = (id: string, start: number, words: string[], step = 300): NarrationSegment => ({
   segment_id: id,
