@@ -5,16 +5,21 @@ priority: [checkmate, blunder, brilliant, missed_win, comeback, rest]
 triggers:
   blunder_drop: 2.0
   winning_eval: 2.0
+  losing_eval: -2.0
   mistake_drop: 1.0
+  mistake_max_drop: 2.0
   brilliant_max_loss: 0.3
   brilliant_material_given: 2.0
   missed_win_best: 3.0
   missed_win_played: 1.0
   comeback_plies: 20
   comeback_was: -3.0
+  comeback_now: 0.0
   long_think_fraction: 0.15
   long_think_ms: 300000
   time_scramble_ms: 60000
+  king_walk_count: 3
+  king_walk_before_move: 30
 poses:
   blunder: facepalm
   mistake: side_eye

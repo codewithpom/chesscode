@@ -50,6 +50,13 @@ def _input_hash(ctx: Context, inputs: list[str]) -> str:
         digest.update(name.encode())
         if source.is_file():
             digest.update(source.read_bytes())
+        elif source.is_dir():
+            files = sorted(path for path in source.rglob("*") if path.is_file())
+            for path in files:
+                digest.update(path.relative_to(source).as_posix().encode())
+                digest.update(path.read_bytes())
+            if not files:
+                digest.update(b"<empty-directory>")
         else:
             digest.update(b"<missing>")
     return digest.hexdigest()

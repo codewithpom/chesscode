@@ -89,3 +89,14 @@ def test_config_missing_names_file(tmp_path):
     with pytest.raises(KeyError, match="missing.yaml"):
         from chesscode.config import load
         load("missing", root=tmp_path)
+
+
+def test_directory_input_changes_hash(tmp_path):
+    ctx = context.Context("cc-2026-0001-en", tmp_path / "spec", tmp_path, {}, "en", "studio")
+    source = tmp_path / "content" / "openings"
+    source.mkdir(parents=True)
+    opening = source / "a.tsv"
+    opening.write_text("one")
+    before = runner._input_hash(ctx, ["content/openings"])
+    opening.write_text("two")
+    assert runner._input_hash(ctx, ["content/openings"]) != before
