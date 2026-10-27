@@ -45,6 +45,8 @@ class Face:
     sweat: bool = False
     level: float = 0.5         # engine bot: eval-bar mouth fill
     lean: float = 0.0          # body rotation in degrees
+    brow_r_y: float = 0.0      # extra raise of the right brow only (skeptical look)
+    pop: float = 0.0           # head prop lift in px (crown pops off when shocked)
 
 
 def attrs(**kw) -> str:
@@ -53,7 +55,7 @@ def attrs(**kw) -> str:
 
 # ---------- shared parts ----------
 
-def eye(cx: float, cy: float, f: Face, p: Palette, uid: str, rx=15, ry=20) -> str:
+def eye(cx: float, cy: float, f: Face, p: Palette, uid: str, rx=18, ry=24) -> str:
     rx, ry = rx * f.scale, ry * f.scale
     if f.shut:
         bend = 7 if f.shut == "down" else -3
@@ -63,13 +65,13 @@ def eye(cx: float, cy: float, f: Face, p: Palette, uid: str, rx=15, ry=20) -> st
             d = f"M{cx-rx},{cy-6} L{cx+rx*0.5},{cy} L{cx-rx},{cy+6}" if uid.endswith("l") else f"M{cx+rx},{cy-6} L{cx-rx*0.5},{cy} L{cx+rx},{cy+6}"
         return f'<g id="eye-{uid}"><path d="{d}" fill="none" stroke="{p.ink}" stroke-width="{STROKE+1}" stroke-linecap="round" stroke-linejoin="round"/>{extra}</g>'
     clip = f"clip-{uid}"
-    pr = 7.5 * f.pupil * f.scale
+    pr = 8.5 * f.pupil * f.scale
     pxx, pyy = cx + f.px * (rx - pr - 2), cy + f.py * (ry - pr - 2)
     lid_h = 2 * ry * (1 - f.open)
     lid = ""
     if lid_h > 0.5:
         top = cy - ry
-        lid = (f'<rect x="{cx-rx-2}" y="{top-2}" width="{2*rx+4}" height="{lid_h+2}" fill="{p.shade}"/>'
+        lid = (f'<rect x="{cx-rx-2}" y="{top-2}" width="{2*rx+4}" height="{lid_h+2}" fill="{p.body}"/>'
                f'<line x1="{cx-rx}" y1="{top+lid_h}" x2="{cx+rx}" y2="{top+lid_h}" stroke="{p.ink}" stroke-width="{STROKE-0.5}"/>')
     return (f'<g id="eye-{uid}"><clipPath id="{clip}"><ellipse cx="{cx}" cy="{cy}" rx="{rx}" ry="{ry}"/></clipPath>'
             f'<ellipse cx="{cx}" cy="{cy}" rx="{rx}" ry="{ry}" fill="{p.body}"/>'
@@ -80,12 +82,13 @@ def eye(cx: float, cy: float, f: Face, p: Palette, uid: str, rx=15, ry=20) -> st
 
 def brows(lx: float, rx_: float, y: float, f: Face, p: Palette, color: str | None = None, w=20) -> str:
     c = color or p.ink
-    y = y - f.brow_y * 9
+    y = y - max(-1.0, min(1.0, f.brow_y)) * 9  # capped so brows never hit the head prop
     out = []
     for side, x in (("l", lx), ("r", rx_)):
         a = f.brow * 18 * (1 if side == "l" else -1)  # inner ends tilt together
-        out.append(f'<line id="brow-{side}" x1="{x-w/2}" y1="{y}" x2="{x+w/2}" y2="{y}" stroke="{c}" stroke-width="{STROKE+1.5}" '
-                   f'stroke-linecap="round" transform="rotate({a} {x} {y})"/>')
+        by = y - (f.brow_r_y * 8 if side == "r" else 0)
+        out.append(f'<line id="brow-{side}" x1="{x-w/2}" y1="{by}" x2="{x+w/2}" y2="{by}" stroke="{c}" stroke-width="{STROKE+1.5}" '
+                   f'stroke-linecap="round" transform="rotate({a} {x} {by})"/>')
     return "".join(out)
 
 
@@ -105,15 +108,17 @@ def mouth(cx: float, cy: float, kind: str, p: Palette) -> str:
 
 def arm(points: list[tuple[float, float]], p: Palette, side: str, hand_r=13) -> str:
     (x0, y0), (x1, y1), (x2, y2) = points
-    d = f"M{x0},{y0} Q{x1},{y1} {x2},{y2}"
-    return (f'<g id="arm-{side}"><path d="{d}" fill="none" stroke="{p.ink}" stroke-width="{STROKE+8}" stroke-linecap="round"/>'
-            f'<path d="{d}" fill="none" stroke="{p.body}" stroke-width="{STROKE+1}" stroke-linecap="round"/>'
+    d = f"M{x0},{y0} L{x1},{y1} L{x2},{y2}"  # shoulder, elbow, hand: two segments per spec section 7
+    return (f'<g id="arm-{side}"><path d="{d}" fill="none" stroke="{p.ink}" stroke-width="{STROKE+11}" stroke-linecap="round" stroke-linejoin="round"/>'
+            f'<path d="{d}" fill="none" stroke="{p.body}" stroke-width="{STROKE+4}" stroke-linecap="round" stroke-linejoin="round"/>'
             + hand(x2, y2, hand_r, p) + '</g>')
 
 
 def hand(x: float, y: float, r: float, p: Palette) -> str:
     if r < 20:
-        return f'<circle cx="{x}" cy="{y}" r="{r}" fill="{p.body}" stroke="{p.ink}" stroke-width="{STROKE-0.5}"/>'
+        sk = f'fill="{p.body}" stroke="{p.ink}" stroke-width="{STROKE-0.5}"'
+        return (f'<circle cx="{x}" cy="{y-r*0.75}" r="{r*0.42}" {sk}/>'  # thumb
+                f'<ellipse cx="{x}" cy="{y}" rx="{r*0.8}" ry="{r}" {sk}/>')
     # open palm laid over the face: a wide mitten with finger creases, so it never reads as a monocle
     creases = "".join(f'<line x1="{x-r*0.95}" y1="{y+dy}" x2="{x-r*0.35}" y2="{y+dy}" stroke="{p.ink}" stroke-width="{STROKE-1}" stroke-linecap="round"/>'
                       for dy in (-6, 1, 8))
@@ -121,8 +126,8 @@ def hand(x: float, y: float, r: float, p: Palette) -> str:
             f'stroke="{p.ink}" stroke-width="{STROKE-0.5}"/>' + creases)
 
 
-def sweat(x: float, y: float, p: Palette) -> str:
-    return (f'<path d="M{x},{y} C{x+9},{y+12} {x+10},{y+20} {x},{y+22} C{x-10},{y+20} {x-9},{y+12} {x},{y} Z" '
+def sweat(x: float, y: float, p: Palette, k: float = 1.5) -> str:
+    return (f'<path d="M{x},{y} C{x+9*k},{y+12*k} {x+10*k},{y+20*k} {x},{y+22*k} C{x-10*k},{y+20*k} {x-9*k},{y+12*k} {x},{y} Z" '
             f'fill="{p.body}" stroke="{p.ink}" stroke-width="{STROKE-1}" stroke-linejoin="round"/>')
 
 
@@ -145,15 +150,15 @@ def pyaada(f: Face, p: Palette) -> str:
     ink = f'stroke="{p.ink}" stroke-width="{STROKE}" stroke-linejoin="round"'
     arms_back = ""
     arms_front = "".join(arm(pts, p, s, hand_r=22 if f.arms == "facepalm" else 13) for s, pts in PAWN_ARMS[f.arms])
-    face = (eye(98, 88, f, p, "l") + eye(142, 88, f, p, "r") + brows(97, 143, 58, f, p) + mouth(120, 122, f.mouth, p))
-    crown = (f'<g id="prop" transform="translate(112,8) rotate(13)"><path d="M0,32 L0,9 L13,19 L26,0 L39,19 L52,9 L52,32 Z" '
+    face = (eye(96, 90, f, p, "l") + eye(144, 90, f, p, "r") + brows(96, 144, 54, f, p) + mouth(120, 126, f.mouth, p))
+    crown = (f'<g id="prop-head" transform="translate({112 + f.pop * 0.3},{8 - f.pop}) rotate({13 + f.pop * 0.8})"><path d="M0,32 L0,9 L13,19 L26,0 L39,19 L52,9 L52,32 Z" '
              f'fill="{p.accent}" {ink}/></g>')
     return (f'<g transform="rotate({f.lean} 120 249)">'
             f'<path id="body" d="M88,138 C86,170 62,190 46,210 L194,210 C178,190 154,170 152,138 Z" fill="{p.body}" {ink}/>'
             + pawn_base(p) +
             f'<ellipse id="collar" cx="120" cy="140" rx="45" ry="11" fill="{p.body}" {ink}/>'
             f'<circle id="head" cx="120" cy="84" r="58" fill="{p.body}" {ink}/>'
-            + crown + face + (sweat(190, 44, p) if f.sweat else "") + arms_back + arms_front + "</g>")
+            + crown + face + (sweat(166, 42, p) if f.sweat else "") + arms_back + arms_front + "</g>")
 
 
 KNIGHT_ARMS = {
@@ -174,8 +179,8 @@ def knight(f: Face, p: Palette) -> str:
             + f'<circle cx="196" cy="100" r="3.2" fill="{p.ink}"/>')
     arms = "".join(arm(pts, p, s, hand_r=22 if f.arms == "facepalm" else 13) for s, pts in KNIGHT_ARMS.get(f.arms, []))
     return (f'<g transform="rotate({f.lean} 120 249)">' + f'<path id="body" d="{head}" fill="{p.body}" {ink}/>'
-            + f'<path id="prop" d="{mane}" fill="{p.accent}" {ink}/>' + pawn_base(p) + face
-            + (sweat(176, 36, p) if f.sweat else "") + arms + "</g>")
+            + f'<path id="prop-head" d="{mane}" fill="{p.accent}" {ink}/>' + pawn_base(p) + face
+            + (sweat(170, 40, p) if f.sweat else "") + arms + "</g>")
 
 
 BOT_ARMS = {
@@ -199,11 +204,11 @@ def engine_bot(f: Face, p: Palette) -> str:
     feet = "".join(f'<rect x="{x}" y="200" width="34" height="18" rx="8" fill="{p.shade}" {ink}/>' for x in (70, 136))
     return (f'<g transform="rotate({f.lean} 120 249)">' + feet
             + f'<line x1="120" y1="62" x2="120" y2="34" stroke="{p.ink}" stroke-width="{STROKE+1}" stroke-linecap="round"/>'
-            + f'<circle id="prop" cx="120" cy="28" r="9" fill="{p.accent}" {ink}/>'
+            + f'<circle id="prop-head" cx="120" cy="28" r="9" fill="{p.accent}" {ink}/>'
             + f'<rect id="body" x="48" y="60" width="144" height="146" rx="24" fill="{p.body}" {ink}/>'
             + f'<rect id="head" x="64" y="76" width="112" height="90" rx="14" fill="{p.ink}"/>'
             + eyes + brows(98, 142, 90, f, p, color=p.body, w=16) + bar
-            + (sweat(210, 52, p) if f.sweat else "") + arms + "</g>")
+            + (sweat(196, 54, p) if f.sweat else "") + arms + "</g>")
 
 
 # ---------- concepts ----------
@@ -219,15 +224,16 @@ class Concept:
     swatch_names: tuple
     expressions: list = field(default_factory=list)
     note: str = ""
+    view: str = "Front, neutral"
 
 
 EXPR = ["neutral", "side_eye", "facepalm", "shocked", "slow_clap", "sweating"]
 PAWN_FACES = {
     "neutral": Face(mouth="smile"),
-    "side_eye": Face(open=0.45, px=0.9, brow=0.7, brow_y=-0.3, mouth="flat"),
+    "side_eye": Face(open=0.5, px=1.0, brow=0.6, brow_y=-0.4, brow_r_y=1.2, mouth="flat"),
     "facepalm": Face(shut="down", brow=-0.8, brow_y=0.4, mouth="frown", arms="facepalm", lean=-4),
-    "shocked": Face(scale=1.22, pupil=0.6, brow_y=1.4, mouth="o", lean=3),
-    "slow_clap": Face(open=0.55, py=0.2, brow=-0.2, mouth="smirk", arms="clap"),
+    "shocked": Face(scale=1.18, pupil=0.55, brow_y=1.0, mouth="o", lean=3, pop=14),
+    "slow_clap": Face(open=0.7, py=-0.4, brow=-0.3, brow_y=0.4, mouth="smirk", arms="clap"),
     "sweating": Face(pupil=0.7, px=-0.5, brow=-0.9, brow_y=0.5, mouth="wavy", sweat=True),
 }
 BOT_FACES = {**PAWN_FACES,
@@ -240,13 +246,13 @@ BOT_FACES = {**PAWN_FACES,
 
 CONCEPTS = [
     Concept("pyaada", "Pyaada", "प्यादा", "A pawn who is sure he deserves to be promoted. He made the crown himself.",
-            pyaada, Palette("#F1E7D3", "#C8B391", "#1D2026", "#F2B33D"), ("body", "shade", "ink", "crown"),
+            pyaada, Palette("#F1E7D3", "#C8B391", "#1D2026", "#6FA8DC"), ("body", "shade", "ink", "paper crown"),
             note="Running gag: wants promotion, distrusts the h-pawn, thinks every rook lift is too aggressive."),
     Concept("knight", "Ghoda", "घोड़ा", "A tiny knight who refuses to move in anything but an L, even across the screen.",
-            knight, Palette("#F1E7D3", "#C8B391", "#1D2026", "#D9774B"), ("body", "shade", "ink", "mane"),
-            note="Entrances and exits are two squares then one: the L-move is the walk cycle."),
+            knight, Palette("#F1E7D3", "#C8B391", "#1D2026", "#4FB6C8"), ("body", "shade", "ink", "mane"),
+            note="Entrances and exits are two squares then one: the L-move is the walk cycle.", view="Three-quarter, neutral"),
     Concept("engine-bot", "Bot", "बॉट", "A small engine whose mouth is an eval bar. It fills when it is happy and drains when you blunder.",
-            engine_bot, Palette("#E4E8EC", "#A9B2BC", "#1D2026", "#F2B33D"), ("body", "shade", "ink", "eval fill"),
+            engine_bot, Palette("#E4E8EC", "#A9B2BC", "#1D2026", "#A98BE0"), ("body", "shade", "ink", "eval fill"),
             note="The mouth is the eval bar: mood = fill level, so the face doubles as a second eval display."),
 ]
 
@@ -273,31 +279,34 @@ def sheet(c: Concept) -> str:
     faces = BOT_FACES if c.slug == "engine-bot" else PAWN_FACES
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}">',
            f'<rect width="{W}" height="{H}" fill="{BG}"/>',
-           text(M, 136, f'{c.name} <tspan fill="{MUTED}" font-weight="400">{c.native}</tspan>', 72, weight=600),
+           text(M, 136, f'{c.name} <tspan font-family="IBM Plex Sans Devanagari">{c.native}</tspan>', 72, weight=600),
            text(M, 190, c.line, 32, MUTED)]
     # hero
     hx, hy, hw, hh = M, 240, 760, 940
     out += [panel(hx, hy, hw, hh), place(c, faces["neutral"], c.palette, hx + hw / 2, hy + hh - 110, 700),
-            text(hx + 32, hy + hh - 36, "Front, neutral", 28, MUTED)]
+            text(hx + 32, hy + hh - 36, c.view, 28, MUTED)]
     # expressions
-    cw, ch, gap, ex0 = 448, 446, 24, 904
+    cw, ch, gap, ex0 = 448, 458, 24, 904
     for i, name in enumerate(EXPR):
-        cx, cy = ex0 + (i % 3) * (cw + gap), 240 + (i // 3) * (ch + 48)
+        cx, cy = ex0 + (i % 3) * (cw + gap), 240 + (i // 3) * (ch + gap)
         out += [panel(cx, cy, cw, ch), place(c, faces[name], c.palette, cx + cw / 2, cy + ch - 76, 300),
                 text(cx + 28, cy + ch - 26, name.replace("_", " ").capitalize(), 28, MUTED)]
-    # silhouettes on light, at 120 px and 240 px tall
-    sy = 1216
-    out += [panel(M, sy, 760, 288, LIGHT),
-            place(c, faces["neutral"], SILHOUETTE, M + 130, sy + 200, 120),
-            text(M + 130, sy + 252, "120 px", 28, "#3A3F47", anchor="middle"),
-            place(c, faces["neutral"], SILHOUETTE, M + 460, sy + 262, 236),
-            text(M + 620, sy + 252, "240 px", 28, "#3A3F47")]
+    # silhouettes on light at 120 and 240 px; colour at real Studio size (200 px) on the video background
+    sy, bh = 1204, 300
+    out += [panel(M, sy, 470, bh, LIGHT),
+            place(c, faces["neutral"], SILHOUETTE, M + 90, sy + 196, 120),
+            place(c, faces["neutral"], SILHOUETTE, M + 320, sy + 258, 240),
+            text(M + 90, sy + 254, "120 px", 28, "#3A3F47", anchor="middle"),
+            text(M + 440, sy + 286, "240 px", 28, "#3A3F47", anchor="end"),
+            panel(M + 486, sy, 274, bh, BG),
+            place(c, faces["neutral"], c.palette, M + 486 + 137, sy + 230, 200),
+            text(M + 486 + 137, sy + 282, "200 px", 28, MUTED, anchor="middle")]
     # palette + note
     px0 = ex0
-    out.append(panel(px0, sy, 1400, 288))
+    out.append(panel(px0, sy, 1392, bh))
     for i, (hexv, label) in enumerate(zip((c.palette.body, c.palette.shade, c.palette.ink, c.palette.accent), c.swatch_names)):
         x = px0 + 32 + i * 196
-        out += [f'<rect x="{x}" y="{sy + 32}" width="160" height="120" rx="10" fill="{hexv}" stroke="{HAIRLINE}" stroke-width="2"/>',
+        out += [f'<rect x="{x}" y="{sy + 32}" width="160" height="120" rx="10" fill="{hexv}" stroke="#4A505B" stroke-width="2"/>',
                 text(x, sy + 192, label.capitalize(), 28),
                 text(x, sy + 232, hexv.upper(), 28, MUTED)]
     note_x = px0 + 32 + 4 * 196 + 16
