@@ -16,6 +16,11 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8"]
+tts = [
+  "azure-cognitiveservices-speech",
+  "kokoro-onnx",
+  "whisperx",
+]
 
 [build-system]
 requires = ["setuptools>=68"]
