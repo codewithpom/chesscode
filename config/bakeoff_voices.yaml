@@ -1,6 +1,6 @@
 elevenlabs:
-  en: TODO_ELEVENLABS_EN_VOICE_ID
-  hi: TODO_ELEVENLABS_HI_VOICE_ID
+  en: JBFqnCBsd6RMkjVDRZzb  # George (premade, multilingual v2)
+  hi: EXAVITQu4vr4xnSDxMaL  # Sarah (premade, multilingual v2)
 azure:
   en: TODO_AZURE_EN_IN_VOICE_ID
   hi: TODO_AZURE_HI_IN_VOICE_ID
