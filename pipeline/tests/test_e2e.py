@@ -66,6 +66,9 @@ def test_e2e_golden_specs_validate(tmp_path, monkeypatch):
         # sparse ply segments: plies before the first one, and gaps between them, must still be timed
         wanted = 4 if short else 12
         marks = sorted({1 + (n_plies - 1) * i // wanted for i in range(wanted)} | {max(1, n_plies // 3)})
+        if short:  # a Short's ply segments start just before its beat, as the Shorts prompt asks
+            first = max(1, request["short_beat"]["ply"] - 3)
+            marks = [p for p in range(first, first + 4) if p <= n_plies]
         per = words // (len(marks) + 1)
         texts = [per] * len(marks) + [words - per * len(marks)]
         segments = [{"kind": "cold_open", "ply": None, "text": " ".join(["develops"] * texts[-1])}]

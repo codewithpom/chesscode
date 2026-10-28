@@ -10,14 +10,17 @@ def complete_json(model_key: str, system: str, user: str, schema: dict, client=N
         import anthropic
         client = anthropic.Anthropic()
     models = load("models")
-    model = models[model_key]
+    model = models[model_key]; max_tokens = models["max_tokens"][model_key]
     for attempt in range(retries + 1):
         try:
             if hasattr(client, "complete"):
                 raw = client.complete(model=model, system=system, user=user, schema=schema)
             else:
-                response = client.messages.create(model=model, max_tokens=8192, system=system, messages=[{"role":"user","content":user}])
+                response = client.messages.create(model=model, max_tokens=max_tokens, system=system, messages=[{"role":"user","content":user}])
+                if getattr(response, "stop_reason", None) == "max_tokens":  # a retry would truncate the same way
+                    raise StageError("unknown", "script", f"model output was cut off at max_tokens {max_tokens}: raise max_tokens.{model_key} in config/models.yaml")
                 raw = "".join(block.text for block in response.content if getattr(block, "type", None) == "text")
+        except StageError: raise
         except Exception as exc:
             raise StageError("unknown", "script", f"model request failed: {exc}") from exc
         try:

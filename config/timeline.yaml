@@ -3,3 +3,4 @@ reaction_gap_ms: 900
 outro_ms: 20000
 min_chapters: 3
 chapter_min_ms: 10000
+piece_move_ms: 280  # a piece slide takes this long; consecutive plies are shown at least this far apart

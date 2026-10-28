@@ -120,3 +120,32 @@ def test_missing_beats_config_is_an_error():
 def test_shorts_skip_chapter_padding():
     r = run([("cold_open", None), ("ply", 1)], n_plies=4, duration=8000, cfg={**CFG, "min_chapters": 0, "outro_ms": 0})
     assert [c["start_ms"] for c in r["chapters"]] == [0]  # no filler "Chapter N" entries for Shorts
+
+
+def test_plies_never_share_a_timestamp_inside_a_segment_with_few_words():
+    r = run([("cold_open", None), ("ply", 1), ("outro", None)], n_words=3, n_plies=5)  # 5 plies, 3 words
+    times = [r["plies_show_at"][n] for n in range(1, 6)]
+    assert all(b - a >= CFG["piece_move_ms"] for a, b in zip(times, times[1:]))
+    assert times == sorted(times) and set(times) <= word_starts(r) | {s["start_ms"] for s in r["narration"]}
+
+
+def test_plies_on_close_words_are_pushed_to_the_next_word_start():
+    segments, voice = make([("cold_open", None), ("ply", 1), ("outro", None)], n_words=8)
+    voice[1]["words"] = words(8, step=100)  # words only 100 ms apart
+    r = layout(segments, voice, [], [{"ply": n} for n in range(1, 7)], CFG)
+    times = [r["plies_show_at"][n] for n in range(1, 7)]
+    assert all(b - a >= CFG["piece_move_ms"] for a, b in zip(times, times[1:]))
+    assert set(times) <= word_starts(r) | {s["start_ms"] for s in r["narration"]}
+
+
+def test_chapter_titles_are_never_cut_mid_word():
+    long = "alpha " * 11 + "supercalifragilisticexpialidocious and more words follow after that"
+    segments, voice = make([("cold_open", None), ("ply", 1), ("chapter", None)], n_words=3, duration=20000)
+    segments[2]["text"] = long
+    voice[2]["words"] = words(3)
+    r = layout(segments, voice, [], [{"ply": n} for n in range(1, 4)], {**CFG, "min_chapters": 1})
+    titles = [c["title"] for c in r["chapters"]]
+    assert all(len(t) <= 70 for t in titles)
+    assert any(t.startswith("alpha alpha") for t in titles)
+    for t in titles:
+        if t.startswith("alpha"): assert long[len(t)] == " ", t

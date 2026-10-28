@@ -165,3 +165,11 @@ def test_final_beat_wins_pose_conflict_over_previous_beat():
     cands = [{"type": "brilliant", "ply": 1, "intensity": 1}, {"type": "checkmate", "ply": 9, "intensity": 3}]
     kept = pace(cands, {1: 0, 9: 90000}, cfg)
     assert [b["type"] for b in kept] == ["checkmate"]
+
+
+def test_beats_yaml_defines_each_top_level_key_once():
+    import re
+    from pathlib import Path
+    text = (Path(__file__).resolve().parents[2] / "config/beats.yaml").read_text(encoding="utf-8")
+    keys = re.findall(r"^([A-Za-z_]\w*):", text, re.M)
+    assert len(keys) == len(set(keys)), sorted(k for k in set(keys) if keys.count(k) > 1)

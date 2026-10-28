@@ -23,7 +23,7 @@ SCHEMA = {"type":"object", "required":["segments","mascot_lines","titles","hook"
  "mascot_lines":{"type":"object","additionalProperties":{"type":"string"}},"titles":{"type":"array","minItems":3,"maxItems":3,"items":{"type":"string"}},"hook":{"type":"string"}}}
 
 # Hindi is written natively, not translated; chess terms and moves stay English/Latin (joke rule 3, SAN guard).
-SHORTS_ADDENDUM = "\nThis is a Short about the single beat named in short_beat (type, ply, move, mascot pose). Tell that moment as a story with a hook; do not recap the rest of the game."
+SHORTS_ADDENDUM = "\nThis is a Short about the single beat named in short_beat (type, ply, move, mascot pose). Tell that moment as a story with a hook; do not recap the rest of the game. Start your ply segments 3 or 4 plies before the beat's ply, not at ply 1: earlier moves are set up instantly and only moves that have words to land on are animated."
 HINDI_ADDENDUM = "\nWrite the narration natively in conversational spoken Hindi (Devanagari) from these facts; never translate an English script. Keep chess terms (fork, pin, blunder, checkmate, rook, knight) in English and write every move in standard SAN with Latin letters."
 
 def select_bank_line(beat_type: str, bank: dict, recent: set[str], language: str) -> str:
@@ -121,18 +121,18 @@ def run(ctx):
             san=next(r["san"] for r in facts["classified.json"] if r["ply"]==beat["ply"])
             request["short_beat"]={"beat_id":beat["beat_id"],"type":beat["type"],"ply":beat["ply"],"san":san,"pose":beat["pose"]}
             system += SHORTS_ADDENDUM
-        long_form=ctx.template!="shorts"
+        long_form=ctx.template!="shorts"; model_key="script_hi" if ctx.language=="hi" else "script"  # Hindi has its own output budget
         wpm=140 if ctx.language=="hi" else 150
         min_words,max_words=(int(wpm*8),int(wpm*12)) if long_form else (int(wpm*35/60),int(wpm*59/60))
         km_lo,km_hi=int(wpm*18/60),int(wpm*36/60)  # inside 15-40 s with margin for voice pace
         if long_form: request["key_moment_words"]={"min":km_lo,"max":km_hi}
         user = json.dumps(request, ensure_ascii=False)
-        output = llm.complete_json("script", system, user, SCHEMA)
+        output = llm.complete_json(model_key, system, user, SCHEMA)
         rows=facts["classified.json"]
         game_sans={r.get("san","") for r in rows}
         qa=load("qa",root=ctx.repo_root)
         try:
-            output=ensure_specific(output,lambda:llm.complete_json("script",system,user+"\nMake the game-specific plans, squares, and moves explicit.",SCHEMA),qa.get("min_specific_tokens_per_min",6),wpm)
+            output=ensure_specific(output,lambda:llm.complete_json(model_key,system,user+"\nMake the game-specific plans, squares, and moves explicit.",SCHEMA),qa.get("min_specific_tokens_per_min",6),wpm)
         except ValueError as exc: raise StageError(ctx.video_id,"script",str(exc)) from exc
         def problems(value):
             count=sum(len(s["text"].split()) for s in value["segments"])
@@ -141,7 +141,7 @@ def run(ctx):
             return found
         found=problems(output)
         if found:
-            output=llm.complete_json("script",system,user+"\n"+" ".join(f[0] for f in found),SCHEMA)
+            output=llm.complete_json(model_key,system,user+"\n"+" ".join(f[0] for f in found),SCHEMA)
             found=problems(output)
             if found: raise StageError(ctx.video_id,"script","; ".join(f[1] for f in found)+" after regeneration")
         if ctx.template=="shorts" and output["segments"]:
@@ -150,7 +150,7 @@ def run(ctx):
         def regenerate(path,bad):
             part=_at(output,path[:2]) if path[0]=="segments" else _at(output,path)
             where=" ".join(map(str,path[:2] if path[0]=="segments" else path))
-            return llm.complete_json("script",system,user+f"\nRegenerate only the {where} and return the full JSON. Unknown SAN: "+", ".join(bad)+". Current: "+json.dumps(part,ensure_ascii=False),SCHEMA)
+            return llm.complete_json(model_key,system,user+f"\nRegenerate only the {where} and return the full JSON. Unknown SAN: "+", ".join(bad)+". Current: "+json.dumps(part,ensure_ascii=False),SCHEMA)
         try: guard_san(output,game_sans,lambda:_engine_sans(rows),regenerate)
         except ValueError as exc: raise StageError(ctx.video_id,"script",str(exc)) from exc
         if output["thumbnail_text"].lower() in {title.lower() for title in output["titles"]}: raise StageError(ctx.video_id,"script","thumbnail_text repeats a title")

@@ -27,14 +27,27 @@ def _lay(segments: list[dict], voice: list[dict], cover: dict, reaction_plies: s
         elif i < len(segments)-1: cursor += cfg["segment_gap_ms"]
     return narration
 
-def _show_at(narration: list[dict], cover: dict) -> dict[int, int]:
-    """First covered ply at segment start, the rest at evenly spaced word starts; earlier plies at the first ply segment."""
+def _show_at(narration: list[dict], cover: dict, piece_move_ms: int) -> dict[int, int]:
+    """First covered ply at segment start, the rest at evenly spaced word starts; earlier plies at the first ply segment.
+    Consecutive covered plies are at least piece_move_ms apart: a ply that is too close moves to the next word start."""
     show = {p: narration[min(cover)]["start_ms"] for p in range(1, cover[min(cover)][0])}
     for i, (first, last) in cover.items():
         seg = narration[i]; starts = [w["start_ms"] for w in seg["words"]]; count = last-first+1
         show[first] = seg["start_ms"]
         for j in range(1, count): show[first+j] = starts[j*len(starts)//count] if starts else seg["start_ms"]
+    candidates = sorted({n["start_ms"] for n in narration} | {w["start_ms"] for n in narration for w in n["words"]})
+    for ply in range(cover[min(cover)][0]+1, max(show)+1):
+        earliest = show[ply-1] + piece_move_ms
+        if show[ply] >= earliest: continue
+        # shortcut: after the last word start of the whole narration the remaining plies share that start (always on a word); only a script that covers far more plies than it has words gets there
+        show[ply] = next((t for t in candidates if t >= max(earliest, show[ply])), candidates[-1])
     return show
+
+def _title(text: str, limit: int = 70) -> str:
+    """Chapter title: the text, cut at a word boundary when longer than the limit."""
+    if len(text) <= limit or text[limit] == " ": return text[:limit]
+    head = text[:limit]
+    return head.rsplit(" ", 1)[0] if " " in head else head  # shortcut: one word longer than the limit is still cut
 
 def layout(segments: list[dict], voice: list[dict], beats: list[dict], plies: list[dict], cfg: dict) -> dict:
     if len(segments) != len(voice): raise ValueError("script and voice segment counts differ")
@@ -42,7 +55,7 @@ def layout(segments: list[dict], voice: list[dict], beats: list[dict], plies: li
     reaction = {b["ply"] for b in beats if b["intensity"] >= 2}
     for _ in range(5):
         narration = _lay(segments, voice, cover, reaction, cfg)
-        plies_show_at = _show_at(narration, cover)
+        plies_show_at = _show_at(narration, cover, cfg["piece_move_ms"])
         timed_beats = pace([{**b, "at_ms": plies_show_at[b["ply"]]} for b in beats], plies_show_at, cfg["beats"])
         settled = {b["ply"] for b in timed_beats if b["intensity"] >= 2}
         if settled == reaction: break
@@ -50,7 +63,7 @@ def layout(segments: list[dict], voice: list[dict], beats: list[dict], plies: li
     else: raise ValueError("reaction gaps and beat pacing do not settle")
     duration=(narration[-1]["start_ms"]+narration[-1]["duration_ms"] if narration else 0)+cfg["outro_ms"]
     timed_beats=[b for b in timed_beats if b["at_ms"]<duration]
-    chapters=[{"title":s["text"][:70],"start_ms":s["start_ms"]} for s in narration if s["kind"] in ("cold_open","chapter","key_moment","verdict")]
+    chapters=[{"title":_title(s["text"]),"start_ms":s["start_ms"]} for s in narration if s["kind"] in ("cold_open","chapter","key_moment","verdict")]
     if not chapters: chapters=[{"title":"Opening","start_ms":0}]
     chapters.sort(key=lambda c:c["start_ms"])
     spaced=[]
