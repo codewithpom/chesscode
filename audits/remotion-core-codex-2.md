@@ -1,0 +1,5 @@
+major | [CoreGallery.tsx](/D:/chess%20code/.worktrees/remotion-core/remotion/src/compositions/CoreGallery.tsx:34) | `msF` converts milliseconds to frames locally, violating the plan’s requirement that every conversion use `src/spec/time.ts` | Import and use `msToFrame` for gallery frame calculations.
+
+major | [2026-10-27-remotion-core.md](/D:/chess%20code/.worktrees/remotion-core/docs/superpowers/plans/2026-10-27-remotion-core.md:134) | Task 6 calls for rendered panel review and recording the design audit or intentional deviations; I found no audit record to verify those steps | Render the panels, record the review in `audits/TRIAGE.md`, and update the task status.
+
+**Verdict:** TypeScript passes. Vitest could not start workers (`spawn EPERM`), so tests remain unverified. Graph refresh was blocked by read-only permissions; the existing graph query worked. I did not render the gallery or visually assess its panels.

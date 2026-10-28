@@ -26,3 +26,9 @@ One row per auditor finding: fix, defer or reject, with a one-line reason.
 | A-pre | golden-review-claude | checkmate/resign intensity 1 | fix | Comic timing needs >= 2. |
 | A-pre | golden-review-claude | unordered "rest" priority | fix | Explicit order recorded as assumption. |
 | A-pre | remotion-core-codex | no findings | n/a | Design review pending (design-critic). |
+| A-pre | design-critic (remotion-core, 2 passes) | 10 visual fixes (coords, last-move tint, check stroke, eval bar, blunder contrast, Hindi stress text, caption size) + 3 owner items | fix | All verified in pixels on pass 2; owner decided piece recolour, 864 Shorts board, four hues. |
+| A-pre | design-critic pass 2 | SPEC.md section 6 still says #E5484D, red glow, 960 board | defer | SPEC is the owner's document; deviations are logged in docs/ROADMAP.md decisions; owner may update SPEC. |
+| A-pre | design-critic pass 2 | theme keys cool_grey/warm_sand now sage/rose | defer | Schema change; rename at next contract bump (needs Python + Zod together). |
+| A-pre | design-critic pass 2 | vertical eval label overlaps a8 corner area | defer | M5 scene layout task. |
+| A-pre | remotion-core-codex-2 | CoreGallery local msF | fix | Now wraps msToFrame. |
+| A-pre | remotion-core-codex-2 | Task 6 review not recorded | fix | Recorded in these rows. |
