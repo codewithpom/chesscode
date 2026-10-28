@@ -15,19 +15,23 @@ poses:
   checkmate: mic_drop
   resign: bow
   opening_exit: thinking
+# Spec section 8: blunder intensity 3 faints instead of facepalming.
+pose_by_intensity:
+  blunder:
+    3: faint
 alt_poses:
   blunder: shocked
   mistake: thinking
-  brilliant: jealous
+  brilliant: shocked
   missed_win: facepalm
   comeback: party
-  long_think: side_eye
-  time_scramble: facepalm
+  long_think: thinking
+  time_scramble: shocked
   king_walk: thinking
-  promotion: slow_clap
-  checkmate: shocked
-  resign: thinking
-  opening_exit: checks_watch
+  promotion: party
+  checkmate: bow
+  resign: mic_drop
+  opening_exit: side_eye
 eval_clamp_pawns: 10
 brilliant_decided_pawns: 5.0
 triggers:
@@ -61,3 +65,8 @@ poses:
   checkmate: mic_drop
   resign: bow
   opening_exit: thinking
+# Spec gap (assumption 11 in docs/ROADMAP.md): cap repetitive low-stakes beats per video.
+max_per_type:
+  long_think: 2
+  mistake: 3
+  time_scramble: 2

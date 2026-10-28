@@ -111,3 +111,25 @@ def test_beat_poses_alternate_and_final_intensities():
 def test_priority_is_complete_and_promotion_precedes_mistake():
     cfg = load("beats")
     assert cfg["priority"] == ["checkmate", "blunder", "brilliant", "missed_win", "comeback", "promotion", "king_walk", "time_scramble", "resign", "mistake", "long_think", "opening_exit"]
+
+
+def test_intensity3_gap_only_applies_between_two_intensity3_beats():
+    cfg = {"min_gap_ms": 20000, "min_gap_intensity3_ms": 60000, "priority": ["blunder", "mistake"], "poses": {"blunder": "facepalm", "mistake": "side_eye"}}
+    cands = [{"type": "blunder", "ply": 1, "intensity": 3}, {"type": "mistake", "ply": 2, "intensity": 1}]
+    kept = pace(cands, {1: 0, 2: 25000}, cfg)
+    assert [b["type"] for b in kept] == ["blunder", "mistake"]
+
+
+def test_max_per_type_caps_long_think():
+    cfg = {"min_gap_ms": 20000, "priority": ["long_think"], "poses": {"long_think": "checks_watch"},
+           "alt_poses": {"long_think": "thinking"}, "max_per_type": {"long_think": 2}}
+    cands = [{"type": "long_think", "ply": p, "intensity": 1} for p in range(1, 6)]
+    kept = pace(cands, {p: p * 30000 for p in range(1, 6)}, cfg)
+    assert len(kept) == 2
+
+
+def test_intensity3_blunder_faints():
+    cfg = {"min_gap_ms": 20000, "priority": ["blunder"], "poses": {"blunder": "facepalm"},
+           "pose_by_intensity": {"blunder": {3: "faint"}}}
+    kept = pace([{"type": "blunder", "ply": 1, "intensity": 3}, {"type": "blunder", "ply": 9, "intensity": 2}], {1: 0, 9: 90000}, cfg)
+    assert [b["pose"] for b in kept] == ["faint", "facepalm"]

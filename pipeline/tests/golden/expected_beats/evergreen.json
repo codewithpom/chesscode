@@ -1,0 +1,32 @@
+[
+ {
+  "type": "opening_exit",
+  "ply": 15,
+  "intensity": 1,
+  "pose": "thinking"
+ },
+ {
+  "type": "blunder",
+  "ply": 22,
+  "intensity": 3,
+  "pose": "faint"
+ },
+ {
+  "type": "missed_win",
+  "ply": 33,
+  "intensity": 1,
+  "pose": "screaming"
+ },
+ {
+  "type": "brilliant",
+  "ply": 41,
+  "intensity": 1,
+  "pose": "slow_clap"
+ },
+ {
+  "type": "checkmate",
+  "ply": 47,
+  "intensity": 3,
+  "pose": "mic_drop"
+ }
+]

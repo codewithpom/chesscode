@@ -18,12 +18,17 @@ def _mover_score(row, key, clamp=10):
     score = (10.0 if mate is not None and mate > 0 else -10.0 if mate is not None else cp / 100)
     return max(-clamp, min(clamp, score)) * (1 if white_turn else -1)
 
+def default_pose(kind: str, intensity: int, cfg: dict) -> str | None:
+    """Section 8 table pose, with per-intensity overrides (blunder intensity 3 faints)."""
+    return cfg.get("pose_by_intensity", {}).get(kind, {}).get(intensity, cfg.get("poses", {}).get(kind))
+
+
 def detect(rows: list[dict], cfg: dict) -> list[dict]:
     trig = cfg.get("triggers", {})
     found = []
     def add(kind, row, intensity=1):
         priority = (cfg.get("priority", [])).index(kind) if kind in cfg.get("priority", []) else len(cfg.get("priority", []))
-        found.append({"type": kind, "ply": row["ply"], "intensity": intensity, "priority": priority, "pose": cfg.get("poses", {}).get(kind)})
+        found.append({"type": kind, "ply": row["ply"], "intensity": intensity, "priority": priority, "pose": default_pose(kind, intensity, cfg)})
     clock_seen = set(); last_clock = {}; kings = {chess.WHITE: 0, chess.BLACK: 0}; opening_done = False
     for i, row in enumerate(rows):
         clamp = cfg.get("eval_clamp_pawns", 10)
@@ -63,13 +68,16 @@ def detect(rows: list[dict], cfg: dict) -> list[dict]:
 def pace(cands: list[dict], ply_times_ms: dict[int,int] | None, cfg: dict) -> list[dict]:
     priority = cfg.get("priority", [])
     for beat in cands:
-        beat.setdefault("pose", cfg.get("poses", {}).get(beat["type"]))
+        beat.setdefault("pose", default_pose(beat["type"], beat.get("intensity", 1), cfg))
     ordered = sorted(cands, key=lambda b: (priority.index(b["type"]) if b["type"] in priority else len(priority), -b.get("intensity", 1), b["ply"]))
     selected = []
     def at(b): return (ply_times_ms or {}).get(b["ply"], b["ply"] * cfg.get("est_ms_per_ply", 4500))
+    caps = cfg.get("max_per_type", {})
+    def gap(a, b): return cfg.get("min_gap_intensity3_ms", 60000) if a.get("intensity") == 3 and b.get("intensity") == 3 else cfg.get("min_gap_ms", 20000)
     for beat in ordered:
-        gap = cfg.get("min_gap_intensity3_ms", 60000) if beat.get("intensity") == 3 and any(x.get("intensity")==3 for x in selected) else cfg.get("min_gap_ms",20000)
-        if any(abs(at(beat)-at(prev)) < gap for prev in selected): continue
+        if any(abs(at(beat)-at(prev)) < gap(beat, prev) for prev in selected): continue
+        # spec gap: a clock-heavy classical game would otherwise get a checks_watch every 20 s
+        if beat["type"] in caps and sum(b["type"] == beat["type"] for b in selected) >= caps[beat["type"]]: continue
         selected.append(beat)
     result=[]
     for beat in sorted(selected,key=lambda b:(at(b),b["ply"])):

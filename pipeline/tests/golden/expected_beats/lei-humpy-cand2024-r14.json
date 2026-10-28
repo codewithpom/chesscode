@@ -1,0 +1,50 @@
+[
+ {
+  "type": "long_think",
+  "ply": 12,
+  "intensity": 1,
+  "pose": "checks_watch"
+ },
+ {
+  "type": "long_think",
+  "ply": 20,
+  "intensity": 1,
+  "pose": "thinking"
+ },
+ {
+  "type": "brilliant",
+  "ply": 45,
+  "intensity": 1,
+  "pose": "slow_clap"
+ },
+ {
+  "type": "mistake",
+  "ply": 51,
+  "intensity": 1,
+  "pose": "side_eye"
+ },
+ {
+  "type": "mistake",
+  "ply": 61,
+  "intensity": 1,
+  "pose": "thinking"
+ },
+ {
+  "type": "mistake",
+  "ply": 72,
+  "intensity": 1,
+  "pose": "side_eye"
+ },
+ {
+  "type": "promotion",
+  "ply": 92,
+  "intensity": 1,
+  "pose": "jealous"
+ },
+ {
+  "type": "promotion",
+  "ply": 122,
+  "intensity": 1,
+  "pose": "party"
+ }
+]

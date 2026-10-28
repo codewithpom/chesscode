@@ -1,0 +1,38 @@
+[
+ {
+  "type": "opening_exit",
+  "ply": 9,
+  "intensity": 1,
+  "pose": "thinking"
+ },
+ {
+  "type": "blunder",
+  "ply": 21,
+  "intensity": 3,
+  "pose": "faint"
+ },
+ {
+  "type": "blunder",
+  "ply": 35,
+  "intensity": 3,
+  "pose": "shocked"
+ },
+ {
+  "type": "brilliant",
+  "ply": 49,
+  "intensity": 1,
+  "pose": "slow_clap"
+ },
+ {
+  "type": "brilliant",
+  "ply": 58,
+  "intensity": 1,
+  "pose": "shocked"
+ },
+ {
+  "type": "checkmate",
+  "ply": 82,
+  "intensity": 3,
+  "pose": "mic_drop"
+ }
+]
