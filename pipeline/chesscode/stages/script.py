@@ -47,20 +47,26 @@ def run(ctx):
         if ctx.language=="hi": system += "\nWrite in natural spoken Hindi from these facts. Do not translate or use any English script."
         user = json.dumps({"language":ctx.language,"facts":facts}, ensure_ascii=False)
         output = llm.complete_json("script", system, user, SCHEMA)
+        if ctx.template=="shorts" and output["segments"]:
+            output["segments"][0].update(kind="cold_open",ply=None)
         rows=facts["classified.json"]
         game_sans={r.get("san","") for r in rows}
         engine_sans=set()
-        for row in rows:
-            for key,fen_key in (("before","fen_before"),("after","fen_after")):
-                board=chess.Board(row[fen_key])
-                for line in row.get(key) or []:
-                    for uci in line.get("pv",[]):
-                        try:
-                            move=chess.Move.from_uci(uci); engine_sans.add(board.san(move)); board.push(move)
-                        except (ValueError,chess.IllegalMoveError): break
+        bad_by_segment=[unknown_moves(segment["text"],game_sans,engine_sans) for segment in output["segments"]]
+        if any(bad_by_segment):
+            for row in rows:
+                for key,fen_key in (("before","fen_before"),("after","fen_after")):
+                    board=chess.Board(row[fen_key])
+                    for line in row.get(key) or []:
+                        for uci in line.get("pv",[]):
+                            try:
+                                move=chess.Move.from_uci(uci)
+                                if move not in board.legal_moves: break
+                                engine_sans.add(board.san(move)); board.push(move)
+                            except (ValueError,chess.IllegalMoveError): break
         for index,segment in enumerate(output["segments"]):
             for _ in range(3):
-                bad=unknown_moves(segment["text"],game_sans,engine_sans)
+                bad=bad_by_segment[index] if _==0 else unknown_moves(segment["text"],game_sans,engine_sans)
                 if not bad: break
                 prompt=user+"\nRegenerate only this segment and return the full JSON. Unknown SAN: "+", ".join(bad)+". Segment: "+json.dumps(segment,ensure_ascii=False)
                 revised=llm.complete_json("script",system,prompt,SCHEMA)
@@ -74,7 +80,7 @@ def run(ctx):
         try:
             output=ensure_specific(output,lambda:llm.complete_json("script",system,user+"\nMake the game-specific plans, squares, and moves explicit.",SCHEMA),qa.get("min_specific_tokens_per_min",6),wpm)
         except ValueError as exc: raise StageError(ctx.video_id,"script",str(exc)) from exc
-        min_words,max_words=(int(wpm*35/60),int(wpm*60/60)) if ctx.template=="shorts" else (int(wpm*8),int(wpm*12))
+        min_words,max_words=(int(wpm*35/60),int(wpm*59/60)) if ctx.template=="shorts" else (int(wpm*8),int(wpm*12))
         if not min_words<=word_count<=max_words:
             output=llm.complete_json("script",system,user+f"\nTarget a total of {min_words} to {max_words} spoken words.",SCHEMA)
             word_count=sum(len(s["text"].split()) for s in output["segments"])

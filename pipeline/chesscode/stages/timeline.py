@@ -49,6 +49,16 @@ def layout(segments: list[dict], voice: list[dict], beats: list[dict], plies: li
 def run(ctx):
     try:
         data={name:json.loads((ctx.spec_dir/name).read_text(encoding="utf-8")) for name in ("script.json","voice.json","beats.json","classified.json")}
-        result=layout(data["script.json"]["segments"],data["voice.json"],data["beats.json"],data["classified.json"],load("timeline",root=ctx.repo_root))
+        beats=data["beats.json"]
+        timeline_cfg=load("timeline",root=ctx.repo_root)
+        if ctx.template=="shorts":
+            if not beats: raise ValueError("shorts requires at least one beat")
+            beats=[max(beats,key=lambda beat:(beat.get("priority",0),beat.get("intensity",0),-beat.get("ply",0)))]
+            timeline_cfg=dict(timeline_cfg)
+            timeline_cfg["outro_ms"]=0
+            gap=timeline_cfg.get("segment_gap_ms",300)
+            duration=sum(int(row["duration_ms"]) for row in data["voice.json"])+gap*max(0,len(data["voice.json"])-1)+timeline_cfg.get("outro_ms",20000)
+            timeline_cfg["est_ms_per_ply"]=min(timeline_cfg.get("est_ms_per_ply",4500),max(1,(duration-1)//max(1,beats[0]["ply"])))
+        result=layout(data["script.json"]["segments"],data["voice.json"],beats,data["classified.json"],timeline_cfg)
         (ctx.spec_dir/"timeline.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
     except Exception as exc: raise StageError(ctx.video_id,"timeline",str(exc)) from exc

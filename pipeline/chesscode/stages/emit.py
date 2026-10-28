@@ -28,7 +28,7 @@ def assemble(ctx) -> dict:
         return {"name":name,"rating":rating,"title":headers.get(key+"Title") or None,"country":game.get(key.lower()+"_country")}
     result=headers.get("Result",game.get("result","1/2-1/2"))
     orientation="white" if result=="1/2-1/2" else "white" if result=="1-0" else "black"
-    game_obj={"source":game["source"],"source_id":game["source_id"],"white":player(chess.WHITE),"black":player(chess.BLACK),"event":headers.get("Event","Unknown event"),"date":headers.get("Date","????.??.??").replace(".","-"),"result":result,"eco":headers.get("ECO","A00"),"opening":headers.get("Opening","Unknown opening"),"pgn":pgn}
+    game_obj={"source":game["source"],"source_id":game.get("source_id") or game.get("pgn_file", "local"),"white":player(chess.WHITE),"black":player(chess.BLACK),"event":headers.get("Event","Unknown event"),"date":headers.get("Date","????.??.??").replace(".","-"),"result":result,"eco":headers.get("ECO","A00"),"opening":headers.get("Opening","Unknown opening"),"pgn":pgn}
     spec_plies=[]
     for row in rows:
         n=row["ply"]; fen=row["fen_after"]
@@ -50,7 +50,8 @@ def validate(spec: dict) -> None:
     if vid != f"{pair}-{lang}": errors.append("video_id: must equal pair_id-language")
     if spec.get("template")=="shorts":
         if spec.get("format")!={"width":1080,"height":1920,"fps":30}: errors.append("format: shorts must be 1080x1920 at 30 fps")
-        if spec.get("duration_ms",0)>175000: errors.append("duration_ms: shorts maximum is 175000")
+        if spec.get("duration_ms",0)>59000: errors.append("duration_ms: shorts maximum is 59000")
+        if len(spec.get("beats",[]))!=1: errors.append("beats: shorts require exactly one beat")
     narration=spec.get("narration",[])
     for a,b in zip(narration,narration[1:]):
         if a.get("start_ms",0)+a.get("duration_ms",0)>b.get("start_ms",0): errors.append(f"narration.{b.get('segment_id','?')}: overlaps previous segment")
