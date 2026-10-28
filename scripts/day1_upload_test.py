@@ -15,9 +15,17 @@ from chesscode.auth import youtube_client
 from chesscode.upload import build_body, check_publish_at, upload_video
 
 
+def _validate_publish_hours(value: str | int) -> int:
+    hours = int(value)
+    if hours < 3:
+        from chesscode.upload import UploadRefused
+        raise UploadRefused("publish-in-hours must be at least 3")
+    return hours
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--publish-in-hours", type=int, required=True)
+    parser.add_argument("--publish-in-hours", type=_validate_publish_hours, required=True)
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
     title = "ChessCode API test (delete me)"

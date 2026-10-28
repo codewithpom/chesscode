@@ -23,13 +23,13 @@ def main(argv: list[str] | None = None) -> int:
     samples = [(lang, ROOT / "content" / "bakeoff" / f"{lang}.txt") for lang in ("en", "hi")]
     for provider in args.providers:
         for lang, text_path in samples:
-            voice = str(voices[provider][lang])
+            voice = _voice_for(voices, provider, lang)
+            if not voice or voice.startswith("TODO"):
+                print(f"{provider} {lang}: configure voice id in {args.voices}", file=sys.stderr)
+                return 2
             output = ROOT / "build" / "bakeoff" / f"{provider}_{lang}.mp3"
             if args.dry_run:
                 print(f"{provider} {lang} voice={voice} -> {output.relative_to(ROOT)}")
-            elif voice.startswith("TODO"):
-                print(f"{provider} {lang}: configure voice id in {args.voices}", file=sys.stderr)
-                return 2
     if args.dry_run:
         return 0
 
@@ -38,10 +38,7 @@ def main(argv: list[str] | None = None) -> int:
     rows = []
     for provider in args.providers:
         for lang, text_path in samples:
-            voice = str(voices[provider][lang])
-            if voice.startswith("TODO"):
-                print(f"{provider} {lang}: configure voice id in {args.voices}", file=sys.stderr)
-                return 2
+            voice = _voice_for(voices, provider, lang)
             text = text_path.read_text(encoding="utf-8").strip()
             cached_audio, words = tts.synthesize(provider, text, voice, lang, build / "cache")
             name = f"{provider}_{lang}"
@@ -61,6 +58,14 @@ def main(argv: list[str] | None = None) -> int:
     page += "".join(rows) + "</tbody></table>"
     (build / "index.html").write_text(page, encoding="utf-8")
     return 0
+
+
+def _voice_for(voices, provider: str, lang: str) -> str:
+    try:
+        value = voices[provider][lang]
+    except (KeyError, TypeError):
+        value = None
+    return str(value).strip() if value else ""
 
 
 if __name__ == "__main__":

@@ -54,8 +54,8 @@ def synthesize(text: str, voice: str, lang: str, out_mp3: Path) -> list[Word]:
                                          alignment["character_end_times_seconds"])
             words.extend({**word, "start_ms": word["start_ms"] + offset,
                           "end_ms": word["end_ms"] + offset} for word in chunk_words)
-            if chunk_words:
-                offset = words[-1]["end_ms"]
+            if alignment["character_end_times_seconds"]:
+                offset += round(max(alignment["character_end_times_seconds"]) * 1000)
             audio.extend(base64.b64decode(result["audio_base64"]))
         out_mp3.parent.mkdir(parents=True, exist_ok=True)
         out_mp3.write_bytes(audio)

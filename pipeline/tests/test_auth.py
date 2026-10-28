@@ -67,6 +67,14 @@ def test_login_uses_repo_root_and_restricts_token_permissions(tmp_path, monkeypa
     assert "sentinel-refresh-secret" not in captured.out + captured.err
 
 
+def test_login_missing_client_secret_is_actionable(tmp_path, monkeypatch, capsys):
+    from argparse import Namespace
+    monkeypatch.setattr(auth, "SECRETS_DIR", tmp_path / "data" / "secrets")
+    with patch.object(auth.InstalledAppFlow, "from_client_secrets_file", side_effect=FileNotFoundError):
+        assert auth.main(Namespace(action="login")) == 1
+    assert "client_secret.json" in capsys.readouterr().out
+
+
 def test_refresh_error_is_translated(monkeypatch):
     monkeypatch.setattr(auth, "TOKEN_PATH", auth.REPO_ROOT / "missing-token.json")
     with patch.object(auth.Credentials, "refresh", side_effect=RefreshError("invalid_grant")):

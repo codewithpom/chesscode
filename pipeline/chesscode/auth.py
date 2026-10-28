@@ -63,7 +63,12 @@ def check() -> dict:
 
 def main(args: argparse.Namespace) -> int:
     if args.action == "login":
-        credentials = InstalledAppFlow.from_client_secrets_file(str(SECRETS_DIR / "client_secret.json"), SCOPES).run_local_server()
+        client_secret = SECRETS_DIR / "client_secret.json"
+        try:
+            credentials = InstalledAppFlow.from_client_secrets_file(str(client_secret), SCOPES).run_local_server()
+        except FileNotFoundError:
+            print(f"OAuth client file not found: {client_secret}")
+            return 1
         TOKEN_PATH.parent.mkdir(parents=True, exist_ok=True)
         TOKEN_PATH.write_text(credentials.to_json(), encoding="utf-8")
         TOKEN_PATH.chmod(0o600)

@@ -8,10 +8,15 @@ import pytest
 
 from chesscode import upload
 
+
 SCRIPT = Path(__file__).resolve().parents[2] / "scripts" / "day1_upload_test.py"
 spec = importlib.util.spec_from_file_location("day1_upload_test", SCRIPT)
 day1 = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(day1)
+
+def test_publish_hours_must_be_at_least_three():
+    with pytest.raises(Exception, match="at least 3"):
+        day1._validate_publish_hours(2)
 
 
 def test_dry_run_uses_upload_body_and_guard(monkeypatch, capsys):

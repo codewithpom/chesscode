@@ -159,3 +159,28 @@ def test_elevenlabs_chunks_requests_at_provider_limit(monkeypatch, tmp_path):
         tts.elevenlabs.synthesize("x" * 10_001, "voice", "en", tmp_path / "long.mp3")
     assert post.call_count == 2
     assert max(len(call.kwargs["json"]["text"]) for call in post.call_args_list) <= 10_000
+
+
+def test_elevenlabs_chunk_offsets_use_alignment_audio_end(monkeypatch, tmp_path):
+    monkeypatch.setenv("ELEVENLABS_API_KEY", "secret")
+    response = Mock()
+    response.json.return_value = {"audio_base64": "YWJj", "alignment": {
+        "characters": ["a"], "character_start_times_seconds": [0],
+        "character_end_times_seconds": [2.5]}}
+    with patch.object(tts.elevenlabs.requests, "post", return_value=response):
+        words = tts.elevenlabs.synthesize("x" * 10_001, "voice", "en", tmp_path / "long.mp3")
+    assert words[1]["start_ms"] == 2500
+
+
+def test_alignment_interpolates_missing_words_between_neighbors(monkeypatch, tmp_path):
+    fake = ModuleType("whisperx")
+    fake.load_audio = lambda _: [0.0] * 48_000
+    fake.load_align_model = lambda **kwargs: (object(), {})
+    fake.align = lambda *args: {"word_segments": [
+        {"word": "before", "start": .2, "end": .4},
+        {"word": "missing"},
+        {"word": "after", "start": .8, "end": 1.0}]}
+    monkeypatch.setitem(sys.modules, "whisperx", fake)
+    words = tts.align.align_words(tmp_path / "audio.mp3", "before missing after", "en")
+    assert words[1]["start_ms"] == 400
+    assert words[1]["end_ms"] == 800
