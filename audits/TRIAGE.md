@@ -32,3 +32,26 @@ One row per auditor finding: fix, defer or reject, with a one-line reason.
 | A-pre | design-critic pass 2 | vertical eval label overlaps a8 corner area | defer | M5 scene layout task. |
 | A-pre | remotion-core-codex-2 | CoreGallery local msF | fix | Now wraps msToFrame. |
 | A-pre | remotion-core-codex-2 | Task 6 review not recorded | fix | Recorded in these rows. |
+| A | gateA-agy B1 / gateA-claude B1 | timeline: plies outside an exact ply segment fall back to n*4500 (backwards, mid-word) | fix | Plan Task 8 coverage rule was never implemented. |
+| A | gateA-claude B2 | e2e fake script has no ply segments, hides B1 | fix | e2e must use ply segments and assert monotonic, word-start show_at_ms. |
+| A | gateA-claude B3 | SAN guard runs before rewrites; mascot lines/titles/hook unchecked | fix | Guard every final text. |
+| A | gateA-claude B4 | timeline re-pacing reads timeline.yaml without priority/poses/caps | fix | Must reuse config/beats.yaml. |
+| A | gateA-agy B2 / gateA-claude | calendar crashes on target tier, crashes past floor capacity, drops games, series rule unchecked | fix | Leave overflow unassigned with a reason; never crash; enforce section 11. |
+| A | gateA-claude | shorts pick least important beat (max on priority index) | fix | |
+| A | gateA-claude | emit hard-codes poses (faint/alt lost) | fix | |
+| A | gateA-agy / gateA-claude | emit silent defaults; arrows always []; no check highlights; sfx None; music path hard-coded, file not copied | fix | Spec section 3 no silent defaults. Music: config/music.yaml + copied file; generated silent bed placeholder until licensed music exists (flagged in QA). |
+| A | gateA-claude | publish_at never format-checked (format lib missing) | fix | Explicit ISO-8601 UTC check. |
+| A | gateA-claude | class-blunder always intensity 3 | fix | Intensity from drop per section 8; golden expectations re-reviewed. |
+| A | gateA-claude | final resign beat lost to time_scramble | fix | Final-ply beat (checkmate/resign) is never dropped. |
+| A | gateA-claude | 8-14 beats per 10 min not enforced | defer | Pacing can only drop beats; minimum becomes a QA warning at Gate C. |
+| A | gateA-agy / gateA-claude | SAN regex: 0-0, e8Q, suffixes, bare squares | fix | |
+| A | gateA-agy / gateA-claude | script prompt not hashed; non-portable hash names; line_history polluted on rerun | fix | Idempotency. |
+| A | gateA-claude | no CI workflow runs pytest | fix | Add ci.yml per spec section 9 (pytest, tsc, vitest, schema check). |
+| A | gateA-claude | Hindi prompt "no English script" contradicts joke rule 3 | fix | Means "not translated from the English script"; chess terms stay English. |
+| A | gateA-agy checklist 1 | contract lacks cold-open ply range, player facts, key-moment lines, verdict turning point/accuracy, thumbnail text/crop | fix (main session) | Additive contract 1.1.0 designed by main session, then pipeline fills it. |
+| A | gateA-agy | emit stricter than Zod (shorts 59 s, one beat, fps 30) | reject | Intentional: plan sets Shorts default <= 59 s and one beat; Zod keeps the spec hard limits. |
+| A | gateA-agy | title scorer hard-coded valid[0]; credits empty; chapters duplicated in youtube | fix | |
+| A | gateA-agy | script regeneration IndexError when one segment returned | fix | |
+| A | gateA-agy | line bank files missing, rejection crashes | fix (clear StageError) / defer (bank) | Bank is M3 owner content; drafted next. |
+| A | gateA-agy | shorts chapter generation crashes | fix | |
+| A | gateA-agy | comeback trigger unexercised by golden games | defer | Covered by unit test; add a golden comeback game in M3 games list. |
