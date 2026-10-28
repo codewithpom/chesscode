@@ -37,7 +37,7 @@ def model(outputs, systems=None):
 
     def fake(key, system, user, schema):
         if key == "checks":
-            return {"ok": True}
+            return {"bad": []}
         calls.append(user)
         if systems is not None:
             systems.append(system)

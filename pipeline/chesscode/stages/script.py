@@ -167,9 +167,15 @@ def run(ctx):
             line=output["mascot_lines"].get(bid)
             if not line or len(line.split())>cap or line in used or unknown_moves(line,game_sans,engine_sans):
                 line=output["mascot_lines"][bid]=_bank_line(ctx,beat["type"],bank_path,used)
-            checked=llm.complete_json("checks",system,"Check only this mascot line against the quoted joke rules. Return {\"ok\": boolean}. Line: "+line,{"type":"object","required":["ok"],"properties":{"ok":{"type":"boolean"}}})
-            if not checked["ok"]: output["mascot_lines"][bid]=_bank_line(ctx,beat["type"],bank_path,used)
-            used.add(output["mascot_lines"][bid])
+            used.add(line)
+        # one check call for all lines: offline that is one agent-answered request per video, not one per beat
+        lines={b["beat_id"]:output["mascot_lines"][b["beat_id"]] for b in facts["beats.json"]}
+        flagged=llm.complete_json("checks",system,"Check each mascot line against the quoted joke rules. Return {\"bad\": [the beat ids whose line breaks a rule]}. Lines: "+json.dumps(lines,ensure_ascii=False),{"type":"object","required":["bad"],"properties":{"bad":{"type":"array","items":{"type":"string"}}}})["bad"] if lines else []
+        for beat in facts["beats.json"]:
+            if beat["beat_id"] in flagged:
+                used.add(output["mascot_lines"].setdefault(beat["beat_id"],"") or "")
+                output["mascot_lines"][beat["beat_id"]]=_bank_line(ctx,beat["type"],bank_path,used)
+                used.add(output["mascot_lines"][beat["beat_id"]])
         bad=[m for line in output["mascot_lines"].values() for m in unknown_moves(line,game_sans,engine_sans)]
         if bad: raise StageError(ctx.video_id,"script",f"unknown SAN in mascot line: {', '.join(bad)}")
         (ctx.spec_dir / "script.json").write_text(json.dumps(output, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")

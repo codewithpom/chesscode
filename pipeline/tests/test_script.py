@@ -1,4 +1,6 @@
 import json
+from pathlib import Path
+from chesscode.context import StageError
 import pytest
 import yaml
 from chesscode import llm
@@ -75,3 +77,21 @@ def test_specificity_below_threshold_regenerates():
     calls=[]
     result=ensure_specific(initial,lambda:(calls.append(True) or improved),6,150)
     assert calls and result is improved
+
+
+def test_offline_client_writes_request_then_reads_committed_answer(tmp_path):
+    client = llm.OfflineClient(tmp_path)
+    with pytest.raises(llm.AnswerMissing) as missing:
+        client.complete(model=llm.load("models")["script"], system="s", user="u", schema={"type": "object"})
+    request = json.loads(Path(missing.value.request).read_text(encoding="utf-8"))
+    assert request["user"] == "u" and request["schema"] == {"type": "object"}
+    answer = tmp_path / "content" / "llm" / f"{request['key']}.json"
+    answer.parent.mkdir(parents=True)
+    answer.write_text('{"x": 1}', encoding="utf-8")
+    assert llm.complete_json("script", "s", "u", {"type": "object"}, client=llm.OfflineClient(tmp_path)) == {"x": 1}
+    assert not Path(missing.value.request).exists()  # answered requests are cleared
+
+
+def test_offline_answer_missing_is_a_stage_error_naming_the_request(tmp_path):
+    with pytest.raises(StageError, match="llm_requests"):
+        llm.complete_json("checks", "s", "u", {"type": "object"}, client=llm.OfflineClient(tmp_path))
