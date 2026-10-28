@@ -26,7 +26,7 @@ def _context(video_id: str) -> Context:
         games = yaml.safe_load(games_path.read_text(encoding="utf-8"))
     except OSError as exc:
         raise StageError(video_id, "select", f"cannot read {games_path}: {exc}") from exc
-    source_game_no = game_no - 5000 if template == "shorts" else game_no
+    source_game_no = game_no % 1000 if template == "shorts" else game_no
     game = next((g for g in (games or []) if g.get("game_no") == source_game_no), None)
     if game is None:
         raise StageError(video_id, "select", f"game {source_game_no} not found in {games_path}")

@@ -80,6 +80,7 @@ def test_stage_error_exit_code_nonzero_and_logged(monkeypatch, tmp_path, caplog)
 @pytest.mark.parametrize("video_id, expected", [
     ("cc-2026-0042-hi", (2026, 42, "hi", "studio")),
     ("cc-2026-5042-en", (2026, 5042, "en", "shorts")),
+    ("cc-2026-6042-hi", (2026, 6042, "hi", "shorts")),
 ])
 def test_parse_video_id(video_id, expected):
     assert context.parse_video_id(video_id) == expected

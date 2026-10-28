@@ -5,8 +5,11 @@ slots:
   - {weekday: tue, kind: long, game: A, lang: en, time: "18:30", tier: floor}
   - {weekday: wed, kind: short, game: A, lang: hi, time: "12:30", tier: floor}
   - {weekday: thu, kind: long, game: A, lang: hi, time: "13:30", tier: floor}
+  # Friday teaser (owner decision, Oct 28): alternates EN/HI and teases NEXT week's long-form, EN Tue (+4 days) or HI Thu (+6 days). Ids are game_no + 6000.
+  - {weekday: fri, kind: teaser, game: A, lang: en, time: "12:30", tier: floor}
+  - {weekday: fri, kind: teaser, game: A, lang: hi, time: "12:30", tier: floor}
   # Shorts must run 1 to 3 days before their long-form (spec 11), so game B teasers sit Fri (EN, before Sat) and Sat (HI, before Sun).
-  - {weekday: fri, kind: short, game: B, lang: en, time: "12:30", tier: target}
+  - {weekday: fri, kind: short, game: B, lang: en, time: "13:30", tier: target}
   - {weekday: sat, kind: long, game: B, lang: en, time: "18:30", tier: target}
   - {weekday: sun, kind: long, game: B, lang: hi, time: "13:30", tier: target}
   - {weekday: sat, kind: short, game: B, lang: hi, time: "12:30", tier: target}

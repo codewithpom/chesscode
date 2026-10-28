@@ -4,7 +4,7 @@ def test_publish_at_is_utc_z_and_unique():
     series=["legendary_games","indian_chess_heroes","opening_explained"]
     games=[{"game_no":i,"pair_id":f"p{i}","series":series[i-1],"tier":"floor"} for i in range(1,4)]
     assigned=assign(games,"floor")
-    assert len(assigned)==12
+    assert len(assigned)==15  # per game: 2 long-forms, 2 Shorts, 1 Friday teaser
     assert len(set(assigned.values()))==len(assigned)
     assert all(value.endswith("Z") for value in assigned.values())
 
@@ -24,8 +24,9 @@ def test_short_1_to_3_days_before_longform():
         assert 1 <= (date.fromisoformat(long[:10])-date.fromisoformat(short[:10])).days <= 3
 
 def test_floor_fills_earliest_first():
-    first=next(iter(assign([{"game_no":1,"series":"legendary_games","tier":"floor"}],"floor").values()))
-    assert first.startswith("2026-11-16")
+    assigned=assign([{"game_no":1,"series":"legendary_games","tier":"floor"}],"floor")
+    assert min(v for k,v in assigned.items() if int(k.split("-")[2])<6000).startswith("2026-11-16")
+    assert assigned["cc-2026-6001-en"].startswith("2026-11-13")  # game 1's Friday teaser is the only upload before the window
 
 def test_series_max_two_weeks_in_a_row():
     games=[{"game_no":i,"series":s,"tier":"floor"} for i,s in enumerate(["legendary_games","indian_chess_heroes","opening_explained","blunder_hall_of_fame"]*2,1)]
@@ -107,3 +108,30 @@ def test_every_target_game_gets_both_shorts():
         for lang in ("en", "hi"):
             long, short = assigned[f"cc-2026-{i:04d}-{lang}"], assigned[f"cc-2026-{5000 + i:04d}-{lang}"]
             assert 1 <= (date.fromisoformat(long[:10]) - date.fromisoformat(short[:10])).days <= 3
+
+
+def test_floor_tier_yields_39_shorts_over_13_weeks_with_friday_teasers():
+    games = [{"game_no": i, "series": SERIES[i % 4], "tier": "floor"} for i in range(1, 14)]
+    assigned, unassigned = schedule(games)
+    assert not unassigned
+    shorts = {k: v for k, v in assigned.items() if int(k.split("-")[2]) >= 5000}
+    assert len(shorts) == 39 and len([k for k in assigned if int(k.split("-")[2]) < 5000]) == 26
+    teasers = {k: v for k, v in shorts.items() if int(k.split("-")[2]) >= 6000}
+    assert len(teasers) == 13
+    for i in range(1, 14):
+        lang = ("en", "hi")[(i - 1) % 2]  # Friday alternates EN/HI
+        teaser = date.fromisoformat(teasers[f"cc-2026-{6000 + i:04d}-{lang}"][:10])
+        long = date.fromisoformat(assigned[f"cc-2026-{i:04d}-{lang}"][:10])
+        assert teaser.weekday() == 4 and (long - teaser).days == (4 if lang == "en" else 6)
+        assert f"cc-2026-{6000 + i:04d}-{'hi' if lang == 'en' else 'en'}" not in teasers
+        for other in ("en", "hi"):  # every other Short keeps 1 to 3 days
+            days = (date.fromisoformat(assigned[f"cc-2026-{i:04d}-{other}"][:10]) - date.fromisoformat(assigned[f"cc-2026-{5000 + i:04d}-{other}"][:10])).days
+            assert 1 <= days <= 3
+    assert len(set(assigned.values())) == len(assigned)
+    assert max(assigned.values()) < "2027-02-16"
+
+
+def test_target_friday_short_does_not_collide_with_the_floor_teaser():
+    games = [{"game_no": i, "series": SERIES[i % 4], "tier": "floor" if i % 2 else "target"} for i in range(1, 9)]
+    assigned, unassigned = schedule(games)
+    assert not unassigned and len(set(assigned.values())) == len(assigned)
