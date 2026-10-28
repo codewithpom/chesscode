@@ -55,3 +55,10 @@ One row per auditor finding: fix, defer or reject, with a one-line reason.
 | A | gateA-agy | line bank files missing, rejection crashes | fix (clear StageError) / defer (bank) | Bank is M3 owner content; drafted next. |
 | A | gateA-agy | shorts chapter generation crashes | fix | |
 | A | gateA-agy | comeback trigger unexercised by golden games | defer | Covered by unit test; add a golden comeback game in M3 games list. |
+| A2 | gateA2-agy | all prior findings verified fixed; checklist answered | n/a | Verdict PASS. |
+| A2 | gateA2-claude | all prior blockers fixed; 40 e2e specs pass real Zod | n/a | Verdict PASS with 2 majors below. |
+| A2 | gateA2-claude M1 | key moments share one move window; prompt contradicts itself on key-moment ply | fix | Script must emit one key_moment segment per intensity>=2 beat (15-40 s); Zod rule added on main (ce7d9ca); Python mirror. |
+| A2 | gateA2-claude M2 | bare squares / spelled-out moves skip the SAN guard | fix | Check bare destination squares against game + engine-line destinations; flag spelled-out piece moves ("knight to f6", Hindi piece names + square) the same way. |
+| A2 | owner decision | Friday floor Short teases next week's long-form (EN +4 d, HI +6 d) | fix | ROADMAP decisions log, Oct 28. |
+| A2 | gateA2-claude minors | several plies on one timestamp; chapter titles cut mid-word; poses defined twice in beats.yaml; Hindi script may hit 8192 output tokens | fix | Cheap and user-visible. |
+| A2 | gateA2-claude minor | accuracy differs slightly from Lichess (no volatility weighting) | defer | Display-only; revisit if viewers compare with Lichess. |

@@ -53,4 +53,9 @@ describe("contract 1.1 scene data", () => {
     expect(VideoSpec.safeParse({ ...fixture, key_moments: [km] }).success).toBe(false);
     expect(VideoSpec.safeParse({ ...fixture, key_moments: [{ ...km, beat_id: "b-02" }] }).success).toBe(true);
   });
+  it("rejects key moments that overlap or fall outside 15-40 s", () => {
+    const km = { beat_id: "b-02", ply: 31, start_ms: 30000, duration_ms: 15000, label: "The queen sac", line: ["b3b8"] };
+    expect(VideoSpec.safeParse({ ...fixture, key_moments: [{ ...km, duration_ms: 9000 }] }).success).toBe(false);
+    expect(VideoSpec.safeParse({ ...fixture, key_moments: [km, { ...km, start_ms: 40000 }] }).success).toBe(false);
+  });
 });
