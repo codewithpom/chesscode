@@ -274,6 +274,14 @@ export const VideoSpec = z
       ctx.addIssue({ code: "custom", path: ["cold_open"], message: "ply_from..ply_to must be a forward range of existing plies" });
     }
     s.key_moments.forEach((k, i) => {
+      // spec section 5: KeyMoment scenes run 15 to 40 s and never overlap each other.
+      if (k.duration_ms < 15000 || k.duration_ms > 40000) {
+        ctx.addIssue({ code: "custom", path: ["key_moments", i, "duration_ms"], message: "must be 15000-40000 ms" });
+      }
+      const prev = s.key_moments[i - 1];
+      if (prev && k.start_ms < prev.start_ms + prev.duration_ms) {
+        ctx.addIssue({ code: "custom", path: ["key_moments", i, "start_ms"], message: "overlaps previous key moment" });
+      }
       if (!plyOk(k.ply)) ctx.addIssue({ code: "custom", path: ["key_moments", i, "ply"], message: "no such ply" });
       if (!s.beats.some((b) => b.beat_id === k.beat_id)) {
         ctx.addIssue({ code: "custom", path: ["key_moments", i, "beat_id"], message: "must reference a beat" });
