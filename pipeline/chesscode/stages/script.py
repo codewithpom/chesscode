@@ -4,6 +4,7 @@ import sqlite3
 from pathlib import Path
 
 import chess
+import jsonschema
 import yaml
 from .. import llm
 from ..config import load
@@ -108,7 +109,31 @@ def _bank_line(ctx, beat_type: str, bank_path: Path, used: set[str]) -> str:
     try: return select_bank_line(beat_type,yaml.safe_load(bank_path.read_text(encoding="utf-8")) or {},used,ctx.language)
     except StageError as exc: raise StageError(ctx.video_id,"script",exc.reason) from exc
 
+def _replay(ctx, committed: Path) -> dict:
+    """A committed final script: re-check what can change between machines (schema, moves, line length), no model calls."""
+    output=json.loads(committed.read_text(encoding="utf-8-sig"))
+    jsonschema.validate(output,SCHEMA)
+    rows=json.loads((ctx.spec_dir/"classified.json").read_text(encoding="utf-8"))
+    def no_regen(path,bad): raise ValueError(f"unknown SAN in committed script {committed.name} at {'.'.join(map(str,path))}: {', '.join(bad)}")
+    guard_san(output,{r.get("san","") for r in rows},lambda:_engine_sans(rows),no_regen)
+    cap=10 if ctx.language=="hi" else 8
+    long_lines=[bid for bid,line in output["mascot_lines"].items() if len(line.split())>cap]
+    if long_lines: raise ValueError(f"mascot lines over {cap} words in {committed.name}: {', '.join(long_lines)}")
+    return output
+
+def _record(ctx, output: dict) -> None:
+    (ctx.spec_dir / "script.json").write_text(json.dumps(output, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
+    history_path=ctx.repo_root/"data/line_history.sqlite"; history_path.parent.mkdir(parents=True,exist_ok=True)
+    with sqlite3.connect(history_path) as db:
+        db.execute("CREATE TABLE IF NOT EXISTS line_history (video_id TEXT, language TEXT, line TEXT)")
+        db.execute("DELETE FROM line_history WHERE video_id=?",(ctx.video_id,))
+        db.executemany("INSERT INTO line_history VALUES (?, ?, ?)",[(ctx.video_id,ctx.language,line) for line in output["mascot_lines"].values()])
+
 def run(ctx):
+    committed=ctx.repo_root/"content/scripts"/f"{ctx.video_id}.json"
+    if committed.is_file():
+        try: _record(ctx,_replay(ctx,committed)); return
+        except Exception as exc: raise StageError(ctx.video_id,"script",str(exc)) from exc
     try:
         facts = {name: json.loads((ctx.spec_dir / name).read_text(encoding="utf-8")) for name in ("game.json", "classified.json", "beats.json")}
         system = (Path(__file__).parent.parent / "prompts" / "script_system.md").read_text(encoding="utf-8")
@@ -171,19 +196,17 @@ def run(ctx):
         # one check call for all lines: offline that is one agent-answered request per video, not one per beat
         lines={b["beat_id"]:output["mascot_lines"][b["beat_id"]] for b in facts["beats.json"]}
         flagged=llm.complete_json("checks",system,"Check each mascot line against the quoted joke rules. Return {\"bad\": [the beat ids whose line breaks a rule]}. Lines: "+json.dumps(lines,ensure_ascii=False),{"type":"object","required":["bad"],"properties":{"bad":{"type":"array","items":{"type":"string"}}}})["bad"] if lines else []
+        if set(flagged)-set(lines): raise StageError(ctx.video_id,"script",f"line check named unknown beats: {', '.join(sorted(set(flagged)-set(lines)))}")
         for beat in facts["beats.json"]:
             if beat["beat_id"] in flagged:
-                used.add(output["mascot_lines"].setdefault(beat["beat_id"],"") or "")
                 output["mascot_lines"][beat["beat_id"]]=_bank_line(ctx,beat["type"],bank_path,used)
                 used.add(output["mascot_lines"][beat["beat_id"]])
+        output["mascot_lines"]={bid:output["mascot_lines"][bid] for bid in lines}  # only this video's beats
         bad=[m for line in output["mascot_lines"].values() for m in unknown_moves(line,game_sans,engine_sans)]
         if bad: raise StageError(ctx.video_id,"script",f"unknown SAN in mascot line: {', '.join(bad)}")
-        (ctx.spec_dir / "script.json").write_text(json.dumps(output, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
-        history_path=ctx.repo_root/"data/line_history.sqlite"; history_path.parent.mkdir(parents=True,exist_ok=True)
-        with sqlite3.connect(history_path) as db:
-            db.execute("CREATE TABLE IF NOT EXISTS line_history (video_id TEXT, language TEXT, line TEXT)")
-            db.execute("DELETE FROM line_history WHERE video_id=?",(ctx.video_id,))
-            db.executemany("INSERT INTO line_history VALUES (?, ?, ?)",[(ctx.video_id,ctx.language,line) for line in output["mascot_lines"].values()])
+        _record(ctx,output)
+        committed.parent.mkdir(parents=True,exist_ok=True)  # the final script is content: commit it so batch runs replay it
+        committed.write_text(json.dumps(output, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
     except Exception as exc:
         if isinstance(exc, StageError): raise
         raise StageError(ctx.video_id, "script", str(exc)) from exc

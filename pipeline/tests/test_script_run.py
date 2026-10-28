@@ -307,3 +307,25 @@ def test_friday_teaser_without_a_second_beat_is_a_stage_error(tmp_path, monkeypa
     monkeypatch.setattr(script.llm, "complete_json", fake)
     with pytest.raises(StageError, match=r"cc-2026-6001-en \[script\]: no second beat"):
         script.run(ctx)
+
+
+def test_success_commits_the_script_and_a_rerun_replays_it_without_the_model(tmp_path, monkeypatch):
+    ctx = setup_run(tmp_path, monkeypatch)
+    fake, calls = model([out()])
+    monkeypatch.setattr(script.llm, "complete_json", fake)
+    script.run(ctx)
+    committed = ctx.repo_root / "content/scripts" / f"{ctx.video_id}.json"
+    assert json.loads(committed.read_text(encoding="utf-8")) == json.loads((ctx.spec_dir / "script.json").read_text(encoding="utf-8"))
+    monkeypatch.setattr(script.llm, "complete_json", lambda *a: pytest.fail("replay must not call the model"))
+    (ctx.spec_dir / "script.json").unlink()
+    script.run(ctx)
+    assert (ctx.spec_dir / "script.json").is_file()
+
+
+def test_committed_script_with_an_unknown_move_is_refused(tmp_path, monkeypatch):
+    ctx = setup_run(tmp_path, monkeypatch)
+    committed = ctx.repo_root / "content/scripts" / f"{ctx.video_id}.json"
+    committed.parent.mkdir(parents=True)
+    committed.write_text(json.dumps(out(hook="Then Qh5 wins.")), encoding="utf-8")
+    with pytest.raises(StageError, match="Qh5"):
+        script.run(ctx)

@@ -85,7 +85,7 @@ def test_offline_client_writes_request_then_reads_committed_answer(tmp_path):
         client.complete(model=llm.load("models")["script"], system="s", user="u", schema={"type": "object"})
     request = json.loads(Path(missing.value.request).read_text(encoding="utf-8"))
     assert request["user"] == "u" and request["schema"] == {"type": "object"}
-    answer = tmp_path / "content" / "llm" / f"{request['key']}.json"
+    answer = tmp_path / request["answer_path"]
     answer.parent.mkdir(parents=True)
     answer.write_text('{"x": 1}', encoding="utf-8")
     assert llm.complete_json("script", "s", "u", {"type": "object"}, client=llm.OfflineClient(tmp_path)) == {"x": 1}
@@ -95,3 +95,21 @@ def test_offline_client_writes_request_then_reads_committed_answer(tmp_path):
 def test_offline_answer_missing_is_a_stage_error_naming_the_request(tmp_path):
     with pytest.raises(StageError, match="llm_requests"):
         llm.complete_json("checks", "s", "u", {"type": "object"}, client=llm.OfflineClient(tmp_path))
+
+
+def test_offline_invalid_answer_names_the_file_and_keeps_the_request(tmp_path):
+    with pytest.raises(StageError):
+        llm.complete_json("checks", "s", "u", {"type": "object", "required": ["bad"]}, client=llm.OfflineClient(tmp_path))
+    request = next((tmp_path / "build" / "llm_requests").glob("*.json"))
+    answer = tmp_path / json.loads(request.read_text(encoding="utf-8"))["answer_path"]
+    answer.parent.mkdir(parents=True)
+    answer.write_text('{"x": 1}', encoding="utf-8")
+    with pytest.raises(StageError, match="llm_answers"):
+        llm.complete_json("checks", "s", "u", {"type": "object", "required": ["bad"]}, client=llm.OfflineClient(tmp_path))
+    assert request.exists()
+
+
+def test_unknown_provider_is_refused(monkeypatch):
+    monkeypatch.setattr(llm, "load", lambda name: {"provider": "anthopic"})
+    with pytest.raises(StageError, match="provider"):
+        llm.provider()
