@@ -71,6 +71,16 @@ def top_beat(beats: list[dict]) -> dict:
     """The beat a Short is about and a long-form cold-opens on: beats.yaml priority, then intensity, then earliest."""
     return min(beats, key=lambda b: (b["priority"], -b["intensity"], b["ply"]))
 
+def short_beat(beats: list[dict], cfg: dict, teaser: bool = False) -> dict:
+    """The beat a Short is about. The Friday teaser (id >= 6000) takes the next beat in top_beat order whose ply is at least
+    min_gap_ms of narration (est_ms_per_ply) from the top beat, so it never repeats the ply of the game's other Shorts."""
+    top = top_beat(beats)
+    if not teaser: return top
+    ranked = sorted(beats, key=lambda b: (b["priority"], -b["intensity"], b["ply"]))
+    pick = next((b for b in ranked if abs(b["ply"]-top["ply"])*cfg["est_ms_per_ply"] >= cfg["min_gap_ms"]), None)
+    if pick is None: raise ValueError(f"no second beat at least {cfg['min_gap_ms']//1000} s of narration from the top beat (ply {top['ply']}): a teaser Short needs a different moment")
+    return pick
+
 def pace(cands: list[dict], ply_times_ms: dict[int,int] | None, cfg: dict) -> list[dict]:
     priority = cfg.get("priority", [])
     for beat in cands:

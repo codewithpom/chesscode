@@ -281,3 +281,29 @@ def test_prompt_no_longer_contradicts_itself_on_key_moment_ply():
     text = (ROOT / "pipeline/chesscode/prompts/script_system.md").read_text(encoding="utf-8")
     assert '"key_moment", "verdict" and "outro" (ply null)' not in text
     assert 'exactly one segment of kind "key_moment"' in text
+
+
+def test_friday_teaser_short_is_about_a_different_beat(tmp_path, monkeypatch):
+    ctx = setup_run(tmp_path, monkeypatch)
+    ctx.video_id = "cc-2026-6001-en"
+    beats = [{"beat_id": "b-01", "type": "blunder", "ply": 1, "intensity": 2, "priority": 0, "pose": "facepalm"},
+             {"beat_id": "b-02", "type": "mistake", "ply": 20, "intensity": 1, "priority": 9, "pose": "side_eye"}]
+    (ctx.spec_dir / "beats.json").write_text(json.dumps(beats))
+    rows = json.loads((ctx.spec_dir / "classified.json").read_text())
+    (ctx.spec_dir / "classified.json").write_text(json.dumps(rows + [{**rows[0], "ply": 20, "san": "Nf3"}]))
+    fake, calls = model([out(lines={"b-02": "Oops again."}, key_moment_labels={})])
+    monkeypatch.setattr(script.llm, "complete_json", fake)
+    script.run(ctx)
+    assert json.loads(calls[0])["short_beat"]["beat_id"] == "b-02"
+    other = Context("cc-2026-5001-en", ctx.spec_dir, ctx.repo_root, {}, "en", "shorts")
+    calls.clear(); script.run(other)
+    assert json.loads(calls[0])["short_beat"]["beat_id"] == "b-01"  # the 5000-range Short keeps the top beat
+
+
+def test_friday_teaser_without_a_second_beat_is_a_stage_error(tmp_path, monkeypatch):
+    ctx = setup_run(tmp_path, monkeypatch)
+    ctx.video_id = "cc-2026-6001-en"  # fixture beats sit on the same ply
+    fake, _ = model([out()])
+    monkeypatch.setattr(script.llm, "complete_json", fake)
+    with pytest.raises(StageError, match=r"cc-2026-6001-en \[script\]: no second beat"):
+        script.run(ctx)

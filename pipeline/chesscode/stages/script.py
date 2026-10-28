@@ -7,9 +7,9 @@ import chess
 import yaml
 from .. import llm
 from ..config import load
-from ..context import StageError
+from ..context import StageError, parse_video_id
 from ..san_guard import extract_san, unknown_moves
-from .beats import top_beat
+from .beats import short_beat
 
 INPUTS = ["classified.json", "beats.json", "game.json", "config/models.yaml", "config/qa.yaml", "pipeline/chesscode/prompts/script_system.md"]
 OUTPUTS = ["script.json"]
@@ -116,7 +116,8 @@ def run(ctx):
         request = {"language":ctx.language,"facts":facts}
         if ctx.template=="shorts":
             if not facts["beats.json"]: raise StageError(ctx.video_id,"script","a Short needs at least one beat")
-            beat=top_beat(facts["beats.json"])  # the timeline cuts the same beat
+            try: beat=short_beat(facts["beats.json"],load("beats",root=ctx.repo_root),teaser=parse_video_id(ctx.video_id)[1]>=6000)  # the timeline cuts the same beat
+            except ValueError as exc: raise StageError(ctx.video_id,"script",str(exc)) from exc
             facts["beats.json"]=[beat]
             san=next(r["san"] for r in facts["classified.json"] if r["ply"]==beat["ply"])
             request["short_beat"]={"beat_id":beat["beat_id"],"type":beat["type"],"ply":beat["ply"],"san":san,"pose":beat["pose"]}

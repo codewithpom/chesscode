@@ -173,3 +173,26 @@ def test_beats_yaml_defines_each_top_level_key_once():
     text = (Path(__file__).resolve().parents[2] / "config/beats.yaml").read_text(encoding="utf-8")
     keys = re.findall(r"^([A-Za-z_]\w*):", text, re.M)
     assert len(keys) == len(set(keys)), sorted(k for k in set(keys) if keys.count(k) > 1)
+
+
+def _beat(beat_id, ply, priority, intensity=2):
+    return {"beat_id": beat_id, "ply": ply, "priority": priority, "intensity": intensity}
+
+
+def test_teaser_takes_the_next_ranked_beat_at_least_20s_away():
+    from chesscode.config import load
+    from chesscode.stages.beats import short_beat, top_beat
+    cfg = load("beats")  # 4500 ms per ply estimate: 20 s is 5 plies
+    beats = [_beat("top", 20, 1), _beat("near", 22, 2), _beat("far", 40, 3), _beat("farther", 60, 4)]
+    assert short_beat(beats, cfg)["beat_id"] == top_beat(beats)["beat_id"] == "top"
+    assert short_beat(beats, cfg, teaser=True)["beat_id"] == "far"  # "near" is only ~9 s from the top beat
+
+
+def test_teaser_without_a_second_beat_stops_with_a_reason():
+    import pytest
+    from chesscode.config import load
+    from chesscode.stages.beats import short_beat
+    with pytest.raises(ValueError, match="no second beat"):
+        short_beat([_beat("top", 20, 1)], load("beats"), teaser=True)
+    with pytest.raises(ValueError, match="no second beat"):
+        short_beat([_beat("top", 20, 1), _beat("near", 22, 2)], load("beats"), teaser=True)

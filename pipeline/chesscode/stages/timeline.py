@@ -1,8 +1,8 @@
 import json
 
 from ..config import load
-from ..context import StageError
-from .beats import pace, top_beat
+from ..context import StageError, parse_video_id
+from .beats import pace, short_beat
 
 INPUTS = ["script.json", "voice.json", "beats.json", "classified.json", "config/timeline.yaml", "config/beats.yaml"]
 OUTPUTS = ["timeline.json"]
@@ -86,7 +86,7 @@ def run(ctx):
         timeline_cfg={**load("timeline",root=ctx.repo_root),"beats":load("beats",root=ctx.repo_root)}
         if ctx.template=="shorts":
             if not beats: raise ValueError("shorts requires at least one beat")
-            beats=[top_beat(beats)]
+            beats=[short_beat(beats,timeline_cfg['beats'],teaser=parse_video_id(ctx.video_id)[1]>=6000)]
             timeline_cfg["outro_ms"]=0; timeline_cfg["min_chapters"]=0
         result=layout(data["script.json"]["segments"],data["voice.json"],beats,data["classified.json"],timeline_cfg)
         (ctx.spec_dir/"timeline.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
