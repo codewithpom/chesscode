@@ -97,3 +97,13 @@ def test_shorts_for_target_games_keep_the_one_to_three_day_rule():
     assigned, _ = schedule([{"game_no": 1, "series": "legendary_games", "tier": "target"}])
     en_long, en_short = assigned["cc-2026-0001-en"], assigned["cc-2026-5001-en"]
     assert 1 <= (date.fromisoformat(en_long[:10]) - date.fromisoformat(en_short[:10])).days <= 3
+
+
+def test_every_target_game_gets_both_shorts():
+    games = [{"game_no": i, "series": SERIES[i % 4], "tier": "target"} for i in range(1, 9)]
+    assigned, unassigned = schedule(games)
+    assert not unassigned
+    for i in range(1, 9):
+        for lang in ("en", "hi"):
+            long, short = assigned[f"cc-2026-{i:04d}-{lang}"], assigned[f"cc-2026-{5000 + i:04d}-{lang}"]
+            assert 1 <= (date.fromisoformat(long[:10]) - date.fromisoformat(short[:10])).days <= 3

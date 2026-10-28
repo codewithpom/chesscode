@@ -23,13 +23,12 @@ def schedule(games: list[dict], root=REPO_ROOT) -> tuple[dict[str,str], dict[str
     cfg=load("calendar",root=root); start=date.fromisoformat(str(cfg["start"])); end=date.fromisoformat(str(cfg["end"]))
     slots=cfg["slots"]; occupied=set(); assigned={}; unassigned={}
     def find(kind,lang,tier,lo,hi,taken):
-        """Earliest free slot in [lo, hi]; shorts of the target tier may also use the alternating Friday short."""
+        """Earliest free slot in [lo, hi]."""
         for offset in range((min(hi,end)-max(lo,start)).days+1):
             day=max(lo,start)+timedelta(days=offset)
             for s in slots:
                 if s["kind"]!=kind or day.weekday()!=_WEEKDAYS[s["weekday"]]: continue
-                if kind=="long" and not (s["tier"]==tier and s["lang"]==lang): continue
-                if kind=="short" and not (s["lang"] in (lang,"alternating") and (s["tier"]==tier or (tier=="target" and s["lang"]=="alternating"))): continue
+                if not (s["tier"]==tier and s["lang"]==lang): continue
                 dt=datetime.combine(day,time.fromisoformat(s["time"]),timezone.utc)
                 if dt not in occupied and dt not in taken: return dt
         return None
