@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from datetime import timedelta
 
 from chesscode.tts.base import Word
 
@@ -18,10 +19,13 @@ def synthesize(text: str, voice: str, lang: str, out_mp3: Path) -> list[Word]:
     out_mp3.parent.mkdir(parents=True, exist_ok=True)
     synthesizer = speechsdk.SpeechSynthesizer(speech_config=speech_config, audio_config=None)
     words = []
-    synthesizer.synthesis_word_boundary.connect(
-        lambda event: words.append({"w": event.text, "start_ms": ticks_to_ms(event.audio_offset),
-                                    "end_ms": ticks_to_ms(event.audio_offset + event.duration)})
-    )
+    def add_word(event):
+        if event.boundary_type != speechsdk.SpeechSynthesisBoundaryType.Word:
+            return
+        duration_ms = round(event.duration.total_seconds() * 1000) if isinstance(event.duration, timedelta) else ticks_to_ms(event.duration)
+        words.append({"w": event.text, "start_ms": ticks_to_ms(event.audio_offset),
+                      "end_ms": ticks_to_ms(event.audio_offset) + duration_ms})
+    synthesizer.synthesis_word_boundary.connect(add_word)
     result = synthesizer.speak_text_async(text).get()
     if result.reason != speechsdk.ResultReason.SynthesizingAudioCompleted:
         raise RuntimeError("Azure Speech synthesis failed")

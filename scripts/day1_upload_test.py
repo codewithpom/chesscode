@@ -12,7 +12,7 @@ sys.path.insert(0, str(ROOT / "pipeline"))
 import imageio_ffmpeg
 
 from chesscode.auth import youtube_client
-from chesscode.upload import upload_video, with_ccid_footer
+from chesscode.upload import build_body, check_publish_at, upload_video
 
 
 def main() -> int:
@@ -20,6 +20,12 @@ def main() -> int:
     parser.add_argument("--publish-in-hours", type=int, required=True)
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
+    title = "ChessCode API test (delete me)"
+    video_id = "cc-test-0000-en"
+    publish_at = datetime.now(timezone.utc) + timedelta(hours=args.publish_in_hours)
+    description = "Throwaway scheduled API test."
+    check_publish_at(publish_at, datetime.now(timezone.utc))
+    body = build_body(video_id, title, description, [], publish_at, "en")
     clip_path = ROOT / "build" / "day1-test.mp4"
     clip_path.parent.mkdir(parents=True, exist_ok=True)
     subprocess.run([
@@ -28,22 +34,12 @@ def main() -> int:
         "sine=frequency=1000:sample_rate=48000", "-t", "5", "-pix_fmt",
         "yuv420p", str(clip_path),
     ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    title = "ChessCode API test (delete me)"
-    video_id = "cc-test-0000-en"
-    publish_at = datetime.now(timezone.utc) + timedelta(hours=args.publish_in_hours)
-    description = with_ccid_footer("Throwaway scheduled API test.", video_id)
-    body = {
-        "snippet": {"title": title, "description": description, "tags": [], "categoryId": "20",
-                    "defaultLanguage": "en", "defaultAudioLanguage": "en"},
-        "status": {"privacyStatus": "private", "publishAt": publish_at.isoformat().replace("+00:00", "Z"),
-                   "selfDeclaredMadeForKids": False},
-    }
     print(f"clip: {clip_path}")
     if args.dry_run:
         print(json.dumps(body, indent=2))
         return 0
     youtube_id = upload_video(youtube_client(), clip_path, video_id, title,
-                              "Throwaway scheduled API test.", [], publish_at, "en")
+                              description, [], publish_at, "en")
     print(f"https://studio.youtube.com/video/{youtube_id}/edit")
     return 0
 

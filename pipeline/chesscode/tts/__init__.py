@@ -23,12 +23,16 @@ def synthesize(provider: str, text: str, voice: str, lang: str,
     key = cache_key(provider, voice, text)
     output = cache_dir / f"{key}.mp3"
     words_path = cache_dir / f"{key}.words.json"
+    raw = cache_dir / f"{key}.raw.mp3"
     if output.exists() and words_path.exists():
         return output, json.loads(words_path.read_text(encoding="utf-8"))
     cache_dir.mkdir(parents=True, exist_ok=True)
-    raw = cache_dir / f"{key}.raw.mp3"
-    words = PROVIDERS[provider](text, voice, lang, raw)
+    if raw.exists() and words_path.exists():
+        words = json.loads(words_path.read_text(encoding="utf-8"))
+    else:
+        words = PROVIDERS[provider](text, voice, lang, raw)
+        if not words:
+            raise RuntimeError(f"{provider} returned no word timing; refusing to cache incomplete audio")
+        words_path.write_text(json.dumps(words, ensure_ascii=False), encoding="utf-8")
     audio.loudnorm(raw, output)
-    raw.unlink(missing_ok=True)
-    words_path.write_text(json.dumps(words, ensure_ascii=False), encoding="utf-8")
     return output, words

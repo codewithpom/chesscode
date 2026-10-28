@@ -26,17 +26,42 @@ def chars_to_words(chars: list[str], starts_s: list[float], ends_s: list[float])
 
 def synthesize(text: str, voice: str, lang: str, out_mp3: Path) -> list[Word]:
     key = os.environ["ELEVENLABS_API_KEY"]
+    chunks = []
+    remaining = text
+    while remaining:
+        if len(remaining) <= 10_000:
+            chunks.append(remaining)
+            break
+        split_at = remaining.rfind(" ", 0, 10_001)
+        if split_at < 1:
+            split_at = 10_000
+        chunks.append(remaining[:split_at])
+        remaining = remaining[split_at:].lstrip()
+    audio = bytearray()
+    words = []
+    offset = 0
     try:
-        response = requests.post(
-            f"https://api.elevenlabs.io/v1/text-to-speech/{voice}/with-timestamps",
-            headers={"xi-api-key": key, "Content-Type": "application/json"},
-            json={"text": text, "model_id": "eleven_multilingual_v2"}, timeout=60,
-        )
-        response.raise_for_status()
-        result = response.json()
-        alignment = result.get("normalized_alignment") or result["alignment"]
-        out_mp3.write_bytes(base64.b64decode(result["audio_base64"]))
-        return chars_to_words(alignment["characters"], alignment["character_start_times_seconds"],
-                              alignment["character_end_times_seconds"])
+        for chunk in chunks:
+            response = requests.post(
+                f"https://api.elevenlabs.io/v1/text-to-speech/{voice}/with-timestamps",
+                headers={"xi-api-key": key, "Content-Type": "application/json"},
+                json={"text": chunk, "model_id": "eleven_multilingual_v2"}, timeout=60,
+            )
+            response.raise_for_status()
+            result = response.json()
+            alignment = result.get("alignment") or result["normalized_alignment"]
+            chunk_words = chars_to_words(alignment["characters"], alignment["character_start_times_seconds"],
+                                         alignment["character_end_times_seconds"])
+            words.extend({**word, "start_ms": word["start_ms"] + offset,
+                          "end_ms": word["end_ms"] + offset} for word in chunk_words)
+            if chunk_words:
+                offset = words[-1]["end_ms"]
+            audio.extend(base64.b64decode(result["audio_base64"]))
+        out_mp3.parent.mkdir(parents=True, exist_ok=True)
+        out_mp3.write_bytes(audio)
+        return words
+    except requests.HTTPError as exc:
+        status = getattr(exc.response, "status_code", "unknown")
+        raise RuntimeError(f"ElevenLabs failed: HTTP {status}") from None
     except Exception:
         raise RuntimeError("ElevenLabs synthesis failed") from None

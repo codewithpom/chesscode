@@ -1,0 +1,9 @@
+elevenlabs:
+  en: TODO_ELEVENLABS_EN_VOICE_ID
+  hi: TODO_ELEVENLABS_HI_VOICE_ID
+azure:
+  en: TODO_AZURE_EN_IN_VOICE_ID
+  hi: TODO_AZURE_HI_IN_VOICE_ID
+kokoro:
+  en: af_heart
+  hi: hf_alpha

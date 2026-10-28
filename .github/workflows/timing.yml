@@ -1,0 +1,51 @@
+name: Render timing
+
+on:
+  workflow_dispatch:
+    inputs:
+      frames:
+        description: Frame range to render (for example 0-1799)
+        required: true
+        default: 0-1799
+        type: string
+
+jobs:
+  render-timing:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: remotion
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: remotion/package-lock.json
+      - name: Install Remotion Chrome dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libnss3 libdbus-1-3 libatk1.0-0 libgbm-dev libasound2t64 libxrandr2 libxkbcommon-dev libxfixes3 libxcomposite1 libxdamage1 libatk-bridge2.0-0 libpango-1.0-0 libcairo2 libcups2t64
+      - run: npm ci
+      - run: npx remotion browser ensure
+      - name: Render and benchmark
+        env:
+          FRAME_RANGE: ${{ inputs.frames }}
+        run: |
+          if [[ ! "$FRAME_RANGE" =~ ^[0-9]+-[0-9]+$ ]]; then
+            echo "frames must be a start-end range" >&2
+            exit 2
+          fi
+          frame_start=${FRAME_RANGE%-*}
+          frame_end=${FRAME_RANGE#*-}
+          if (( frame_end < frame_start )); then
+            echo "frame range end must be >= start" >&2
+            exit 2
+          fi
+          frames=$((frame_end - frame_start + 1))
+          start=$(date +%s)
+          npx remotion render StudioVideo /tmp/out.mp4 --props=../spec/fixtures/cc-2026-0001-en/video_spec.json --public-dir=../spec/fixtures/cc-2026-0001-en --frames="$FRAME_RANGE" --codec=h264 --crf=18 --x264-preset=veryfast --concurrency=100%
+          end=$(date +%s)
+          render_seconds=$((end - start))
+          npx remotion benchmark
+          echo "render_seconds=$render_seconds frames=$frames runner=$(nproc)" >> "$GITHUB_STEP_SUMMARY"

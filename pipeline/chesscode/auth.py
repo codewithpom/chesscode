@@ -7,9 +7,12 @@ from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
 
 SCOPES = ["https://www.googleapis.com/auth/youtube.upload", "https://www.googleapis.com/auth/youtube"]
-TOKEN_PATH = Path("data/secrets/youtube_token.json")
+REPO_ROOT = Path(__file__).resolve().parents[2]
+SECRETS_DIR = REPO_ROOT / "data" / "secrets"
+TOKEN_PATH = SECRETS_DIR / "youtube_token.json"
 
 
 class AuthError(RuntimeError):
@@ -48,16 +51,22 @@ def youtube_client():
 
 
 def check() -> dict:
-    response = youtube_client().channels().list(part="snippet", mine=True).execute()
-    channel = response["items"][0]
-    return {"channel_id": channel["id"], "title": channel["snippet"]["title"]}
+    try:
+        response = youtube_client().channels().list(part="snippet", mine=True).execute()
+        channel = response["items"][0]
+        return {"channel_id": channel["id"], "title": channel["snippet"]["title"]}
+    except AuthError:
+        raise
+    except (FileNotFoundError, KeyError, IndexError, HttpError) as exc:
+        raise AuthError("YouTube authentication check failed; run auth login and try again.") from exc
 
 
 def main(args: argparse.Namespace) -> int:
     if args.action == "login":
-        credentials = InstalledAppFlow.from_client_secrets_file("data/secrets/client_secret.json", SCOPES).run_local_server()
+        credentials = InstalledAppFlow.from_client_secrets_file(str(SECRETS_DIR / "client_secret.json"), SCOPES).run_local_server()
         TOKEN_PATH.parent.mkdir(parents=True, exist_ok=True)
         TOKEN_PATH.write_text(credentials.to_json(), encoding="utf-8")
+        TOKEN_PATH.chmod(0o600)
         print("YouTube authorization saved.")
         return 0
     try:
