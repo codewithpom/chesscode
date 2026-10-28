@@ -104,3 +104,17 @@ def test_run_writes_classified_rows(tmp_path):
     assert result["class"] == "book"
     assert result["eval"] == {"cp": 80, "mate": None}
     assert result["best_uci"] == "d2d4"
+
+
+def test_opera_qb8_is_brilliant_and_bxf3_is_not():
+    rows = json.loads((Path(__file__).parent / "golden" / "analysis" / "opera.json").read_text())
+    classified = {row["ply"]: classify.classify_ply(row, False, CFG) for row in rows}
+    assert classified[31] == "brilliant"
+    assert classified[8] != "brilliant"
+
+
+def test_brilliant_is_suppressed_in_already_decided_position():
+    entry = row(600, 590, played="e2e4", best="d2d4")
+    entry["after"][0]["pv"] = ["e7e5", "d7d5", "e4d5"]
+    cfg = {**CFG, "brilliant_decided_pawns": 5.0}
+    assert classify.classify_ply(entry, False, cfg) != "brilliant"

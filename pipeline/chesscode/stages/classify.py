@@ -54,7 +54,9 @@ def _material_given(row: dict) -> float:
 
     initial = balance(before)
     try:
-        for uci in row["after"][0].get("pv", []):
+        # The played move is already reflected in fen_after. Only inspect the
+        # opponent's reply and the mover's following move for a sacrifice.
+        for uci in row["after"][0].get("pv", [])[:2]:
             after.push_uci(uci)
     except (ValueError, chess.IllegalMoveError):
         return 0
@@ -92,7 +94,8 @@ def classify_ply(row: dict, in_book: bool, cfg: dict) -> str:
     loss = best_pct - played_pct if mover == chess.WHITE else played_pct - best_pct
 
     brilliant = cfg["brilliant"]
-    if loss <= brilliant["max_loss"] and _material_given(row) >= brilliant["min_material_given"]:
+    decided_guard = _pawns(best, mover) < cfg.get("brilliant_decided_pawns", 5.0) or row.get("uci") == best.get("uci")
+    if loss <= brilliant["max_loss"] and _material_given(row) >= brilliant["min_material_given"] and decided_guard:
         return "brilliant"
     missed = cfg["missed_win"]
     if best_mate is None and played_mate is None and _pawns(best, mover) >= missed["best_min_pawns"] and _pawns(played, mover) <= missed["played_max_pawns"]:

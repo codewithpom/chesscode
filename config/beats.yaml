@@ -1,7 +1,35 @@
 min_gap_ms: 20000
 min_gap_intensity3_ms: 60000
 est_ms_per_ply: 4500
-priority: [checkmate, blunder, brilliant, missed_win, comeback, rest]
+priority: [checkmate, blunder, brilliant, missed_win, comeback, promotion, king_walk, time_scramble, resign, mistake, long_think, opening_exit]
+poses:
+  blunder: facepalm
+  mistake: side_eye
+  brilliant: slow_clap
+  missed_win: screaming
+  comeback: shocked
+  long_think: checks_watch
+  time_scramble: sweating
+  king_walk: binoculars
+  promotion: jealous
+  checkmate: mic_drop
+  resign: bow
+  opening_exit: thinking
+alt_poses:
+  blunder: shocked
+  mistake: thinking
+  brilliant: jealous
+  missed_win: facepalm
+  comeback: party
+  long_think: side_eye
+  time_scramble: facepalm
+  king_walk: thinking
+  promotion: slow_clap
+  checkmate: shocked
+  resign: thinking
+  opening_exit: checks_watch
+eval_clamp_pawns: 10
+brilliant_decided_pawns: 5.0
 triggers:
   blunder_drop: 2.0
   winning_eval: 2.0
