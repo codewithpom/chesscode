@@ -1,0 +1,5 @@
+# Music beds. A track with placeholder: true is generated as a silent bed and flagged for QA (music/<file>.placeholder);
+# replace it with a licensed file in content/music/ and set placeholder: false before publishing.
+track: bed_calm_01
+tracks:
+  bed_calm_01: {file: content/music/bed_calm_01.mp3, placeholder: true, volume: 0.12, duck_under_voice: 0.06, credit: null}

@@ -5,6 +5,9 @@
   source: local
   pgn_file: pipeline/tests/golden/pgn/opera.pgn
   tier: floor
+  source_id: opera
+  white_country: null
+  black_country: null
 - game_no: 2
   pair_id: cc-2026-0002
   series: legendary_games
@@ -12,6 +15,9 @@
   source: local
   pgn_file: pipeline/tests/golden/pgn/immortal.pgn
   tier: floor
+  source_id: immortal
+  white_country: null
+  black_country: null
 - game_no: 3
   pair_id: cc-2026-0003
   series: legendary_games
@@ -19,6 +25,9 @@
   source: local
   pgn_file: pipeline/tests/golden/pgn/century.pgn
   tier: floor
+  source_id: century
+  white_country: null
+  black_country: null
 - game_no: 4
   pair_id: cc-2026-0004
   series: legendary_games
@@ -26,6 +35,9 @@
   source: local
   pgn_file: pipeline/tests/golden/pgn/kasparov-topalov.pgn
   tier: floor
+  source_id: kasparov-topalov
+  white_country: null
+  black_country: null
 - game_no: 5
   pair_id: cc-2026-0005
   series: legendary_games
@@ -33,6 +45,9 @@
   source: local
   pgn_file: pipeline/tests/golden/pgn/evergreen.pgn
   tier: floor
+  source_id: evergreen
+  white_country: null
+  black_country: null
 - game_no: 6
   pair_id: cc-2026-0006
   series: indian_chess_heroes
@@ -40,6 +55,9 @@
   source: local
   pgn_file: pipeline/tests/golden/pgn/ding-gukesh-wch2024-g14.pgn
   tier: floor
+  source_id: ding-gukesh-wch2024-g14
+  white_country: null
+  black_country: null
 - game_no: 7
   pair_id: cc-2026-0007
   series: indian_chess_heroes
@@ -47,6 +65,9 @@
   source: local
   pgn_file: pipeline/tests/golden/pgn/gukesh-ding-wch2024-g3.pgn
   tier: floor
+  source_id: gukesh-ding-wch2024-g3
+  white_country: null
+  black_country: null
 - game_no: 8
   pair_id: cc-2026-0008
   series: indian_chess_heroes
@@ -54,6 +75,9 @@
   source: local
   pgn_file: pipeline/tests/golden/pgn/lei-humpy-cand2024-r14.pgn
   tier: floor
+  source_id: lei-humpy-cand2024-r14
+  white_country: null
+  black_country: null
 - game_no: 9
   pair_id: cc-2026-0009
   series: indian_chess_heroes
@@ -61,6 +85,9 @@
   source: local
   pgn_file: pipeline/tests/golden/pgn/pragg-gukesh-cand2024-r2.pgn
   tier: floor
+  source_id: pragg-gukesh-cand2024-r2
+  white_country: null
+  black_country: null
 - game_no: 10
   pair_id: cc-2026-0010
   series: indian_chess_heroes
@@ -68,3 +95,6 @@
   source: local
   pgn_file: pipeline/tests/golden/pgn/vidit-pragg-cand2024-r3.pgn
   tier: floor
+  source_id: vidit-pragg-cand2024-r3
+  white_country: null
+  black_country: null

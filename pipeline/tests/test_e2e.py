@@ -55,7 +55,7 @@ def test_e2e_golden_specs_validate(tmp_path, monkeypatch):
 
     def fake_llm(model_key, system, user, schema):
         if model_key == "checks":
-            return {"ok": True}
+            return {"ok": True, "best": 0}
         request, _ = json.JSONDecoder().raw_decode(user)
         beats = request["facts"]["beats.json"]
         n_plies = len(request["facts"]["classified.json"])

@@ -70,3 +70,17 @@ max_per_type:
   long_think: 2
   mistake: 3
   time_scramble: 2
+# Sound effect per beat type (null = silent beat); the asset names are resolved by Remotion.
+sfx:
+  blunder: oof_01
+  mistake: hmm_01
+  brilliant: ding_01
+  missed_win: gasp_01
+  comeback: whip_01
+  long_think: tick_01
+  time_scramble: tick_02
+  king_walk: null
+  promotion: sparkle_01
+  checkmate: sting_01
+  resign: sting_02
+  opening_exit: null
