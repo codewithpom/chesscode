@@ -21,12 +21,13 @@ def setup_run(tmp_path, monkeypatch, language="en", bank=True):
     shutil.copytree(ROOT / "config", repo / "config")
     if bank:
         (repo / "content/lines").mkdir(parents=True)
-        (repo / f"content/lines/{language}.yaml").write_text(yaml.safe_dump({"blunder": ["Bank line one.", "Bank line two."]}))
+        (repo / f"content/lines/{language}.yaml").write_text(yaml.safe_dump({"blunder": ["Bank line one.", "Bank line two."], "mistake": ["Mistake bank one."]}))
     spec = tmp_path / "spec"
     spec.mkdir()
     (spec / "game.json").write_text("{}")
     (spec / "classified.json").write_text(json.dumps([{"ply": 1, "san": "e4", "uci": "e2e4", "fen_before": START, "fen_after": AFTER, "before": [], "after": []}]))
-    (spec / "beats.json").write_text(json.dumps([{"beat_id": "b-01", "type": "blunder", "ply": 1}]))
+    (spec / "beats.json").write_text(json.dumps([{"beat_id": "b-01", "type": "blunder", "ply": 1, "intensity": 2, "priority": 0, "pose": "facepalm"},
+                                                 {"beat_id": "b-02", "type": "mistake", "ply": 1, "intensity": 1, "priority": 9, "pose": "side_eye"}]))
     monkeypatch.setattr(script, "ensure_specific", lambda output, *args: output)
     return Context("cc-2026-5001-" + language, spec, repo, {}, language, "shorts")
 
@@ -45,9 +46,11 @@ def model(outputs, systems=None):
     return fake, calls
 
 
-def out(text=GOOD, titles=("A quiet move", "Another title", "Third title"), hook="A hook.", lines=None, segments=None):
+def out(text=GOOD, titles=("A quiet move", "Another title", "Third title"), hook="A hook.", lines=None, segments=None, **extra):
     return {"segments": segments or [{"kind": "cold_open", "ply": None, "text": text}, {"kind": "ply", "ply": 1, "text": text}],
-            "mascot_lines": lines or {"b-01": "Oops again."}, "titles": list(titles), "hook": hook}
+            "mascot_lines": lines or {"b-01": "Oops again."}, "titles": list(titles), "hook": hook,
+            "player_facts": {"white": "White fact.", "black": "Black fact."}, "cold_open_hook": "A hook line", "thumbnail_text": "Quiet move",
+            "key_moment_labels": {"b-01": "The slip"}, **extra}
 
 
 def test_unknown_san_in_titles_and_hook_is_caught(tmp_path, monkeypatch):
@@ -146,3 +149,81 @@ def test_prompt_is_hashed_and_asks_for_ply_segments(tmp_path):
     prompt.write_text("two")
     assert runner._input_hash(ctx, script.INPUTS) != before
     assert 'kind "ply"' in (ROOT / "pipeline/chesscode/prompts/script_system.md").read_text(encoding="utf-8")
+
+
+@pytest.mark.parametrize("field,bad", [
+    ("player_facts", {"white": "Played Qh5 early.", "black": "Black fact."}),
+    ("cold_open_hook", "Qh5 shocks all"),
+    ("thumbnail_text", "Qh5 sac"),
+    ("key_moment_labels", {"b-01": "Then Bxd5"}),
+])
+def test_unknown_san_in_the_new_text_fields_is_regenerated(tmp_path, monkeypatch, field, bad):
+    ctx = setup_run(tmp_path, monkeypatch)
+    fake, calls = model([out(**{field: bad}), out()])
+    monkeypatch.setattr(script.llm, "complete_json", fake)
+    script.run(ctx)
+    final = json.loads((ctx.spec_dir / "script.json").read_text())
+    assert final[field] == out()[field]
+    assert len(calls) == 2
+
+
+def test_persistent_unknown_san_in_a_fact_stops(tmp_path, monkeypatch):
+    ctx = setup_run(tmp_path, monkeypatch)
+    fake, _ = model([out(player_facts={"white": "Always Qh5.", "black": "Black fact."})])
+    monkeypatch.setattr(script.llm, "complete_json", fake)
+    with pytest.raises(StageError, match="unknown SAN.*player_facts"):
+        script.run(ctx)
+
+
+def test_schema_bounds_for_the_new_fields():
+    import jsonschema
+    jsonschema.validate(out(), script.SCHEMA)
+    for field, bad in [("cold_open_hook", "x" * 61), ("thumbnail_text", "one two three four five"), ("key_moment_labels", {"b-01": "x" * 41}),
+                       ("player_facts", {"white": "x" * 121, "black": "ok"}), ("player_facts", {"white": "ok"})]:
+        with pytest.raises(jsonschema.ValidationError):
+            jsonschema.validate(out(**{field: bad}), script.SCHEMA)
+    for field in ("player_facts", "cold_open_hook", "thumbnail_text", "key_moment_labels"):
+        with pytest.raises(jsonschema.ValidationError):
+            jsonschema.validate({k: v for k, v in out().items() if k != field}, script.SCHEMA)
+
+
+def test_thumbnail_text_repeating_a_title_stops(tmp_path, monkeypatch):
+    ctx = setup_run(tmp_path, monkeypatch)
+    fake, _ = model([out(thumbnail_text="a QUIET move")])
+    monkeypatch.setattr(script.llm, "complete_json", fake)
+    with pytest.raises(StageError, match="thumbnail_text"):
+        script.run(ctx)
+
+
+def test_long_form_needs_a_label_for_every_intensity_2_plus_beat(tmp_path, monkeypatch):
+    ctx = setup_run(tmp_path, monkeypatch)
+    ctx.template = "studio"
+    long_text = " ".join([GOOD] * 12)  # 720 words per segment, 1440 total
+    fake, _ = model([out(text=long_text, key_moment_labels={"b-02": "Not the right beat"})])
+    monkeypatch.setattr(script.llm, "complete_json", fake)
+    with pytest.raises(StageError, match="key_moment_labels.*b-01"):
+        script.run(ctx)
+    fake, _ = model([out(text=long_text)])
+    monkeypatch.setattr(script.llm, "complete_json", fake)
+    script.run(ctx)  # b-02 has intensity 1: no label needed
+
+
+def test_shorts_prompt_names_the_single_beat_it_is_about(tmp_path, monkeypatch):
+    ctx = setup_run(tmp_path, monkeypatch)
+    systems = []
+    fake, calls = model([out()], systems)
+    monkeypatch.setattr(script.llm, "complete_json", fake)
+    script.run(ctx)
+    request, _ = json.JSONDecoder().raw_decode(calls[0])
+    assert request["short_beat"] == {"beat_id": "b-01", "type": "blunder", "ply": 1, "san": "e4", "pose": "facepalm"}
+    assert [b["beat_id"] for b in request["facts"]["beats.json"]] == ["b-01"]
+    assert "short_beat" in systems[0]
+
+
+def test_long_form_prompt_has_no_short_beat(tmp_path, monkeypatch):
+    ctx = setup_run(tmp_path, monkeypatch)
+    ctx.template = "studio"
+    fake, calls = model([out(text=" ".join([GOOD] * 12), key_moment_labels={"b-01": "The slip"})])
+    monkeypatch.setattr(script.llm, "complete_json", fake)
+    script.run(ctx)
+    assert "short_beat" not in calls[0] and len(json.loads(calls[0])["facts"]["beats.json"]) == 2

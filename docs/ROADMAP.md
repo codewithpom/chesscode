@@ -86,6 +86,9 @@ Next to plan (after these land): M3 drafts (`games.yaml`, line banks), M4 rig, M
 
 13. Contract 1.1.0 (additive, from Gate A): `game.white/black.fact`, `cold_open {ply_from, ply_to, hook}`, `key_moments[] {beat_id, ply, start_ms, duration_ms, label, line}`, `verdict {turning_point_ply, accuracy}`, `thumbnail {text <= 4 words, ply, crop_origin, pose}`. All required; Python fills them in `emit`.
 
+14. Pipeline choices under 1.1.0: cold open = `max(1, ply-2)..ply` of the top beat (priority, then intensity); key-moment `line` = first 8 UCI of `before[0].pv`; accuracy rounded to 2 decimals; thumbnail crop window is centred on the move (a move wider than 4 squares keeps its destination in view); a Short's script gets only its one beat as `short_beat`.
+15. Calendar: spec section 11's alternating Friday short and Sunday target short could not sit 1 to 3 days before any long-form, so target games got one Short a week. `config/calendar.yaml` now has Fri EN (before Sat EN) and Sat HI (before Sun HI) target Shorts in their place.
+
 ## Owner decisions log
 
 - Oct 28: mascot concept **Pyaada**.

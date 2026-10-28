@@ -17,3 +17,11 @@ Series format:
 Segment structure (the timeline depends on it):
 - Start with one segment of kind "cold_open" (ply null), then segments of kind "title", "player_intro", "chapter", "key_moment", "verdict" and "outro" (ply null) as the story needs.
 - Narrate the game with segments of kind "ply", each carrying the ply number it begins at (white's first move is ply 1). Ply numbers must strictly increase. A ply segment covers every ply up to the next ply segment, so write one only where the narration reaches that move; the first one should be ply 1 or an early ply.
+
+Scene text (all required; limits are hard):
+- "player_facts": {"white", "black"}: one true, specific fact about each player for the intro card, at most 120 characters. Never joke about the person.
+- "cold_open_hook": the line shown over the opening teaser, at most 60 characters.
+- "thumbnail_text": at most 4 words, and not equal to any of your titles.
+- "key_moment_labels": {beat_id: label}, at most 40 characters, for every beat whose intensity is 2 or 3 (long-form only; leave it {} for a Short). A "key_moment" segment that discusses a beat carries that beat's ply number.
+- Shorts: the request names one beat in "short_beat" (type, ply, move, mascot pose). The whole Short is about that moment.
+- Any move you write must be in standard SAN and must be a game or engine move.

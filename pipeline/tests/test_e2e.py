@@ -73,6 +73,10 @@ def test_e2e_golden_specs_validate(tmp_path, monkeypatch):
             "mascot_lines": {beat["beat_id"]: f"{current_video[0]} {beat['beat_id']} changes everything." for beat in beats},
             "titles": ["A quiet move changes everything", "A chess game with a twist", "The position turns"] ,
             "hook": "A shifting position decides the game.",
+            "player_facts": {"white": "White fact.", "black": "Black fact."},
+            "cold_open_hook": "A shifting position",
+            "thumbnail_text": "Position turns",
+            "key_moment_labels": {} if short else {beat["beat_id"]: f"Key moment {beat['beat_id']}" for beat in beats if beat["intensity"] >= 2},
         }
 
     monkeypatch.setattr(llm, "complete_json", fake_llm)
@@ -97,6 +101,10 @@ def test_e2e_golden_specs_validate(tmp_path, monkeypatch):
                 specs.append(spec)
 
     assert len(specs) == 40
+    assert {spec["spec_version"] for spec in specs} == {"1.1.0"}
+    for spec in specs:
+        assert spec["thumbnail"]["ply"] == spec["cold_open"]["ply_to"], spec["video_id"]
+        assert [k["beat_id"] for k in spec["key_moments"]] == ([] if spec["template"] == "shorts" else [b["beat_id"] for b in spec["beats"] if b["intensity"] >= 2]), spec["video_id"]
     for spec in specs:
         times = [p["show_at_ms"] for p in spec["plies"]]
         assert times == sorted(times), spec["video_id"]
