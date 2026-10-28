@@ -1,2 +1,7 @@
 script: claude-sonnet-5-5
 checks: claude-haiku-5-5
+tts:
+  provider: kokoro
+  voice:
+    en: af_heart
+    hi: hf_alpha
