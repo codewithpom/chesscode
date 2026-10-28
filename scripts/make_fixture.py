@@ -116,14 +116,16 @@ def main() -> None:
     silent_mp3(OUT / "music/bed_calm_01.mp3", duration / 1000)
 
     spec = {
-        "spec_version": "1.0.0", "video_id": "cc-2026-0001-en", "pair_id": "cc-2026-0001",
+        "spec_version": "1.1.0", "video_id": "cc-2026-0001-en", "pair_id": "cc-2026-0001",
         "language": "en", "template": "studio", "series": "legendary_games",
         "board": {"orientation": "white", "theme": "bone_slate"},
         "format": {"width": 1920, "height": 1080, "fps": 30}, "duration_ms": duration,
         "game": {
             "source": "local", "source_id": "opera-game-1858",
-            "white": {"name": "Paul Morphy", "rating": None, "title": None, "country": "US"},
-            "black": {"name": "Duke Karl / Count Isouard", "rating": None, "title": None, "country": None},
+            "white": {"name": "Paul Morphy", "rating": None, "title": None, "country": "US",
+                      "fact": "Unofficial world's best player at 21, retired from chess at 22."},
+            "black": {"name": "Duke Karl / Count Isouard", "rating": None, "title": None, "country": None,
+                      "fact": "Two noblemen consulting on every move, in their own opera box."},
             "event": "Paris Opera", "date": "1858-11-02", "result": "1-0", "eco": "C41",
             "opening": "Philidor Defense", "pgn": PGN,
         },
@@ -139,6 +141,10 @@ def main() -> None:
         ],
         "chapters": [{"title": "The opening", "start_ms": 0}, {"title": "The attack", "start_ms": 20400},
                      {"title": "The finish", "start_ms": 30000}],
+        "cold_open": {"ply_from": 31, "ply_to": 33, "hook": "A queen sacrifice at the opera"},
+        "key_moments": [],
+        "verdict": {"turning_point_ply": 19, "accuracy": {"white": 92.0, "black": 61.0}},
+        "thumbnail": {"text": "Queen sac, mate", "ply": 31, "crop_origin": "a5", "pose": "mic_drop"},
         "music": {"track": "music/bed_calm_01.mp3", "volume": 0.12, "duck_under_voice": 0.06},
         "youtube": {
             "title": "He gave up his queen at the opera (and mated in 17)",

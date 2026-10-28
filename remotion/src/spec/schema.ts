@@ -103,6 +103,8 @@ export const Player = z.object({
   rating: z.number().int().positive().nullable(),
   title: z.string().nullable(),
   country: z.string().length(2).nullable(),
+  // 1.1.0: one short fact for the PlayerIntro card (spec section 5).
+  fact: z.string().min(1).max(120),
 });
 
 // Exactly one of cp, mate is non-null; a union so JSON Schema enforces it too.
@@ -157,6 +159,41 @@ export const Beat = z.object({
   sfx: z.string().nullable(),
 });
 
+const uci = z.string().regex(/^[a-h][1-8][a-h][1-8][qrbn]?$/);
+
+// 1.1.0 scene data (Gate A finding: scenes in spec section 5 had no data to draw from).
+export const ColdOpen = z.object({
+  // Board shows the position before ply_from, then plays ply_from..ply_to.
+  ply_from: z.number().int().positive(),
+  ply_to: z.number().int().positive(),
+  hook: z.string().min(1).max(60),
+});
+
+export const KeyMoment = z.object({
+  beat_id: z.string().min(1),
+  ply: z.number().int().positive(),
+  start_ms: ms,
+  duration_ms: z.number().int().positive(),
+  label: z.string().min(1).max(40),
+  // The alternative the narration discusses, as UCI moves from the position before `ply`.
+  line: z.array(uci).min(1).max(8),
+});
+
+export const Verdict = z.object({
+  turning_point_ply: z.number().int().positive(),
+  // Lichess-style accuracy per side, 0-100.
+  accuracy: z.object({ white: z.number().min(0).max(100), black: z.number().min(0).max(100) }),
+});
+
+export const Thumbnail = z.object({
+  // At most 4 words (spec section 6); never the title verbatim.
+  text: z.string().regex(/^\S+(?: \S+){0,3}$/),
+  ply: z.number().int().positive(),
+  // Lower-left square of the 4x4 crop, from White's view.
+  crop_origin: z.string().regex(/^[a-e][1-5]$/),
+  pose: Pose,
+});
+
 export const VideoSpec = z
   .object({
     spec_version: z.string().regex(new RegExp(`^${SUPPORTED_MAJOR}\\.\\d+\\.\\d+$`)),
@@ -188,6 +225,10 @@ export const VideoSpec = z
     narration: z.array(NarrationSegment).min(1),
     beats: z.array(Beat),
     chapters: z.array(z.object({ title: z.string().min(1), start_ms: ms })).min(1),
+    cold_open: ColdOpen,
+    key_moments: z.array(KeyMoment),
+    verdict: Verdict,
+    thumbnail: Thumbnail,
     music: z.object({
       track: relPath,
       volume: z.number().min(0).max(1),
@@ -226,6 +267,23 @@ export const VideoSpec = z
         ctx.addIssue({ code: "custom", path: ["narration", i, "start_ms"], message: "overlaps previous segment" });
       }
     });
+    // refine: scene plies exist and cold open runs forward.
+    const n = s.plies.length;
+    const plyOk = (p: number) => p >= 1 && p <= n;
+    if (!plyOk(s.cold_open.ply_from) || !plyOk(s.cold_open.ply_to) || s.cold_open.ply_from > s.cold_open.ply_to) {
+      ctx.addIssue({ code: "custom", path: ["cold_open"], message: "ply_from..ply_to must be a forward range of existing plies" });
+    }
+    s.key_moments.forEach((k, i) => {
+      if (!plyOk(k.ply)) ctx.addIssue({ code: "custom", path: ["key_moments", i, "ply"], message: "no such ply" });
+      if (!s.beats.some((b) => b.beat_id === k.beat_id)) {
+        ctx.addIssue({ code: "custom", path: ["key_moments", i, "beat_id"], message: "must reference a beat" });
+      }
+    });
+    if (!plyOk(s.verdict.turning_point_ply)) ctx.addIssue({ code: "custom", path: ["verdict", "turning_point_ply"], message: "no such ply" });
+    if (!plyOk(s.thumbnail.ply)) ctx.addIssue({ code: "custom", path: ["thumbnail", "ply"], message: "no such ply" });
+    if (s.thumbnail.text.toLowerCase() === s.youtube.title.toLowerCase()) {
+      ctx.addIssue({ code: "custom", path: ["thumbnail", "text"], message: "must not repeat the title" });
+    }
     // refine: plies numbered 1..n in order.
     s.plies.forEach((p, i) => {
       if (p.ply !== i + 1) {
@@ -235,6 +293,7 @@ export const VideoSpec = z
   });
 
 export type VideoSpec = z.infer<typeof VideoSpec>;
+export type KeyMoment = z.infer<typeof KeyMoment>;
 export type Ply = z.infer<typeof Ply>;
 export type Beat = z.infer<typeof Beat>;
 export type NarrationSegment = z.infer<typeof NarrationSegment>;

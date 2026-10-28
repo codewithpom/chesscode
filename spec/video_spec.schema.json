@@ -144,13 +144,19 @@
                   "type": "null"
                 }
               ]
+            },
+            "fact": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120
             }
           },
           "required": [
             "name",
             "rating",
             "title",
-            "country"
+            "country",
+            "fact"
           ]
         },
         "black": {
@@ -189,13 +195,19 @@
                   "type": "null"
                 }
               ]
+            },
+            "fact": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120
             }
           },
           "required": [
             "name",
             "rating",
             "title",
-            "country"
+            "country",
+            "fact"
           ]
         },
         "event": {
@@ -638,6 +650,159 @@
         ]
       }
     },
+    "cold_open": {
+      "type": "object",
+      "properties": {
+        "ply_from": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 9007199254740991
+        },
+        "ply_to": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 9007199254740991
+        },
+        "hook": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        }
+      },
+      "required": [
+        "ply_from",
+        "ply_to",
+        "hook"
+      ]
+    },
+    "key_moments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "beat_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "ply": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "start_ms": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "duration_ms": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "line": {
+            "minItems": 1,
+            "maxItems": 8,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-h][1-8][a-h][1-8][qrbn]?$"
+            }
+          }
+        },
+        "required": [
+          "beat_id",
+          "ply",
+          "start_ms",
+          "duration_ms",
+          "label",
+          "line"
+        ]
+      }
+    },
+    "verdict": {
+      "type": "object",
+      "properties": {
+        "turning_point_ply": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 9007199254740991
+        },
+        "accuracy": {
+          "type": "object",
+          "properties": {
+            "white": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "black": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            }
+          },
+          "required": [
+            "white",
+            "black"
+          ]
+        }
+      },
+      "required": [
+        "turning_point_ply",
+        "accuracy"
+      ]
+    },
+    "thumbnail": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "pattern": "^\\S+(?: \\S+){0,3}$"
+        },
+        "ply": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 9007199254740991
+        },
+        "crop_origin": {
+          "type": "string",
+          "pattern": "^[a-e][1-5]$"
+        },
+        "pose": {
+          "type": "string",
+          "enum": [
+            "idle",
+            "wave",
+            "thinking",
+            "side_eye",
+            "facepalm",
+            "faint",
+            "slow_clap",
+            "screaming",
+            "shocked",
+            "party",
+            "checks_watch",
+            "sweating",
+            "binoculars",
+            "jealous",
+            "mic_drop",
+            "bow",
+            "point"
+          ]
+        }
+      },
+      "required": [
+        "text",
+        "ply",
+        "crop_origin",
+        "pose"
+      ]
+    },
     "music": {
       "type": "object",
       "properties": {
@@ -737,6 +902,10 @@
     "narration",
     "beats",
     "chapters",
+    "cold_open",
+    "key_moments",
+    "verdict",
+    "thumbnail",
     "music",
     "youtube"
   ]
