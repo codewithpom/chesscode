@@ -90,3 +90,9 @@ Next to plan (after these land): M3 drafts (`games.yaml`, line banks), M4 rig, M
 - Oct 28: board pieces = rhosgfx (CC0) with black pieces recoloured to dark ink for contrast.
 - Oct 28: Shorts layout deviates from spec section 6: board **864 px** (not 960) so captions, eval bar and board fit the upper 60 % and the mascot fits below.
 - Oct 28: four series board themes get four distinct hue families (bone/slate, walnut, sage, a fourth muted hue) at the same square contrast.
+- Oct 28: M1 render timing on Actions (public, 4 vCPU): 60 s Studio placeholder with real board, eval bar and captions rendered in about 50 s (run 40628324296); a 10-minute video is about 8 to 9 minutes. Re-measure at Batch 0 with full scenes.
+
+## Tooling notes
+
+- Codex here runs through a local compression proxy (`model_provider = "caveman"`), which can show function bodies as `...` with `<<ccr:...>>` markers. Codex prompts must say so and point at the `caveman_retrieve` MCP tool. Codex's first remotion-core audit ("no findings") may have read elided bodies; it is backed by tests plus two pixel-level design-critic passes, and Gate B will use agy and a fresh Claude auditor.
+- The Codex sandbox cannot write the git index of a linked worktree, so the main session commits Codex's work with Codex co-authorship.
