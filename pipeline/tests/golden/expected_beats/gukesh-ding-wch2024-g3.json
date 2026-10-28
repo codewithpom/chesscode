@@ -1,0 +1,32 @@
+[
+ {
+  "type": "opening_exit",
+  "ply": 7,
+  "intensity": 1,
+  "pose": "thinking"
+ },
+ {
+  "type": "long_think",
+  "ply": 18,
+  "intensity": 1,
+  "pose": "checks_watch"
+ },
+ {
+  "type": "long_think",
+  "ply": 26,
+  "intensity": 1,
+  "pose": "thinking"
+ },
+ {
+  "type": "mistake",
+  "ply": 36,
+  "intensity": 1,
+  "pose": "side_eye"
+ },
+ {
+  "type": "resign",
+  "ply": 74,
+  "intensity": 2,
+  "pose": "bow"
+ }
+]

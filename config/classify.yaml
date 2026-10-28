@@ -1,0 +1,10 @@
+excellent_max_loss: 2
+good_max_loss: 5
+inaccuracy_max_loss: 10
+mistake_max_loss: 15
+brilliant:
+  max_loss: 3
+  min_material_given: 2
+missed_win:
+  best_min_pawns: 3.0
+  played_max_pawns: 1.0

@@ -1,0 +1,32 @@
+[
+ {
+  "type": "opening_exit",
+  "ply": 8,
+  "intensity": 1,
+  "pose": "thinking"
+ },
+ {
+  "type": "king_walk",
+  "ply": 50,
+  "intensity": 1,
+  "pose": "binoculars"
+ },
+ {
+  "type": "brilliant",
+  "ply": 58,
+  "intensity": 1,
+  "pose": "slow_clap"
+ },
+ {
+  "type": "brilliant",
+  "ply": 76,
+  "intensity": 1,
+  "pose": "shocked"
+ },
+ {
+  "type": "resign",
+  "ply": 87,
+  "intensity": 2,
+  "pose": "bow"
+ }
+]

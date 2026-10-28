@@ -1,0 +1,32 @@
+[
+ {
+  "type": "opening_exit",
+  "ply": 15,
+  "intensity": 1,
+  "pose": "thinking"
+ },
+ {
+  "type": "mistake",
+  "ply": 22,
+  "intensity": 1,
+  "pose": "side_eye"
+ },
+ {
+  "type": "blunder",
+  "ply": 30,
+  "intensity": 1,
+  "pose": "facepalm"
+ },
+ {
+  "type": "blunder",
+  "ply": 38,
+  "intensity": 2,
+  "pose": "shocked"
+ },
+ {
+  "type": "checkmate",
+  "ply": 47,
+  "intensity": 3,
+  "pose": "mic_drop"
+ }
+]

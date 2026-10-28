@@ -31,3 +31,4 @@ include = ["chesscode*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+markers = ["engine: requires a local Stockfish binary"]

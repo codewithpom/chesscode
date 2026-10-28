@@ -1,0 +1,13 @@
+script: claude-sonnet-5-5
+script_hi: claude-sonnet-5-5  # same model; own key so Hindi (Devanagari tokenises ~3x longer) gets its own output budget
+checks: claude-haiku-5-5
+max_tokens:
+  script: 8192
+  script_hi: 16384
+  checks: 8192
+# Owner picked at the M3 voice checkpoint (Oct 28, 2026): ElevenLabs Multilingual v2 premade voices.
+tts:
+  provider: elevenlabs
+  voice:
+    en: JBFqnCBsd6RMkjVDRZzb  # George
+    hi: EXAVITQu4vr4xnSDxMaL  # Sarah

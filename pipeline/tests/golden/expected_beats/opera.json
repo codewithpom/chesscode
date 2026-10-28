@@ -1,0 +1,14 @@
+[
+ {
+  "type": "opening_exit",
+  "ply": 8,
+  "intensity": 1,
+  "pose": "thinking"
+ },
+ {
+  "type": "checkmate",
+  "ply": 33,
+  "intensity": 3,
+  "pose": "mic_drop"
+ }
+]

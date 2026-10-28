@@ -1,0 +1,26 @@
+[
+ {
+  "type": "long_think",
+  "ply": 13,
+  "intensity": 1,
+  "pose": "checks_watch"
+ },
+ {
+  "type": "long_think",
+  "ply": 20,
+  "intensity": 1,
+  "pose": "thinking"
+ },
+ {
+  "type": "blunder",
+  "ply": 109,
+  "intensity": 3,
+  "pose": "faint"
+ },
+ {
+  "type": "resign",
+  "ply": 116,
+  "intensity": 2,
+  "pose": "bow"
+ }
+]
