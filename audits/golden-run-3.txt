@@ -1,0 +1,80 @@
+Golden run 3 (builder, Gate A fixes: blunder intensity ladder, final-ply beat kept). For main-session review.
+== century
+  opening_exit  ply   9 Bf4      intensity 1 pose thinking
+  blunder       ply  21 Bg5      intensity 1 pose facepalm
+  blunder       ply  35 Bxb6     intensity 1 pose shocked
+  brilliant     ply  49 Qxb6     intensity 1 pose slow_clap
+  brilliant     ply  58 Bf8      intensity 1 pose shocked
+  checkmate     ply  82 Rc2#     intensity 3 pose mic_drop
+  CHANGED vs expected_beats
+  expected: opening_exit 9 i1 thinking; blunder 21 i3 faint; blunder 35 i3 shocked; brilliant 49 i1 slow_clap; brilliant 58 i1 shocked; checkmate 82 i3 mic_drop
+== ding-gukesh-wch2024-g14
+  long_think    ply  13 c4       intensity 1 pose checks_watch
+  long_think    ply  20 Bc5      intensity 1 pose thinking
+  blunder       ply 109 Rf2      intensity 3 pose faint
+  resign        ply 116 Ke5      intensity 2 pose bow
+  unchanged
+== evergreen
+  opening_exit  ply  15 Qb3      intensity 1 pose thinking
+  mistake       ply  22 b5       intensity 1 pose side_eye
+  blunder       ply  30 Qf5      intensity 1 pose facepalm
+  blunder       ply  38 Qxf3     intensity 2 pose shocked
+  checkmate     ply  47 Bxe7#    intensity 3 pose mic_drop
+  CHANGED vs expected_beats
+  expected: opening_exit 15 i1 thinking; blunder 22 i3 faint; missed_win 33 i1 screaming; brilliant 41 i1 slow_clap; checkmate 47 i3 mic_drop
+== gukesh-ding-wch2024-g3
+  opening_exit  ply   7 cxd5     intensity 1 pose thinking
+  long_think    ply  18 Qxb3     intensity 1 pose checks_watch
+  long_think    ply  26 Nbd7     intensity 1 pose thinking
+  mistake       ply  36 Rh5      intensity 1 pose side_eye
+  resign        ply  74 Rh5      intensity 2 pose bow
+  CHANGED vs expected_beats
+  expected: opening_exit 7 i1 thinking; long_think 18 i1 checks_watch; long_think 26 i1 thinking; mistake 36 i1 side_eye; time_scramble 70 i1 sweating
+== immortal
+  opening_exit  ply   9 Bxb5     intensity 1 pose thinking
+  mistake       ply  15 Nh4      intensity 1 pose side_eye
+  blunder       ply  22 cxb5     intensity 1 pose facepalm
+  blunder       ply  35 Bd6      intensity 1 pose shocked
+  checkmate     ply  45 Be7#     intensity 3 pose mic_drop
+  CHANGED vs expected_beats
+  expected: opening_exit 9 i1 thinking; mistake 15 i1 side_eye; blunder 22 i3 faint; mistake 32 i1 side_eye; brilliant 37 i1 slow_clap; checkmate 45 i3 mic_drop
+== kasparov-topalov
+  opening_exit  ply   8 Bg7      intensity 1 pose thinking
+  king_walk     ply  50 Kb6      intensity 1 pose binoculars
+  brilliant     ply  58 Bb7      intensity 1 pose slow_clap
+  brilliant     ply  76 bxc4     intensity 1 pose shocked
+  resign        ply  87 Qa7      intensity 2 pose bow
+  unchanged
+== lei-humpy-cand2024-r14
+  long_think    ply  12 d6       intensity 1 pose checks_watch
+  long_think    ply  20 g5       intensity 1 pose thinking
+  brilliant     ply  45 Qxa5     intensity 1 pose slow_clap
+  mistake       ply  51 Nxf7+    intensity 1 pose side_eye
+  mistake       ply  61 Rxe6     intensity 1 pose thinking
+  mistake       ply  72 Rh6      intensity 1 pose side_eye
+  promotion     ply  92 c1=Q     intensity 1 pose jealous
+  resign        ply 124 Kxa1     intensity 2 pose bow
+  CHANGED vs expected_beats
+  expected: long_think 12 i1 checks_watch; long_think 20 i1 thinking; brilliant 45 i1 slow_clap; mistake 51 i1 side_eye; mistake 61 i1 thinking; mistake 72 i1 side_eye; promotion 92 i1 jealous; promotion 122 i1 party
+== opera
+  opening_exit  ply   8 Bxf3     intensity 1 pose thinking
+  checkmate     ply  33 Rd8#     intensity 3 pose mic_drop
+  unchanged
+== pragg-gukesh-cand2024-r2
+  opening_exit  ply   9 Nc3      intensity 1 pose thinking
+  long_think    ply  18 a6       intensity 1 pose checks_watch
+  long_think    ply  24 Na5      intensity 1 pose thinking
+  mistake       ply  33 Qc2      intensity 1 pose side_eye
+  mistake       ply  49 Qg4      intensity 1 pose thinking
+  resign        ply  66 Rxf2     intensity 2 pose bow
+  CHANGED vs expected_beats
+  expected: opening_exit 9 i1 thinking; long_think 18 i1 checks_watch; long_think 24 i1 thinking; mistake 33 i1 side_eye; mistake 49 i1 thinking; time_scramble 65 i1 sweating
+== vidit-pragg-cand2024-r3
+  opening_exit  ply   9 d4       intensity 1 pose thinking
+  long_think    ply  15 Nxd4     intensity 1 pose checks_watch
+  long_think    ply  21 Qe2      intensity 1 pose thinking
+  mistake       ply  38 O-O-O    intensity 1 pose side_eye
+  blunder       ply  69 Nxb7     intensity 1 pose facepalm
+  resign        ply  90 Rhf5+    intensity 2 pose bow
+  CHANGED vs expected_beats
+  expected: opening_exit 9 i1 thinking; long_think 15 i1 checks_watch; long_think 21 i1 thinking; blunder 39 i3 faint; blunder 69 i3 shocked; resign 90 i2 bow

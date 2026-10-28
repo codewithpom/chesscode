@@ -39,3 +39,18 @@ describe("msToFrame", () => {
     for (let f = 0; f < 3000; f++) expect(msToFrame(frameToMs(f, 30), 30)).toBe(f);
   });
 });
+
+describe("contract 1.1 scene data", () => {
+  it("rejects a cold open that runs backwards", () => {
+    expect(VideoSpec.safeParse({ ...fixture, cold_open: { ...fixture.cold_open, ply_from: 33, ply_to: 31 } }).success).toBe(false);
+  });
+  it("rejects thumbnail text over four words or equal to the title", () => {
+    expect(VideoSpec.safeParse({ ...fixture, thumbnail: { ...fixture.thumbnail, text: "one two three four five" } }).success).toBe(false);
+    expect(VideoSpec.safeParse({ ...fixture, thumbnail: { ...fixture.thumbnail, text: "Same" }, youtube: { ...fixture.youtube, title: "same" } }).success).toBe(false);
+  });
+  it("rejects a key moment that references no beat", () => {
+    const km = { beat_id: "nope", ply: 31, start_ms: 30000, duration_ms: 15000, label: "The queen sac", line: ["b3b8"] };
+    expect(VideoSpec.safeParse({ ...fixture, key_moments: [km] }).success).toBe(false);
+    expect(VideoSpec.safeParse({ ...fixture, key_moments: [{ ...km, beat_id: "b-02" }] }).success).toBe(true);
+  });
+});

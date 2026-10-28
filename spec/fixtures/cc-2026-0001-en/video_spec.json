@@ -1,5 +1,5 @@
 {
-  "spec_version": "1.0.0",
+  "spec_version": "1.1.0",
   "video_id": "cc-2026-0001-en",
   "pair_id": "cc-2026-0001",
   "language": "en",
@@ -22,13 +22,15 @@
       "name": "Paul Morphy",
       "rating": null,
       "title": null,
-      "country": "US"
+      "country": "US",
+      "fact": "Unofficial world's best player at 21, retired from chess at 22."
     },
     "black": {
       "name": "Duke Karl / Count Isouard",
       "rating": null,
       "title": null,
-      "country": null
+      "country": null,
+      "fact": "Two noblemen consulting on every move, in their own opera box."
     },
     "event": "Paris Opera",
     "date": "1858-11-02",
@@ -1446,6 +1448,25 @@
       "start_ms": 30000
     }
   ],
+  "cold_open": {
+    "ply_from": 31,
+    "ply_to": 33,
+    "hook": "A queen sacrifice at the opera"
+  },
+  "key_moments": [],
+  "verdict": {
+    "turning_point_ply": 19,
+    "accuracy": {
+      "white": 92.0,
+      "black": 61.0
+    }
+  },
+  "thumbnail": {
+    "text": "Queen sac, mate",
+    "ply": 31,
+    "crop_origin": "a5",
+    "pose": "mic_drop"
+  },
   "music": {
     "track": "music/bed_calm_01.mp3",
     "volume": 0.12,
