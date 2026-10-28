@@ -1,7 +1,7 @@
 import { spring } from "remotion";
 import { describe, expect, it } from "vitest";
 import { uiSpring } from "../theme/motion";
-import { barShareAt, evalLabel, whipSpring, winPct, type BarBeat, type BarPly } from "./winprob";
+import { barShareAt, evalLabel, evalLabelFixed, whipSpring, winPct, type BarBeat, type BarPly } from "./winprob";
 
 const cp = (v: number) => ({ cp: v, mate: null });
 const mate = (v: number) => ({ cp: null, mate: v });
@@ -53,6 +53,18 @@ describe("evalLabel", () => {
     expect(evalLabel(cp(4))).toBe("0.0");
     expect(evalLabel(mate(3))).toBe("M3");
     expect(evalLabel(mate(-3))).toBe("\u2212M3");
+  });
+});
+
+describe("evalLabelFixed", () => {
+  it("is always 5 characters wide, right-aligned with figure spaces, so the label never jumps", () => {
+    const FS = " ";
+    expect(evalLabelFixed(cp(140))).toBe(FS + "+1.4");
+    expect(evalLabelFixed(cp(0))).toBe(FS + FS + "0.0");
+    expect(evalLabelFixed(mate(3))).toBe(FS + FS + FS + "M3");
+    expect(evalLabelFixed(mate(-3))).toBe(FS + FS + "−M3");
+    for (const e of [cp(0), cp(-30), cp(1234), cp(-1234), mate(1), mate(-12), mate(12)])
+      expect(evalLabelFixed(e)).toHaveLength(5);
   });
 });
 

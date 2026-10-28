@@ -9,7 +9,11 @@ export const color = {
   best: "#3DD68C",
   brilliant: "#F2A93B",
   mistake: "#F5A524",
-  blunder: "#E5484D",
+  blunder: "#E8545A",
+  // Threat arrows: its own token (same value as blunder for now) so they can diverge.
+  threat: "#E8545A",
+  // Black share of the eval bar: visibly lighter than the page so the bar reads as a bar.
+  evalBlack: "#3A3F4A",
 } as const;
 
 export const font = {
@@ -20,7 +24,7 @@ export const font = {
 } as const;
 
 // Nothing under 28 px at 1080p (PRODUCT.md accessibility).
-export const size = { min: 28, label: 28, body: 32, caption: 44, title: 72 } as const;
+export const size = { min: 28, label: 28, body: 32, caption: 56, evalLabel: 40, title: 72 } as const;
 
 /** 8 px grid. */
 export const space = (n: number): number => n * 8;

@@ -20,12 +20,13 @@ export const PANELS = [
   "captions-en",
   "captions-hi",
   "captions-shorts",
+  "captions-hi-shorts",
 ] as const;
 export const GalleryProps = z.object({ panel: z.enum(PANELS) });
 export type GalleryProps = z.infer<typeof GalleryProps>;
 
 export const calculateGalleryMetadata: CalculateMetadataFunction<GalleryProps> = ({ props }) =>
-  props.panel === "captions-shorts" ? { width: 1080, height: 1920 } : { width: 1920, height: 1080 };
+  props.panel.endsWith("shorts") ? { width: 1080, height: 1920 } : { width: 1920, height: 1080 };
 
 const FPS = 30;
 const base = VideoSpec.parse(fixture);
@@ -139,9 +140,13 @@ const EvalStates: FC = () => (
   </>
 );
 
-// 4 s of evenly timed words for the Hindi caption panel (Hindi with English chess terms).
+// Hindi sample with English chess terms: 4 s of evenly timed words, then a conjunct/matra stress
+// segment (क्ष त्र ष्ठ कृ ज़्या) timed fast enough that all five words share one long-form page.
 const HI_WORDS = "सोलहवें move पर queen b8 पर, check. Black को लेना ही पड़ा.".split(" ");
 const HI_STEP = Math.floor(4000 / HI_WORDS.length);
+const HI_STRESS = "क्षति त्रुटि श्रेष्ठ कृपया ज़्यादा".split(" ");
+const HI_STRESS_AT = 4500;
+const HI_STRESS_STEP = 220;
 const hiSpec: VideoSpec = {
   ...base,
   language: "hi",
@@ -155,6 +160,20 @@ const hiSpec: VideoSpec = {
       start_ms: 0,
       duration_ms: 4000,
       words: HI_WORDS.map((w, i) => ({ w, start_ms: i * HI_STEP, end_ms: (i + 1) * HI_STEP - 40 })),
+    },
+    {
+      segment_id: "hi-stress",
+      kind: "ply",
+      ply: 31,
+      text: HI_STRESS.join(" "),
+      audio: "audio/none.mp3",
+      start_ms: HI_STRESS_AT,
+      duration_ms: HI_STRESS.length * HI_STRESS_STEP,
+      words: HI_STRESS.map((w, i) => ({
+        w,
+        start_ms: HI_STRESS_AT + i * HI_STRESS_STEP,
+        end_ms: HI_STRESS_AT + (i + 1) * HI_STRESS_STEP - 20,
+      })),
     },
   ],
 };
@@ -190,16 +209,17 @@ export const CoreGallery: FC<GalleryProps> = ({ panel }) => {
     );
   } else if (panel === "captions-hi") {
     body = (
-      <StudioStub spec={{ ...themed("bone_slate"), language: "hi" }} frame={msF(1500)}>
+      <StudioStub spec={{ ...themed("bone_slate"), language: "hi" }} frame={msF(HI_STRESS_AT + 600)}>
         <Captions spec={hiSpec} mode="long" />
       </StudioStub>
     );
   } else {
     // Shorts: captions, then a thin eval bar (its label sits above it), then the 960 board.
-    const s = themed("bone_slate");
+    const hindi = panel === "captions-hi-shorts";
+    const s = hindi ? { ...themed("bone_slate"), language: "hi" as const } : themed("bone_slate");
     body = (
-      <At frame={msF(7100)}>
-        <Captions spec={base} mode="shorts" />
+      <At frame={msF(hindi ? HI_STRESS_AT + 600 : 7100)}>
+        <Captions spec={hindi ? hiSpec : base} mode="shorts" />
         <div style={{ position: "absolute", left: 60, top: 280 }}>
           <EvalBar spec={s} orientation="horizontal" length={960} thickness={16} />
         </div>

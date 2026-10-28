@@ -3,7 +3,7 @@ import { tokens } from "../theme/tokens";
 import type { Arrow } from "./boardState";
 import { orient, squareXY } from "./boardState";
 
-const COLOR = { best: tokens.color.best, threat: tokens.color.blunder, missed: tokens.color.mistake } as const;
+const COLOR = { best: tokens.color.best, threat: tokens.color.threat, missed: tokens.color.mistake } as const;
 const WIDTH = 0.16;
 const HEAD = 0.42;
 

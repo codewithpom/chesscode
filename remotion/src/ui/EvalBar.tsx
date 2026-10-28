@@ -4,7 +4,7 @@ import type { VideoSpec } from "../spec/schema";
 import { msToFrame } from "../spec/time";
 import { useFonts } from "../theme/fonts";
 import { tokens } from "../theme/tokens";
-import { barShareAt, evalLabel } from "./winprob";
+import { barShareAt, evalLabelFixed } from "./winprob";
 
 type Props = {
   spec: VideoSpec;
@@ -44,9 +44,9 @@ export const EvalBar: FC<Props> = ({ spec, orientation, length, thickness }) => 
         position: "relative",
         width: vertical ? thickness : length,
         height: vertical ? length : thickness,
-        background: tokens.color.surface,
+        background: tokens.color.evalBlack,
         outline: `1px solid ${tokens.color.hairline}`,
-      }}
+              }}
     >
       <div style={{ position: "absolute", background: tokens.color.text, ...fillStyle }} />
       <div
@@ -55,16 +55,16 @@ export const EvalBar: FC<Props> = ({ spec, orientation, length, thickness }) => 
           bottom: "100%",
           marginBottom: tokens.space(1),
           [vertical ? "left" : "right"]: 0,
-          whiteSpace: "nowrap",
+          whiteSpace: "pre",
           color: tokens.color.text,
           fontFamily: tokens.font.mono,
           fontWeight: 500,
-          fontSize: tokens.size.min,
+          fontSize: tokens.size.evalLabel,
           fontVariantNumeric: "tabular-nums",
           lineHeight: 1,
         }}
       >
-        {evalLabel(e)}
+        {evalLabelFixed(e)}
       </div>
     </div>
   );

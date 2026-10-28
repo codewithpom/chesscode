@@ -24,6 +24,11 @@ export const evalLabel = (e: Eval): string => {
   return v > 0 ? `+${v.toFixed(1)}` : `${MINUS}${(-v).toFixed(1)}`;
 };
 
+const FIGURE_SPACE = " "; // same advance as a digit in Plex Mono
+
+/** evalLabel padded to 5 characters with figure spaces, so a right-aligned label never jumps. */
+export const evalLabelFixed = (e: Eval): string => evalLabel(e).padStart(5, FIGURE_SPACE);
+
 /** Same damping ratio as uiSpring at 3x stiffness: faster, still no overshoot. */
 export const whipSpring: SpringConfig = {
   ...uiSpring,

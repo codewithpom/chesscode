@@ -83,3 +83,40 @@ describe("captionPages", () => {
         }
   });
 });
+
+const PUNCT = /[.,?!।]$/;
+const SENTENCES = [
+  seg("p1", 0, ["सोलहवें", "move", "पर", "queen", "b8", "पर,", "check.", "Black", "को", "लेना", "ही", "पड़ा."]),
+  seg("p2", 6000, ["Wait,", "what?", "That", "knight", "just", "walked", "into", "a", "fork!", "Ouch."]),
+];
+
+describe("captionPages punctuation", () => {
+  it("a page ends at punctuation when one falls inside it, and never leaves a lone word", () => {
+    for (const n of [SENTENCES, HI, EN])
+      for (const mode of ["long", "shorts"] as const) {
+        const pages = captionPages(n, mode);
+        expect(pageWords(pages)).toEqual(wordsOf(n));
+        for (const p of pages) {
+          const words = p.tokens.map((t) => t.text.trim());
+          // punctuation only ends a page, except where a one-word sentence is joined to its neighbour
+          // (the first word of a page, or the word before a trailing one-word sentence)
+          words.forEach((w, i) => {
+            if (i === words.length - 1 || i === 0 || i === words.length - 2) return;
+            expect(PUNCT.test(w), `${mode}: ${words.join(" ")}`).toBe(false);
+          });
+          expect(p.tokens.length, `${mode}: ${words.join(" ")}`).toBeGreaterThanOrEqual(2);
+        }
+      }
+  });
+
+  it("shorts pages stay 2 to 3 words for runs longer than 3 (no 1-word tail)", () => {
+    const run = [seg("l", 0, "one two three four five six seven".split(" "), 120)];
+    const sizes = captionPages(run, "shorts").map((p) => p.tokens.length);
+    expect(sizes.reduce((a, b) => a + b, 0)).toBe(7);
+    for (const n of sizes) {
+      expect(n).toBeGreaterThanOrEqual(2);
+      expect(n).toBeLessThanOrEqual(3);
+    }
+  });
+});
+
