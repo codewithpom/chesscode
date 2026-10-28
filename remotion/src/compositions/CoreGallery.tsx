@@ -5,6 +5,7 @@ import { z } from "zod";
 import fixture from "../../../spec/fixtures/cc-2026-0001-en/video_spec.json";
 import { Board } from "../board/Board";
 import { VideoSpec } from "../spec/schema";
+import { msToFrame } from "../spec/time";
 import { fontFor } from "../theme/fonts";
 import { shortsLayout } from "../theme/layout";
 import { tokens } from "../theme/tokens";
@@ -31,7 +32,7 @@ export const calculateGalleryMetadata: CalculateMetadataFunction<GalleryProps> =
 
 const FPS = 30;
 const base = VideoSpec.parse(fixture);
-const msF = (ms: number): number => Math.round((ms * FPS) / 1000);
+const msF = (ms: number): number => msToFrame(ms, FPS);
 
 // Opera game after 21.Bxb5+ has landed: last-move tint, check on e8, and two demo arrows.
 const PLY21 = base.plies.find((p) => p.ply === 21)!;
