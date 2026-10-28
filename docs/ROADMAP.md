@@ -49,7 +49,7 @@ Done and merged: `ws/m1-risk`, `ws/m2-pipeline`, `ws/remotion-core`, `ws/mascot-
 | `.worktrees/m4-mascot` / `ws/m4-mascot` | `docs/superpowers/plans/2026-10-28-m4-mascot-rig.md` | Claude `remotion-builder` (Sonnet) | `design-critic` + Codex read-only or fresh Claude; owner reel approval |
 | `.worktrees/m5-templates` / `ws/m5-templates` | `docs/superpowers/plans/2026-10-28-m5-templates.md` | Claude `remotion-builder` (Sonnet) | `design-critic`; Gate B: agy + fresh Claude; owner approval |
 
-Oct 28: repo secrets set with `gh secret set` (`YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET`, `YOUTUBE_REFRESH_TOKEN`, `ELEVENLABS_API_KEY`). **Missing: `ANTHROPIC_API_KEY`** (owner adds it; needed by the script stage at Batch 0). Day-1 upload confirmed Scheduled in Studio by the owner.
+Oct 28: repo secrets set with `gh secret set` (`YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET`, `YOUTUBE_REFRESH_TOKEN`, `ELEVENLABS_API_KEY`). **No `ANTHROPIC_API_KEY`** (owner, Oct 28: none available; make as many videos as possible by the deadline). Scripts are written offline by agents (Claude subagents, Codex, agy) through the request/answer loop in `docs/offline-llm.md`, and final scripts are committed to `content/scripts/` and replayed on Actions. Script writing is now limited by agent usage, so the floor tier is scripted first. Day-1 upload confirmed Scheduled in Studio by the owner.
 
 ## If the schedule slips (spec section 13)
 
