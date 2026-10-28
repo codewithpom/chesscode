@@ -1,7 +1,8 @@
 script: claude-sonnet-5-5
 checks: claude-haiku-5-5
+# Owner picked at the M3 voice checkpoint (Oct 28, 2026): ElevenLabs Multilingual v2 premade voices.
 tts:
-  provider: kokoro
+  provider: elevenlabs
   voice:
-    en: af_heart
-    hi: hf_alpha
+    en: JBFqnCBsd6RMkjVDRZzb  # George
+    hi: EXAVITQu4vr4xnSDxMaL  # Sarah
