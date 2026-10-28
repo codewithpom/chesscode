@@ -13,7 +13,7 @@ from chesscode.stages import script
 ROOT = Path(__file__).resolve().parents[2]
 START = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 AFTER = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1"
-GOOD = " ".join(["Knight f3 attacks the e5 pawn"] * 10)  # 60 words
+GOOD = " ".join(["Pawn to e4 claims the centre"] * 10)  # 60 words
 
 
 def setup_run(tmp_path, monkeypatch, language="en", bank=True):
