@@ -24,9 +24,9 @@
   "pose": "side_eye"
  },
  {
-  "type": "time_scramble",
-  "ply": 70,
-  "intensity": 1,
-  "pose": "sweating"
+  "type": "resign",
+  "ply": 74,
+  "intensity": 2,
+  "pose": "bow"
  }
 ]

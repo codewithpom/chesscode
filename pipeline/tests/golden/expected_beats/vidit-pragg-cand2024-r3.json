@@ -18,16 +18,16 @@
   "pose": "thinking"
  },
  {
-  "type": "blunder",
-  "ply": 39,
-  "intensity": 3,
-  "pose": "faint"
+  "type": "mistake",
+  "ply": 38,
+  "intensity": 1,
+  "pose": "side_eye"
  },
  {
   "type": "blunder",
   "ply": 69,
-  "intensity": 3,
-  "pose": "shocked"
+  "intensity": 1,
+  "pose": "facepalm"
  },
  {
   "type": "resign",

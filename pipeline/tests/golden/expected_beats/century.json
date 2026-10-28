@@ -8,13 +8,13 @@
  {
   "type": "blunder",
   "ply": 21,
-  "intensity": 3,
-  "pose": "faint"
+  "intensity": 1,
+  "pose": "facepalm"
  },
  {
   "type": "blunder",
   "ply": 35,
-  "intensity": 3,
+  "intensity": 1,
   "pose": "shocked"
  },
  {

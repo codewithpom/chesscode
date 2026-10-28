@@ -14,20 +14,14 @@
  {
   "type": "blunder",
   "ply": 22,
-  "intensity": 3,
-  "pose": "faint"
+  "intensity": 1,
+  "pose": "facepalm"
  },
  {
-  "type": "mistake",
-  "ply": 32,
+  "type": "blunder",
+  "ply": 35,
   "intensity": 1,
-  "pose": "side_eye"
- },
- {
-  "type": "brilliant",
-  "ply": 37,
-  "intensity": 1,
-  "pose": "slow_clap"
+  "pose": "shocked"
  },
  {
   "type": "checkmate",

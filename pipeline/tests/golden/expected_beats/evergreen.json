@@ -6,22 +6,22 @@
   "pose": "thinking"
  },
  {
-  "type": "blunder",
+  "type": "mistake",
   "ply": 22,
-  "intensity": 3,
-  "pose": "faint"
+  "intensity": 1,
+  "pose": "side_eye"
  },
  {
-  "type": "missed_win",
-  "ply": 33,
+  "type": "blunder",
+  "ply": 30,
   "intensity": 1,
-  "pose": "screaming"
+  "pose": "facepalm"
  },
  {
-  "type": "brilliant",
-  "ply": 41,
-  "intensity": 1,
-  "pose": "slow_clap"
+  "type": "blunder",
+  "ply": 38,
+  "intensity": 2,
+  "pose": "shocked"
  },
  {
   "type": "checkmate",

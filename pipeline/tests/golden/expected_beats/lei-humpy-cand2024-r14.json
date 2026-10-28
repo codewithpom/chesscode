@@ -42,9 +42,9 @@
   "pose": "jealous"
  },
  {
-  "type": "promotion",
-  "ply": 122,
-  "intensity": 1,
-  "pose": "party"
+  "type": "resign",
+  "ply": 124,
+  "intensity": 2,
+  "pose": "bow"
  }
 ]

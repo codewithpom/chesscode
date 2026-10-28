@@ -28,7 +28,6 @@ def run_golden(name: str, tmp_path: Path) -> list[dict]:
     return out["beats"] if isinstance(out, dict) else out
 
 
-@pytest.mark.xfail(strict=False, reason="awaiting main-session re-review")  # blunder intensity ladder and final-beat rule changed results
 @pytest.mark.skipif(not FILES, reason="golden expected beats are supplied after review")
 @pytest.mark.parametrize("path", FILES, ids=lambda p: p.stem)
 def test_golden_beats(path, tmp_path):
