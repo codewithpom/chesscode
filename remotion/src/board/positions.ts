@@ -1,4 +1,4 @@
-import { Chess } from "chess.js";
+import { Chess, type Move } from "chess.js";
 
 export type PieceType = "p" | "n" | "b" | "r" | "q" | "k";
 /** Stable per physical piece for the whole game, e.g. "wN-g1" (color, start type, start square). */
@@ -39,16 +39,9 @@ const startPieces = (fen: string): PlacedPiece[] => {
 const byId = (a: PlacedPiece, b: PlacedPiece): number => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
 const cache = new Map<string, PlyState[]>();
 
-/** Replays the PGN once with chess.js; memoized by PGN string. */
-export const buildPositions = (pgn: string): PlyState[] => {
-  const hit = cache.get(pgn);
-  if (hit) return hit;
 
-  const parsed = new Chess();
-  parsed.loadPgn(pgn);
-  const startFen = new Chess(parsed.getHeaders().FEN ?? undefined).fen();
-  const history = parsed.history({ verbose: true });
-
+/** Piece-tracking replay of verbose chess.js moves from `startFen`. */
+const track = (startFen: string, history: Move[]): PlyState[] => {
   const board = new Map<string, PlacedPiece>(startPieces(startFen).map((p) => [p.square, p]));
   const snapshot = (): PlacedPiece[] => Array.from(board.values()).map((p) => ({ ...p })).sort(byId);
   const states: PlyState[] = [{ fen: startFen, pieces: snapshot(), move: null }];
@@ -91,6 +84,31 @@ export const buildPositions = (pgn: string): PlyState[] => {
     });
   }
 
+  return states;
+};
+
+/** Replays the PGN once with chess.js; memoized by PGN string. */
+export const buildPositions = (pgn: string): PlyState[] => {
+  const hit = cache.get(pgn);
+  if (hit) return hit;
+
+  const parsed = new Chess();
+  parsed.loadPgn(pgn);
+  const startFen = new Chess(parsed.getHeaders().FEN ?? undefined).fen();
+  const states = track(startFen, parsed.history({ verbose: true }));
   cache.set(pgn, states);
   return states;
+};
+
+/** Piece-tracking states for a UCI line played from `fenBefore`; index 0 is the start. Throws naming an illegal move. */
+export const lineStates = (fenBefore: string, uci: string[]): PlyState[] => {
+  const game = new Chess(fenBefore);
+  const history = uci.map((u, i) => {
+    try {
+      return game.move({ from: u.slice(0, 2), to: u.slice(2, 4), promotion: u[4] });
+    } catch {
+      throw new Error(`illegal move ${u} (index ${i}) in line from ${fenBefore}`);
+    }
+  });
+  return track(new Chess(fenBefore).fen(), history);
 };
