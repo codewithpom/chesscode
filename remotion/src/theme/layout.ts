@@ -31,3 +31,39 @@ export const youtubeShortsUi = {
   rightZoneX: shortsLayout.width - 120,
   bottomZoneY: shortsLayout.height - 340,
 } as const;
+
+// Studio (1920 x 1080) layout, docs/SPEC.md section 6: 8 px grid, 96 px outer margins, board 800 x 800
+// vertically centred, eval bar 24 px wide 16 px left of it. Right column from x = 1000 to 1824.
+// Vertical stack of the column: label slot, player cards, move list (9 rows of 40), then the mascot
+// (right, beside the move list's lower rows) and captions (bottom, full width) which never meet.
+const SB = 800;
+const SB_X = 136;
+const SB_Y = 140;
+const SQ = SB / 8;
+const COL_X = 1000;
+const COL_W = 824;
+const ROW = 40;
+export const studioLayout = {
+  width: 1920,
+  height: 1080,
+  moveRowHeight: ROW,
+  moveRows: 9,
+  boxes: {
+    evalBar: { x: 96, y: SB_Y, w: 24, h: SB },
+    /** Label sits above the bar (EvalBar draws it 8 px above, 40 px tall). */
+    evalLabel: { x: 96, y: SB_Y - 48, w: 120, h: 40 },
+    board: { x: SB_X, y: SB_Y, w: SB, h: SB },
+    rankLabels: { x: SB_X + SB, y: SB_Y, w: Math.ceil(SQ * (COORD_GAP + COORD_SIZE)) + 4, h: SB },
+    fileLabels: { x: SB_X, y: SB_Y + SB, w: SB, h: Math.ceil(SQ * (COORD_GAP + COORD_SIZE)) + 4 },
+    /** Chapter cards and key-moment labels: top-left of the right column, two lines at most. */
+    label: { x: COL_X, y: 96, w: COL_W, h: 88 },
+    /** Two stacked rows of 56 px; the player at the top of the board is the top row. */
+    cards: { x: COL_X, y: 200, w: COL_W, h: 120 },
+    moveList: { x: COL_X, y: 336, w: 440, h: ROW * 9 },
+    /** Mascot speech bubble zone, right of the move list and above the mascot. */
+    bubble: { x: 1464, y: 336, w: 360, h: 264 },
+    mascot: { x: 1624, y: 616, w: 200, h: 200 },
+    /** Bottom aligned at the 96 px margin; two lines of 56 px captions fit. */
+    captions: { x: COL_X, y: 822, w: COL_W, h: 162 },
+  },
+} as const satisfies { width: number; height: number; moveRowHeight: number; moveRows: number; boxes: Record<string, Box> };
