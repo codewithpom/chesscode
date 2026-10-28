@@ -11,6 +11,7 @@ on:
 
 jobs:
   render-timing:
+    timeout-minutes: 60
     runs-on: ubuntu-24.04
     permissions:
       contents: read
