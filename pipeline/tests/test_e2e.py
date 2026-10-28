@@ -61,6 +61,8 @@ def test_e2e_golden_specs_validate(tmp_path, monkeypatch):
         n_plies = len(request["facts"]["classified.json"])
         short = "Target a total of" in user
         words = (84 if request["language"] == "hi" else 90) if short or "5000" in current_video[0] else 1200
+        km_beats = [] if short or "5000" in current_video[0] else sorted((b for b in beats if b["intensity"] >= 2), key=lambda b: b["ply"])
+        words -= 60 * len(km_beats)  # each key moment speaks 60 words (24 s with the fake voice)
         # sparse ply segments: plies before the first one, and gaps between them, must still be timed
         wanted = 4 if short else 12
         marks = sorted({1 + (n_plies - 1) * i // wanted for i in range(wanted)} | {max(1, n_plies // 3)})
@@ -68,6 +70,9 @@ def test_e2e_golden_specs_validate(tmp_path, monkeypatch):
         texts = [per] * len(marks) + [words - per * len(marks)]
         segments = [{"kind": "cold_open", "ply": None, "text": " ".join(["develops"] * texts[-1])}]
         segments += [{"kind": "ply", "ply": ply, "text": " ".join(["develops"] * count)} for ply, count in zip(marks, texts)]
+        for beat in reversed(km_beats):  # right after the ply segment that reaches the beat's move
+            at = max(i for i, seg in enumerate(segments) if seg["kind"] == "ply" and seg["ply"] <= beat["ply"]) if any(seg["kind"] == "ply" and seg["ply"] <= beat["ply"] for seg in segments) else 1
+            segments.insert(at + 1, {"kind": "key_moment", "ply": beat["ply"], "text": " ".join(["develops"] * 60)})
         return {
             "segments": segments,
             "mascot_lines": {beat["beat_id"]: f"{current_video[0]} {beat['beat_id']} changes everything." for beat in beats},

@@ -99,17 +99,18 @@ def verdict(rows: list[dict], result: str) -> dict:
     return {"turning_point_ply":max(swing,key=swing.get),"accuracy":{side:round(sum(v)/len(v),2) for side,v in accuracy.items()}}
 
 def key_moments(rows: list[dict], beats: list[dict], narration: list[dict], labels: dict) -> list[dict]:
-    """One per beat of intensity >= 2, timed by its key_moment narration segment, else by the ply segment covering it."""
+    """One per beat of intensity >= 2, timed by its key_moment narration segment (carrying the beat's ply); ordered by start."""
     by_ply={r["ply"]:r for r in rows}; moments=[]
     for beat in beats:
         if beat["intensity"]<2: continue
         ply=beat["ply"]
-        seg=next((n for n in narration if n["kind"]=="key_moment" and n.get("ply")==ply),None) or max((n for n in narration if n["kind"]=="ply" and n["ply"]<=ply),key=lambda n:n["ply"],default=None)
-        if seg is None: raise ValueError(f"no narration segment for beat {beat['beat_id']}")
+        segs=[n for n in narration if n["kind"]=="key_moment" and n.get("ply")==ply]
+        if len(segs)!=1: raise ValueError(f"beat {beat['beat_id']} needs exactly one key_moment narration segment at ply {ply}, found {len(segs)}")
+        seg=segs[0]
         line=by_ply[ply]["before"][0].get("pv",[])[:8]
         if not line: raise ValueError(f"engine has no line before ply {ply}")
         moments.append({"beat_id":beat["beat_id"],"ply":ply,"start_ms":seg["start_ms"],"duration_ms":seg["duration_ms"],"label":_need(labels,beat["beat_id"],"script key_moment_labels"),"line":line})
-    return moments
+    return sorted(moments,key=lambda k:k["start_ms"])
 
 def assemble(ctx) -> dict:
     game=_read(ctx,"game.json"); rows=_read(ctx,"classified.json"); script=_read(ctx,"script.json"); timeline=_read(ctx,"timeline.json"); metadata=_read(ctx,"metadata.json")
@@ -173,6 +174,10 @@ def validate(spec: dict) -> None:
     cold=spec.get("cold_open") or {}
     if not (ok(cold.get("ply_from")) and ok(cold.get("ply_to")) and cold["ply_from"]<=cold["ply_to"]): errors.append("cold_open: ply_from..ply_to must be a forward range of existing plies")
     for i,k in enumerate(spec.get("key_moments",[])):
+        # spec section 5: KeyMoment scenes run 15 to 40 s and never overlap each other (same rule as the Zod superRefine)
+        if not 15000<=k.get("duration_ms",0)<=40000: errors.append(f"key_moments.{i}.duration_ms: must be 15000-40000 ms")
+        prev=spec["key_moments"][i-1] if i else None
+        if prev and k.get("start_ms",0)<prev.get("start_ms",0)+prev.get("duration_ms",0): errors.append(f"key_moments.{i}.start_ms: overlaps previous key moment")
         if not ok(k.get("ply")): errors.append(f"key_moments.{i}.ply: no such ply")
         if not any(b.get("beat_id")==k.get("beat_id") for b in spec.get("beats",[])): errors.append(f"key_moments.{i}.beat_id: must reference a beat")
     if not ok((spec.get("verdict") or {}).get("turning_point_ply")): errors.append("verdict.turning_point_ply: no such ply")

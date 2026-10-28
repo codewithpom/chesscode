@@ -26,6 +26,15 @@ def with_before(rows):
     return out
 
 
+def with_key_moment_segments(narration, beats):
+    """Fixture narration plus one 20 s key_moment segment per intensity >= 2 beat, 1 s apart after the last segment."""
+    out = copy.deepcopy(narration)
+    start = out[-1]["start_ms"] + out[-1]["duration_ms"] + 1000
+    for i, beat in enumerate(sorted((b for b in beats if b["intensity"] >= 2), key=lambda b: b["ply"])):
+        out.append({**copy.deepcopy(narration[-1]), "segment_id": f"seg-km{i}", "kind": "key_moment", "ply": beat["ply"], "start_ms": start + i * 21000, "duration_ms": 20000})
+    return out
+
+
 def make_dir(tmp_path, pgn=None, beats=None, game_extra=None, plies=None, script_extra=None, template="studio"):
     spec = tmp_path / "spec"
     spec.mkdir()
@@ -38,7 +47,7 @@ def make_dir(tmp_path, pgn=None, beats=None, game_extra=None, plies=None, script
         "script.json": {"mascot_lines": {b["beat_id"]: b["mascot"]["line"] for b in FIXTURE["beats"]},
                         "player_facts": {"white": "White fact.", "black": "Black fact."}, "cold_open_hook": "Mate in a flash",
                         "thumbnail_text": "Queen sac mate", "key_moment_labels": {"b-01": "Early exit", "b-02": "The mating net"}, **(script_extra or {})},
-        "timeline.json": {"narration": FIXTURE["narration"], "beats": timeline_beats, "chapters": FIXTURE["chapters"], "duration_ms": 60000, "plies_show_at": {str(p["ply"]): p["show_at_ms"] for p in FIXTURE["plies"]}},
+        "timeline.json": {"narration": with_key_moment_segments(FIXTURE["narration"], timeline_beats), "beats": timeline_beats, "chapters": FIXTURE["chapters"], "duration_ms": 60000, "plies_show_at": {str(p["ply"]): p["show_at_ms"] for p in FIXTURE["plies"]}},
         "metadata.json": FIXTURE["youtube"],
     }
     for name, value in files.items():
@@ -180,21 +189,32 @@ def test_cold_open_starts_at_ply_one_for_an_early_beat(tmp_path):
 def test_key_moments_one_per_intensity_2_plus_beat_with_timeline_timing(tmp_path):
     ctx = make_dir(tmp_path)
     spec = emit.assemble(ctx)
-    narration = {n["segment_id"]: n for n in FIXTURE["narration"]}
-    # b-01 is intensity 1 (no key moment); b-02's ply segment seg-007 covers ply 33
+    # b-01 is intensity 1 (no key moment); b-02 has the key_moment segment seg-km0 at ply 33
     assert [k["beat_id"] for k in spec["key_moments"]] == ["b-02"]
     k = spec["key_moments"][0]
-    assert (k["ply"], k["start_ms"], k["duration_ms"], k["label"]) == (33, narration["seg-007"]["start_ms"], narration["seg-007"]["duration_ms"], "The mating net")
+    assert (k["ply"], k["start_ms"], k["duration_ms"], k["label"]) == (33, 41000, 20000, "The mating net")
     assert k["line"] == ["d1d8", "d1d8"] and len(k["line"]) <= 8
+    emit.validate(spec)
 
 
-def test_key_moment_narration_segment_wins_over_the_ply_segment(tmp_path):
+def test_beat_without_a_key_moment_segment_stops(tmp_path):
     ctx = make_dir(tmp_path)
     data = json.loads((ctx.spec_dir / "timeline.json").read_text())
-    data["narration"][0].update(kind="key_moment", ply=33)  # seg-000, 0..5000
+    data["narration"] = [n for n in data["narration"] if n["kind"] != "key_moment"]  # the ply segment seg-007 still covers ply 33
     (ctx.spec_dir / "timeline.json").write_text(json.dumps(data))
-    k = emit.assemble(ctx)["key_moments"][0]
-    assert (k["start_ms"], k["duration_ms"]) == (0, 5000)
+    with pytest.raises(StageError, match="b-02.*exactly one key_moment"):
+        emit.run(ctx)
+
+
+def test_key_moments_are_ordered_by_start(tmp_path):
+    beats = [{"beat_id": "b-01", "type": "blunder", "ply": 7, "at_ms": 11300, "intensity": 3, "pose": "faint"},
+             {"beat_id": "b-02", "type": "checkmate", "ply": 33, "at_ms": 35000, "intensity": 3, "pose": "mic_drop"}]
+    ctx = make_dir(tmp_path, beats=beats)
+    data = json.loads((ctx.spec_dir / "timeline.json").read_text())
+    km = [n for n in data["narration"] if n["kind"] == "key_moment"]
+    km[0]["ply"], km[1]["ply"] = km[1]["ply"], km[0]["ply"]  # the ply-33 narration now comes first
+    (ctx.spec_dir / "timeline.json").write_text(json.dumps(data))
+    assert [k["beat_id"] for k in emit.assemble(ctx)["key_moments"]] == ["b-02", "b-01"]
 
 
 def test_shorts_have_no_key_moments(tmp_path):
@@ -265,6 +285,21 @@ def test_verdict_accuracy_is_the_lichess_formula_per_side():
     out = emit.verdict(rows, "1-0")["accuracy"]
     assert out["white"] == pytest.approx((acc(loss) + acc(-loss)) / 2, abs=0.01)
     assert out["black"] == pytest.approx(100.0, abs=0.01)
+
+
+@pytest.mark.parametrize("edit,match", [
+    (lambda k: k[0].update(duration_ms=14999), r"key_moments\.0\.duration_ms"),
+    (lambda k: k[0].update(duration_ms=40001), r"key_moments\.0\.duration_ms"),
+    (lambda k: k[1].update(start_ms=k[0]["start_ms"] + 19999), "overlaps previous key moment"),
+])
+def test_validate_key_moment_length_and_overlap(edit, match):
+    spec = copy.deepcopy(FIXTURE)
+    spec["key_moments"] = [{"beat_id": "b-01", "ply": 7, "start_ms": 5000, "duration_ms": 20000, "label": "x", "line": ["e2e4"]},
+                           {"beat_id": "b-02", "ply": 33, "start_ms": 26000, "duration_ms": 20000, "label": "y", "line": ["e2e4"]}]
+    emit.validate(spec)
+    edit(spec["key_moments"])
+    with pytest.raises(StageError, match=match):
+        emit.validate(spec)
 
 
 @pytest.mark.parametrize("edit,match", [

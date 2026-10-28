@@ -95,6 +95,14 @@ def guard_san(output: dict, game_sans: set[str], get_engine_sans, regenerate) ->
             if attempt==3: raise ValueError(f"unknown SAN after regeneration in {'.'.join(map(str,path))}: {', '.join(bad)}")
             _at(output,path[:-1])[path[-1]]=_revised_text(regenerate(path,bad),output,path)  # segment kind and ply stay: they drive timing
 
+def key_moment_problems(segments: list[dict], beats: list[dict], lo: int, hi: int) -> list[str]:
+    """Exactly one key_moment segment per intensity >= 2 beat (carrying its ply), each speaking about 15-40 s (lo..hi words)."""
+    kms=[s for s in segments if s["kind"]=="key_moment"]; need={b["ply"] for b in beats if b["intensity"]>=2}
+    problems=[f"beat {b['beat_id']} (ply {b['ply']}) needs exactly one key_moment segment with ply {b['ply']}, found {sum(s['ply']==b['ply'] for s in kms)}" for b in beats if b["intensity"]>=2 and sum(s["ply"]==b["ply"] for s in kms)!=1]
+    problems+=[f"key_moment segment with ply {s['ply']} matches no beat of intensity 2 or 3" for s in kms if s["ply"] not in need]
+    problems+=[f"key_moment segment for ply {s['ply']} has {len(s['text'].split())} words, outside {lo}..{hi}" for s in kms if not lo<=len(s["text"].split())<=hi]
+    return problems
+
 def _bank_line(ctx, beat_type: str, bank_path: Path, used: set[str]) -> str:
     if not bank_path.is_file(): raise StageError(ctx.video_id,"script",f"line bank missing: {bank_path}")
     try: return select_bank_line(beat_type,yaml.safe_load(bank_path.read_text(encoding="utf-8")) or {},used,ctx.language)
@@ -113,21 +121,29 @@ def run(ctx):
             san=next(r["san"] for r in facts["classified.json"] if r["ply"]==beat["ply"])
             request["short_beat"]={"beat_id":beat["beat_id"],"type":beat["type"],"ply":beat["ply"],"san":san,"pose":beat["pose"]}
             system += SHORTS_ADDENDUM
+        long_form=ctx.template!="shorts"
+        wpm=140 if ctx.language=="hi" else 150
+        min_words,max_words=(int(wpm*8),int(wpm*12)) if long_form else (int(wpm*35/60),int(wpm*59/60))
+        km_lo,km_hi=int(wpm*18/60),int(wpm*36/60)  # inside 15-40 s with margin for voice pace
+        if long_form: request["key_moment_words"]={"min":km_lo,"max":km_hi}
         user = json.dumps(request, ensure_ascii=False)
         output = llm.complete_json("script", system, user, SCHEMA)
         rows=facts["classified.json"]
         game_sans={r.get("san","") for r in rows}
-        wpm=140 if ctx.language=="hi" else 150
         qa=load("qa",root=ctx.repo_root)
         try:
             output=ensure_specific(output,lambda:llm.complete_json("script",system,user+"\nMake the game-specific plans, squares, and moves explicit.",SCHEMA),qa.get("min_specific_tokens_per_min",6),wpm)
         except ValueError as exc: raise StageError(ctx.video_id,"script",str(exc)) from exc
-        word_count=sum(len(s["text"].split()) for s in output["segments"])
-        min_words,max_words=(int(wpm*35/60),int(wpm*59/60)) if ctx.template=="shorts" else (int(wpm*8),int(wpm*12))
-        if not min_words<=word_count<=max_words:
-            output=llm.complete_json("script",system,user+f"\nTarget a total of {min_words} to {max_words} spoken words.",SCHEMA)
-            word_count=sum(len(s["text"].split()) for s in output["segments"])
-            if not min_words<=word_count<=max_words: raise StageError(ctx.video_id,"script",f"script length {word_count} words is outside {min_words}..{max_words} after regeneration")
+        def problems(value):
+            count=sum(len(s["text"].split()) for s in value["segments"])
+            found=[(f"Target a total of {min_words} to {max_words} spoken words.",f"script length {count} words is outside {min_words}..{max_words}")] if not min_words<=count<=max_words else []
+            if long_form: found+=[(f"Fix: {p}.",p) for p in key_moment_problems(value["segments"],facts["beats.json"],km_lo,km_hi)]
+            return found
+        found=problems(output)
+        if found:
+            output=llm.complete_json("script",system,user+"\n"+" ".join(f[0] for f in found),SCHEMA)
+            found=problems(output)
+            if found: raise StageError(ctx.video_id,"script","; ".join(f[1] for f in found)+" after regeneration")
         if ctx.template=="shorts" and output["segments"]:
             output["segments"][0].update(kind="cold_open",ply=None)
         # the SAN guard runs last: the regenerations above replace the whole output

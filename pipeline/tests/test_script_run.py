@@ -53,6 +53,15 @@ def out(text=GOOD, titles=("A quiet move", "Another title", "Third title"), hook
             "key_moment_labels": {"b-01": "The slip"}, **extra}
 
 
+def long_out(km=GOOD, **extra):
+    """A long-form script: 1400 words of play-by-play plus the key_moment segment for beat b-01 (ply 1)."""
+    text = " ".join([GOOD] * 11)  # 660 words
+    segments = [{"kind": "cold_open", "ply": None, "text": text}, {"kind": "ply", "ply": 1, "text": text}]
+    if km is not None:
+        segments.append({"kind": "key_moment", "ply": 1, "text": km})
+    return out(segments=segments, **extra)
+
+
 def test_unknown_san_in_titles_and_hook_is_caught(tmp_path, monkeypatch):
     ctx = setup_run(tmp_path, monkeypatch)
     bad = out(titles=("Qh5 changes everything", "Another title", "Third title"), hook="Then Bxd5 happens.")
@@ -198,12 +207,11 @@ def test_thumbnail_text_repeating_a_title_stops(tmp_path, monkeypatch):
 def test_long_form_needs_a_label_for_every_intensity_2_plus_beat(tmp_path, monkeypatch):
     ctx = setup_run(tmp_path, monkeypatch)
     ctx.template = "studio"
-    long_text = " ".join([GOOD] * 12)  # 720 words per segment, 1440 total
-    fake, _ = model([out(text=long_text, key_moment_labels={"b-02": "Not the right beat"})])
+    fake, _ = model([long_out(key_moment_labels={"b-02": "Not the right beat"})])
     monkeypatch.setattr(script.llm, "complete_json", fake)
     with pytest.raises(StageError, match="key_moment_labels.*b-01"):
         script.run(ctx)
-    fake, _ = model([out(text=long_text)])
+    fake, _ = model([long_out()])
     monkeypatch.setattr(script.llm, "complete_json", fake)
     script.run(ctx)  # b-02 has intensity 1: no label needed
 
@@ -223,7 +231,53 @@ def test_shorts_prompt_names_the_single_beat_it_is_about(tmp_path, monkeypatch):
 def test_long_form_prompt_has_no_short_beat(tmp_path, monkeypatch):
     ctx = setup_run(tmp_path, monkeypatch)
     ctx.template = "studio"
-    fake, calls = model([out(text=" ".join([GOOD] * 12), key_moment_labels={"b-01": "The slip"})])
+    fake, calls = model([long_out()])
     monkeypatch.setattr(script.llm, "complete_json", fake)
     script.run(ctx)
     assert "short_beat" not in calls[0] and len(json.loads(calls[0])["facts"]["beats.json"]) == 2
+
+
+def run_long(tmp_path, monkeypatch, outputs):
+    ctx = setup_run(tmp_path, monkeypatch)
+    ctx.template = "studio"
+    fake, calls = model(outputs)
+    monkeypatch.setattr(script.llm, "complete_json", fake)
+    return ctx, calls
+
+
+def test_long_form_request_gives_the_key_moment_word_range(tmp_path, monkeypatch):
+    ctx, calls = run_long(tmp_path, monkeypatch, [long_out()])
+    script.run(ctx)
+    assert json.loads(calls[0])["key_moment_words"] == {"min": 45, "max": 90}
+
+
+def test_missing_key_moment_segment_is_regenerated_once(tmp_path, monkeypatch):
+    ctx, calls = run_long(tmp_path, monkeypatch, [long_out(km=None), long_out()])
+    script.run(ctx)
+    assert len(calls) == 2 and "key_moment segment" in calls[1]
+    assert [s["kind"] for s in json.loads((ctx.spec_dir / "script.json").read_text())["segments"]].count("key_moment") == 1
+
+
+@pytest.mark.parametrize("km,match", [
+    (None, r"beat b-01 \(ply 1\) needs exactly one key_moment segment.*found 0"),
+    ("short " * 10, "has 10 words, outside 45..90"),
+    ("long " * 91, "has 91 words, outside 45..90"),
+])
+def test_long_form_without_a_valid_key_moment_stops(tmp_path, monkeypatch, km, match):
+    ctx, _ = run_long(tmp_path, monkeypatch, [long_out(km=km)])
+    with pytest.raises(StageError, match=match):
+        script.run(ctx)
+
+
+def test_duplicate_or_stray_key_moment_segments_are_rejected():
+    beats = [{"beat_id": "b-01", "ply": 1, "intensity": 2}, {"beat_id": "b-02", "ply": 9, "intensity": 1}]
+    seg = lambda ply: {"kind": "key_moment", "ply": ply, "text": GOOD}
+    assert script.key_moment_problems([seg(1)], beats, 45, 90) == []
+    assert "found 2" in script.key_moment_problems([seg(1), seg(1)], beats, 45, 90)[0]
+    assert "matches no beat" in script.key_moment_problems([seg(1), seg(9)], beats, 45, 90)[0]
+
+
+def test_prompt_no_longer_contradicts_itself_on_key_moment_ply():
+    text = (ROOT / "pipeline/chesscode/prompts/script_system.md").read_text(encoding="utf-8")
+    assert '"key_moment", "verdict" and "outro" (ply null)' not in text
+    assert 'exactly one segment of kind "key_moment"' in text
