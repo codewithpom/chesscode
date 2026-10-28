@@ -133,3 +133,35 @@ def test_intensity3_blunder_faints():
            "pose_by_intensity": {"blunder": {3: "faint"}}}
     kept = pace([{"type": "blunder", "ply": 1, "intensity": 3}, {"type": "blunder", "ply": 9, "intensity": 2}], {1: 0, 9: 90000}, cfg)
     assert [b["pose"] for b in kept] == ["faint", "facepalm"]
+
+
+def _blunder_intensity(before, after):
+    found = detect([row(1, before, after, **{"class": "blunder"})], load("beats"))
+    return [b["intensity"] for b in found if b["type"] == "blunder"]
+
+
+def test_blunder_intensity_follows_pawn_drop_ladder():
+    assert _blunder_intensity(100, -100) == [1]    # drop 2.0
+    assert _blunder_intensity(100, -250) == [2]    # drop 3.5
+    assert _blunder_intensity(100, -350) == [3]    # drop 4.5
+    assert _blunder_intensity(300, -250) == [3]    # winning to losing
+
+
+def test_class_blunder_under_blunder_drop_is_a_mistake():
+    found = detect([row(1, 100, -20, **{"class": "blunder"})], load("beats"))
+    assert {b["type"] for b in found} == {"mistake", "opening_exit"}
+
+
+def test_final_resign_beat_is_never_dropped_by_pacing():
+    cfg = load("beats")
+    cands = [{"type": "time_scramble", "ply": 9, "intensity": 1}, {"type": "resign", "ply": 10, "intensity": 2}]
+    kept = pace(cands, {9: 100000, 10: 104500}, cfg)
+    assert [b["type"] for b in kept] == ["resign"]
+
+
+def test_final_beat_wins_pose_conflict_over_previous_beat():
+    cfg = load("beats")
+    cfg = {**cfg, "poses": {**cfg["poses"], "checkmate": "slow_clap"}, "alt_poses": {}}
+    cands = [{"type": "brilliant", "ply": 1, "intensity": 1}, {"type": "checkmate", "ply": 9, "intensity": 3}]
+    kept = pace(cands, {1: 0, 9: 90000}, cfg)
+    assert [b["type"] for b in kept] == ["checkmate"]

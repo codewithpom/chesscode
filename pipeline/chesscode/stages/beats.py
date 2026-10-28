@@ -8,6 +8,7 @@ from ..context import StageError
 
 INPUTS = ["classified.json", "game.pgn", "config/beats.yaml"]
 OUTPUTS = ["beats.json"]
+FINAL = ("checkmate", "resign")
 _FX = {"blunder": ["board_shake", "red_flash", "replay_move"], "mistake": ["move_underline"], "brilliant": ["gold_glint", "stamp_brilliant"], "missed_win": ["ghost_arrow"], "comeback": ["eval_whip"], "long_think": ["clock_pulse"], "time_scramble": ["clock_red"], "king_walk": ["king_trail"], "promotion": ["crown_sparkle"], "checkmate": ["freeze_frame"], "resign": ["freeze_frame"], "opening_exit": ["out_of_theory_label"]}
 
 def _mover_score(row, key, clamp=10):
@@ -37,9 +38,10 @@ def detect(rows: list[dict], cfg: dict) -> list[dict]:
         cls = row.get("class")
         if cls == "book":
             continue
-        if cls == "blunder" or (before >= trig.get("winning_eval", 2) and after <= 0):
-            intensity = 3 if drop >= 4 or (before >= 2 and after <= trig.get("losing_eval", -2)) else 2 if drop >= 3 else 1
-            add("blunder", row, 3 if cls == "blunder" else intensity)
+        winning_to_zero = before >= trig.get("winning_eval", 2) and after <= 0
+        if (cls == "blunder" and drop >= trig.get("blunder_drop", 2)) or winning_to_zero:
+            # spec section 8 ladder: 3 for drop >= 4 or winning-to-losing, 2 for drop >= 3, else 1
+            add("blunder", row, 3 if drop >= 4 or (before >= trig.get("winning_eval", 2) and after <= trig.get("losing_eval", -2)) else 2 if drop >= 3 else 1)
         elif cls in ("mistake", "blunder") and trig.get("mistake_drop", 1) <= drop < trig.get("mistake_max_drop", 2): add("mistake", row)
         if cls in ("brilliant", "missed_win"): add(cls, row)
         if not opening_done and cls != "book": add("opening_exit", row); opening_done = True
@@ -69,22 +71,24 @@ def pace(cands: list[dict], ply_times_ms: dict[int,int] | None, cfg: dict) -> li
     priority = cfg.get("priority", [])
     for beat in cands:
         beat.setdefault("pose", default_pose(beat["type"], beat.get("intensity", 1), cfg))
-    ordered = sorted(cands, key=lambda b: (priority.index(b["type"]) if b["type"] in priority else len(priority), -b.get("intensity", 1), b["ply"]))
+    # the final-ply beat (checkmate or resign) ends the video and is never dropped by pacing
+    ordered = sorted(cands, key=lambda b: (b["type"] not in FINAL, priority.index(b["type"]) if b["type"] in priority else len(priority), -b.get("intensity", 1), b["ply"]))
     selected = []
     def at(b): return (ply_times_ms or {}).get(b["ply"], b["ply"] * cfg.get("est_ms_per_ply", 4500))
     caps = cfg.get("max_per_type", {})
     def gap(a, b): return cfg.get("min_gap_intensity3_ms", 60000) if a.get("intensity") == 3 and b.get("intensity") == 3 else cfg.get("min_gap_ms", 20000)
     for beat in ordered:
-        if any(abs(at(beat)-at(prev)) < gap(beat, prev) for prev in selected): continue
+        if beat["type"] not in FINAL and any(abs(at(beat)-at(prev)) < gap(beat, prev) for prev in selected): continue
         # spec gap: a clock-heavy classical game would otherwise get a checks_watch every 20 s
-        if beat["type"] in caps and sum(b["type"] == beat["type"] for b in selected) >= caps[beat["type"]]: continue
+        if beat["type"] not in FINAL and beat["type"] in caps and sum(b["type"] == beat["type"] for b in selected) >= caps[beat["type"]]: continue
         selected.append(beat)
     result=[]
     for beat in sorted(selected,key=lambda b:(at(b),b["ply"])):
         if result and beat.get("pose") == result[-1].get("pose"):
             beat["pose"] = cfg.get("alt_poses", {}).get(beat["type"])
             if not beat["pose"] or beat["pose"] == result[-1].get("pose"):
-                continue
+                if beat["type"] not in FINAL: continue
+                result.pop()  # the final beat stays; the earlier beat with the clashing pose goes
         result.append(beat)
     return result
 
