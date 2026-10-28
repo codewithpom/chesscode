@@ -67,6 +67,10 @@ def detect(rows: list[dict], cfg: dict) -> list[dict]:
                 add("comeback", row); break
     return found
 
+def top_beat(beats: list[dict]) -> dict:
+    """The beat a Short is about and a long-form cold-opens on: beats.yaml priority, then intensity, then earliest."""
+    return min(beats, key=lambda b: (b["priority"], -b["intensity"], b["ply"]))
+
 def pace(cands: list[dict], ply_times_ms: dict[int,int] | None, cfg: dict) -> list[dict]:
     priority = cfg.get("priority", [])
     for beat in cands:

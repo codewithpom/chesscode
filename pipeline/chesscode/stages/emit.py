@@ -1,6 +1,7 @@
 import csv
 import io
 import json
+import math
 import re
 import shutil
 import subprocess
@@ -14,12 +15,14 @@ import jsonschema
 
 from ..config import load
 from ..context import StageError
-from .beats import _FX
+from ..winprob import win_pct
+from .beats import _FX, top_beat
 
 INPUTS=["game.json","game.pgn","classified.json","beats.json","script.json","timeline.json","metadata.json","spec/video_spec.schema.json","config/music.yaml","config/beats.yaml","content/openings"]
 OUTPUTS=["video_spec.json"]
 _THEMES={"legendary_games":"bone_slate","indian_chess_heroes":"walnut","opening_explained":"cool_grey","blunder_hall_of_fame":"warm_sand"}
 _RESULTS=("1-0","0-1","1/2-1/2")
+SPEC_VERSION="1.1.0"
 _UTC_Z=re.compile(r"\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z")
 
 def _read(ctx,name): return json.loads((ctx.spec_dir/name).read_text(encoding="utf-8"))
@@ -74,6 +77,40 @@ def prepare_music(ctx,duration_ms: int) -> dict:
         shutil.copyfile(source,target); marker.unlink(missing_ok=True)
     return {"track":f"music/{name}","volume":track["volume"],"duck_under_voice":track["duck_under_voice"]}
 
+def crop_origin(uci: str) -> str:
+    """Lower-left of the 4x4 window (files a-e, ranks 1-5, White's view) holding both squares, centred on the move.
+    A move wider than four squares cannot fit, so the window then keeps the destination in view."""
+    def axis(a,b):
+        lo,hi=max(max(a,b)-3,0),min(min(a,b),4)
+        return max(lo,min(hi,(a+b)//2-1)) if lo<=hi else max(0,min(4,b-1))
+    a,b=chess.parse_square(uci[:2]),chess.parse_square(uci[2:4])
+    return "abcde"[axis(chess.square_file(a),chess.square_file(b))]+str(axis(chess.square_rank(a),chess.square_rank(b))+1)
+
+def verdict(rows: list[dict], result: str) -> dict:
+    """Turning point = largest win% swing against the eventual loser (draws: largest absolute swing); Lichess accuracy per side, book plies included."""
+    pct=lambda s: win_pct(s["cp"],s["mate"])
+    swing={}; accuracy={"white":[],"black":[]}
+    for row in rows:
+        before,after=pct(row["before"][0]),pct(row["eval"]); white=row["ply"]%2==1
+        swing[row["ply"]]={"1-0":after-before,"0-1":before-after}.get(result,abs(after-before))
+        loss=before-after if white else after-before
+        accuracy["white" if white else "black"].append(max(0.0,min(100.0,103.1668*math.exp(-0.04354*loss)-3.1669)))
+    if not all(accuracy.values()): raise ValueError("verdict needs plies from both sides")
+    return {"turning_point_ply":max(swing,key=swing.get),"accuracy":{side:round(sum(v)/len(v),2) for side,v in accuracy.items()}}
+
+def key_moments(rows: list[dict], beats: list[dict], narration: list[dict], labels: dict) -> list[dict]:
+    """One per beat of intensity >= 2, timed by its key_moment narration segment, else by the ply segment covering it."""
+    by_ply={r["ply"]:r for r in rows}; moments=[]
+    for beat in beats:
+        if beat["intensity"]<2: continue
+        ply=beat["ply"]
+        seg=next((n for n in narration if n["kind"]=="key_moment" and n.get("ply")==ply),None) or max((n for n in narration if n["kind"]=="ply" and n["ply"]<=ply),key=lambda n:n["ply"],default=None)
+        if seg is None: raise ValueError(f"no narration segment for beat {beat['beat_id']}")
+        line=by_ply[ply]["before"][0].get("pv",[])[:8]
+        if not line: raise ValueError(f"engine has no line before ply {ply}")
+        moments.append({"beat_id":beat["beat_id"],"ply":ply,"start_ms":seg["start_ms"],"duration_ms":seg["duration_ms"],"label":_need(labels,beat["beat_id"],"script key_moment_labels"),"line":line})
+    return moments
+
 def assemble(ctx) -> dict:
     game=_read(ctx,"game.json"); rows=_read(ctx,"classified.json"); script=_read(ctx,"script.json"); timeline=_read(ctx,"timeline.json"); metadata=_read(ctx,"metadata.json")
     pgn=(ctx.spec_dir/"game.pgn").read_text(encoding="utf-8")
@@ -83,7 +120,7 @@ def assemble(ctx) -> dict:
     def player(color):
         key="White" if color==chess.WHITE else "Black"; name=_need(headers,key,"PGN header")
         elo=headers.get(key+"Elo","")
-        return {"name":name,"rating":int(elo) if elo not in ("","?") else None,"title":headers.get(key+"Title") or None,"country":game[key.lower()+"_country"]}
+        return {"name":name,"rating":int(elo) if elo not in ("","?") else None,"title":headers.get(key+"Title") or None,"country":game[key.lower()+"_country"],"fact":_need(script.get("player_facts") or {},key.lower(),"script player_facts")}
     result=_need(headers,"Result","PGN header")
     if result not in _RESULTS: raise ValueError(f"PGN Result {result!r} is not a finished game")
     eco=_need(headers,"ECO","PGN header")
@@ -103,7 +140,12 @@ def assemble(ctx) -> dict:
         if not line: raise ValueError(f"missing mascot line for beat {bid}")
         spec_beats.append({"beat_id":bid,"type":kind,"ply":b["ply"],"at_ms":b["at_ms"],"intensity":b["intensity"],"mascot":{"pose":b["pose"],"line":line},"fx":_FX[kind],"sfx":sfx[kind]})
     series=_need(game,"series","game.json")
-    return {"spec_version":"1.0.0","video_id":ctx.video_id,"pair_id":"-".join(ctx.video_id.split("-")[:3]),"language":ctx.language,"template":ctx.template,"series":series,"board":{"orientation":"black" if result=="0-1" else "white","theme":_THEMES[series]},"format":{"width":1080,"height":1920,"fps":30} if ctx.template=="shorts" else {"width":1920,"height":1080,"fps":30},"duration_ms":timeline["duration_ms"],"game":game_obj,"plies":spec_plies,"narration":timeline["narration"],"beats":spec_beats,"chapters":timeline["chapters"],"music":prepare_music(ctx,timeline["duration_ms"]),"youtube":{k:v for k,v in metadata.items() if k!="chapters"}}  # chapters live at the top level
+    if not timeline["beats"]: raise ValueError("no beats: cannot choose a cold open or thumbnail ply")
+    top=top_beat(timeline["beats"]); by_ply={r["ply"]:r for r in rows}
+    cold_open={"ply_from":max(1,top["ply"]-2),"ply_to":top["ply"],"hook":_need(script,"cold_open_hook","script.json")}
+    moments=[] if ctx.template=="shorts" else key_moments(rows,timeline["beats"],timeline["narration"],_need(script,"key_moment_labels","script.json"))
+    thumbnail={"text":_need(script,"thumbnail_text","script.json"),"ply":top["ply"],"crop_origin":crop_origin(by_ply[top["ply"]]["uci"]),"pose":top["pose"]}
+    return {"spec_version":SPEC_VERSION,"video_id":ctx.video_id,"pair_id":"-".join(ctx.video_id.split("-")[:3]),"language":ctx.language,"template":ctx.template,"series":series,"board":{"orientation":"black" if result=="0-1" else "white","theme":_THEMES[series]},"format":{"width":1080,"height":1920,"fps":30} if ctx.template=="shorts" else {"width":1920,"height":1080,"fps":30},"duration_ms":timeline["duration_ms"],"game":game_obj,"plies":spec_plies,"narration":timeline["narration"],"beats":spec_beats,"chapters":timeline["chapters"],"cold_open":cold_open,"key_moments":moments,"verdict":verdict(rows,result),"thumbnail":thumbnail,"music":prepare_music(ctx,timeline["duration_ms"]),"youtube":{k:v for k,v in metadata.items() if k!="chapters"}}  # chapters live at the top level
 
 def validate(spec: dict) -> None:
     root=Path(__file__).resolve().parents[3]
@@ -127,6 +169,16 @@ def validate(spec: dict) -> None:
     for a,b in zip(beats,beats[1:]):
         if a.get("mascot",{}).get("pose")==b.get("mascot",{}).get("pose"): errors.append(f"beats.{b.get('beat_id','?')}: mascot pose {b['mascot']['pose']} repeats the previous beat")
     if [p.get("ply") for p in spec.get("plies",[])] != list(range(1,len(spec.get("plies",[]))+1)): errors.append("plies: ply numbers must be 1..n")
+    n=len(spec.get("plies",[])); ok=lambda p: isinstance(p,int) and 1<=p<=n
+    cold=spec.get("cold_open") or {}
+    if not (ok(cold.get("ply_from")) and ok(cold.get("ply_to")) and cold["ply_from"]<=cold["ply_to"]): errors.append("cold_open: ply_from..ply_to must be a forward range of existing plies")
+    for i,k in enumerate(spec.get("key_moments",[])):
+        if not ok(k.get("ply")): errors.append(f"key_moments.{i}.ply: no such ply")
+        if not any(b.get("beat_id")==k.get("beat_id") for b in spec.get("beats",[])): errors.append(f"key_moments.{i}.beat_id: must reference a beat")
+    if not ok((spec.get("verdict") or {}).get("turning_point_ply")): errors.append("verdict.turning_point_ply: no such ply")
+    thumb=spec.get("thumbnail") or {}
+    if not ok(thumb.get("ply")): errors.append("thumbnail.ply: no such ply")
+    if thumb.get("text") and str(thumb["text"]).lower()==str(spec.get("youtube",{}).get("title","")).lower(): errors.append("thumbnail.text: must not repeat the title")
     if errors: raise StageError(spec.get("video_id","unknown"),"emit","\n".join(errors))
 
 def run(ctx):
