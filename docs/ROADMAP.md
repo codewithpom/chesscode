@@ -59,7 +59,7 @@ Next to plan (after these land): M3 drafts (`games.yaml`, line banks), M4 rig, M
 
 ## Open owner decisions (spec section 14)
 
-- [ ] Mascot concept (Pyaada or an alternate) and changes.
+- [x] Mascot concept: **Pyaada** (owner, Oct 28). Sheets: `design/mascot/`, comparison https://claude.ai/artifact/5NQJVWXRBKch2WyHbuSYnD
 - [ ] TTS provider and voices for EN and HI, after the bake-off.
 - [x] Repo visibility: **public** (`codewithpom/chesscode`). Consequence: logs reveal titles and games; MP4s never uploaded as artifacts; secrets only as repo secrets.
 - [ ] Palette: new Studio palette or existing ChessCode colors.
@@ -81,3 +81,12 @@ Next to plan (after these land): M3 drafts (`games.yaml`, line banks), M4 rig, M
 8. The 114 MB Windows Stockfish binary is not in the repo (GitHub limit); use `STOCKFISH_PATH` locally and apt `stockfish` on CI.
 9. Codex builds; Codex-built work is audited by agy or a fresh Claude subagent (owner override of spec section 0).
 10. Shorts get their own `video_id` because the schema pattern is `cc-<year>-<4 digits>-<lang>`: Short of game N uses game number N + 5000 (e.g. `cc-2026-5042-en`).
+11. Beat pacing gaps (spec section 8 is silent): evals clamped to +/-10 pawns (mate = +/-10) before pawn-drop triggers; blunder/mistake beats also need the win% move class to agree; no beats on book plies except `opening_exit`; brilliant needs material given over reply + next move, and is suppressed at >= +5 unless the move is the engine's best; per-video caps `long_think 2, mistake 3, time_scramble 2`; full priority `checkmate > blunder > brilliant > missed_win > comeback > promotion > king_walk > time_scramble > resign > mistake > long_think > opening_exit`.
+12. M1 upload guard refuses `publishAt` less than 3 h ahead (spec: 2 h) to avoid a race between the check and upload completion; stricter, so it only shrinks the allowed window.
+
+## Owner decisions log
+
+- Oct 28: mascot concept **Pyaada**.
+- Oct 28: board pieces = rhosgfx (CC0) with black pieces recoloured to dark ink for contrast.
+- Oct 28: Shorts layout deviates from spec section 6: board **864 px** (not 960) so captions, eval bar and board fit the upper 60 % and the mascot fits below.
+- Oct 28: four series board themes get four distinct hue families (bone/slate, walnut, sage, a fourth muted hue) at the same square contrast.

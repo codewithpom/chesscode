@@ -1,0 +1,63 @@
+== century (82 plies)
+  ply   9 5.Bf4        opening_exit   i1 thinking eval=+0.10 class=good
+  ply  21 11.Bg5       blunder        i3 facepalm eval=-2.05 class=blunder
+  ply  35 18.Bxb6      blunder        i3 shocked eval=-5.37 class=blunder
+  ply  49 25.Qxb6      brilliant      i1 slow_clap eval=-6.12 class=brilliant
+  ply  58 29...Bf8     brilliant      i1 jealous eval=-7.89 class=brilliant
+  ply  82 41...Rc2#    checkmate      i3 mic_drop eval=M-1 class=excellent
+== ding-gukesh-wch2024-g14 (116 plies)
+  ply  13 7.c4         long_think     i1 checks_watch eval=+0.70 class=best
+  ply  20 10...Bc5     long_think     i1 side_eye eval=+0.38 class=excellent
+  ply 109 55.Rf2       blunder        i3 facepalm eval=-5.09 class=blunder
+  ply 116 58...Ke5     resign         i2 bow eval=-81.15 class=best
+== evergreen (47 plies)
+  ply  15 8.Qb3        opening_exit   i1 thinking eval=+0.26 class=best
+  ply  22 11...b5      blunder        i3 facepalm eval=+0.83 class=blunder
+  ply  33 17.Nf6+      missed_win     i1 screaming eval=+0.71 class=missed_win
+  ply  41 21.Qxd7+     brilliant      i1 slow_clap eval=M3 class=brilliant
+  ply  47 24.Bxe7#     checkmate      i3 mic_drop eval=M1 class=best
+== gukesh-ding-wch2024-g3 (74 plies)
+  ply   7 4.cxd5       opening_exit   i1 thinking eval=+0.05 class=good
+  ply  18 9...Qxb3     long_think     i1 checks_watch eval=+0.05 class=excellent
+  ply  26 13...Nbd7    long_think     i1 side_eye eval=+0.26 class=best
+  ply  36 18...Rh5     mistake        i1 thinking eval=+0.62 class=mistake
+  ply  70 35...Rxg5    time_scramble  i1 sweating eval=+3.58 class=good
+== immortal (45 plies)
+  ply   9 5.Bxb5       opening_exit   i1 thinking eval=+0.27 class=best
+  ply  15 8.Nh4        mistake        i1 side_eye eval=-0.74 class=mistake
+  ply  22 11...cxb5    blunder        i3 facepalm eval=+1.71 class=blunder
+  ply  32 16...Bc5     mistake        i1 side_eye eval=+4.21 class=mistake
+  ply  37 19.e5        brilliant      i1 slow_clap eval=+2.85 class=brilliant
+  ply  45 23.Be7#      checkmate      i3 mic_drop eval=M1 class=best
+== kasparov-topalov (87 plies)
+  ply   8 4...Bg7      opening_exit   i1 thinking eval=+0.72 class=best
+  ply  50 25...Kb6     king_walk      i1 binoculars eval=+5.04 class=mistake
+  ply  58 29...Bb7     brilliant      i1 slow_clap eval=+0.86 class=brilliant
+  ply  76 38...bxc4    brilliant      i1 jealous eval=+3.04 class=brilliant
+  ply  87 44.Qa7       resign         i2 bow eval=+5.63 class=best
+== lei-humpy-cand2024-r14 (124 plies)
+  ply  12 6...d6       long_think     i1 checks_watch eval=+0.23 class=excellent
+  ply  20 10...g5      long_think     i1 side_eye eval=-0.40 class=best
+  ply  45 23.Qxa5      brilliant      i1 slow_clap eval=+0.61 class=brilliant
+  ply  51 26.Nxf7+     mistake        i1 side_eye eval=-0.52 class=mistake
+  ply  61 31.Rxe6      mistake        i1 thinking eval=-1.77 class=mistake
+  ply  72 36...Rh6     mistake        i1 side_eye eval=-2.29 class=mistake
+  ply  92 46...c1=Q    promotion      i1 jealous eval=-3.32 class=inaccuracy
+  ply 122 61...a1=Q    promotion      i1 slow_clap eval=M-11 class=excellent
+== opera (33 plies)
+  ply   8 4...Bxf3     opening_exit   i1 thinking eval=+1.53 class=good
+  ply  33 17.Rd8#      checkmate      i3 mic_drop eval=M1 class=best
+== pragg-gukesh-cand2024-r2 (66 plies)
+  ply   9 5.Nc3        opening_exit   i1 thinking eval=+0.08 class=good
+  ply  18 9...a6       long_think     i1 checks_watch eval=-0.49 class=best
+  ply  24 12...Na5     long_think     i1 side_eye eval=-0.43 class=best
+  ply  33 17.Qc2       mistake        i1 thinking eval=-1.19 class=mistake
+  ply  49 25.Qg4       mistake        i1 side_eye eval=-1.65 class=mistake
+  ply  65 33.h6        time_scramble  i1 sweating eval=-6.16 class=good
+== vidit-pragg-cand2024-r3 (90 plies)
+  ply   9 5.d4         opening_exit   i1 thinking eval=+0.86 class=best
+  ply  15 8.Nxd4       long_think     i1 checks_watch eval=+0.70 class=excellent
+  ply  21 11.Qe2       long_think     i1 side_eye eval=+0.00 class=excellent
+  ply  39 20.h4        blunder        i3 facepalm eval=-0.87 class=blunder
+  ply  69 35.Nxb7      blunder        i3 shocked eval=-4.55 class=blunder
+  ply  90 45...Rhf5+   resign         i2 bow eval=-4.75 class=excellent
