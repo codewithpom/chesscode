@@ -2,6 +2,7 @@ import { Composition } from "remotion";
 import { calculateGalleryMetadata, CoreGallery, GalleryProps } from "./compositions/CoreGallery";
 import fixture from "../../spec/fixtures/cc-2026-0001-en/video_spec.json";
 import { calculateStudioMetadata, StudioVideo } from "./compositions/StudioVideo";
+import { MascotReel, REEL_FRAMES } from "./compositions/MascotReel";
 import { MascotSheet } from "./compositions/MascotSheet";
 import { VideoSpec } from "./spec/schema";
 
@@ -32,5 +33,6 @@ export const RemotionRoot: React.FC = () => (
       height={1080}
     />
     <Composition id="MascotSheet" component={MascotSheet} durationInFrames={1} fps={30} width={1920} height={1080} />
+    <Composition id="MascotReel" component={MascotReel} durationInFrames={REEL_FRAMES} fps={30} width={1920} height={1080} />
   </>
 );

@@ -48,27 +48,30 @@ export const SpeechBubble: React.FC<{ line: string; from: number; to: number; bo
   const inP = interpolate(frame, [from, from + enterF], [0, 1], { easing: motion.enter, extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const outP = interpolate(frame, [to - EXIT_FRAMES, to], [0, 1], { easing: motion.exit, extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const t = inP * (1 - outP);
-  const w = box.w - BUBBLE_TAIL;
   const text = {
     fontFamily: fontFor(language, "ui"), fontSize: BUBBLE_FONT, fontWeight: 500, lineHeight: 1.3, color: P.ink,
     gridArea: "1 / 1", overflowWrap: "normal", wordBreak: "normal", hyphens: "manual",
   } as const;
+  // Shrinks to the line (the hidden full text fixes the size so it does not grow while typing), right-aligned to the
+  // mascot, centred on the box; max sizes keep it inside `box`.
   return (
-    <div style={{ position: "absolute", left: box.x, top: box.y, width: box.w, height: box.h, opacity: t, transform: `scale(${0.92 + 0.08 * t})`, transformOrigin: "100% 70%" }}>
-      <div
-        lang={language}
-        style={{
-          position: "absolute", left: 0, top: 0, width: w, height: box.h, boxSizing: "border-box", padding: "16px 24px", overflow: "hidden",
-          background: P.body, border: `4px solid ${P.ink}`, borderRadius: 24, display: "grid", alignContent: "center",
-        }}
-      >
-        <div style={{ ...text, visibility: "hidden" }}>{line}</div>
-        <div style={text}>{typedText(line, frame, from, fps)}</div>
+    <div style={{ position: "absolute", left: box.x, top: box.y, width: box.w, height: box.h, display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
+      <div style={{ display: "flex", alignItems: "center", maxWidth: box.w, maxHeight: box.h, opacity: t, transform: `scale(${0.92 + 0.08 * t})`, transformOrigin: "100% 50%" }}>
+        <div
+          lang={language}
+          style={{
+            boxSizing: "border-box", padding: "16px 24px", overflow: "hidden", maxWidth: box.w - BUBBLE_TAIL, maxHeight: box.h,
+            background: P.body, border: `4px solid ${P.ink}`, borderRadius: 24, display: "grid", alignContent: "center",
+          }}
+        >
+          <div style={{ ...text, visibility: "hidden" }}>{line}</div>
+          <div style={text}>{typedText(line, frame, from, fps)}</div>
+        </div>
+        <svg width={BUBBLE_TAIL} height={40} style={{ flex: "none", marginLeft: -4 }}>
+          <path d={`M0,2 L${BUBBLE_TAIL - 2},20 L0,38`} fill={P.body} stroke={P.ink} strokeWidth={4} strokeLinejoin="round" />
+          <rect x={0} y={5} width={4} height={30} fill={P.body} />
+        </svg>
       </div>
-      <svg width={BUBBLE_TAIL + 4} height={40} style={{ position: "absolute", left: w - 4, top: box.h * 0.7 - 20 }}>
-        <path d={`M0,2 L${BUBBLE_TAIL},20 L0,38 Z`} fill={P.body} stroke={P.ink} strokeWidth={4} strokeLinejoin="round" />
-        <rect x={0} y={5} width={4} height={30} fill={P.body} />
-      </svg>
     </div>
   );
 };
