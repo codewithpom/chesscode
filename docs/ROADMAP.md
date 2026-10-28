@@ -60,7 +60,7 @@ Next to plan (after these land): M3 drafts (`games.yaml`, line banks), M4 rig, M
 ## Open owner decisions (spec section 14)
 
 - [x] Mascot concept: **Pyaada** (owner, Oct 28). Sheets: `design/mascot/`, comparison https://claude.ai/artifact/5NQJVWXRBKch2WyHbuSYnD
-- [ ] TTS provider and voices for EN and HI, after the bake-off.
+- [x] TTS: **ElevenLabs Multilingual v2**, EN voice George `JBFqnCBsd6RMkjVDRZzb`, HI voice Sarah `EXAVITQu4vr4xnSDxMaL` (owner, Oct 28; samples https://claude.ai/artifact/QQZab3vhAVGzuNQKs6xJfn).
 - [x] Repo visibility: **public** (`codewithpom/chesscode`). Consequence: logs reveal titles and games; MP4s never uploaded as artifacts; secrets only as repo secrets.
 - [ ] Palette: new Studio palette or existing ChessCode colors.
 - [ ] YouTube category: Gaming (default) or Education.
@@ -96,3 +96,6 @@ Next to plan (after these land): M3 drafts (`games.yaml`, line banks), M4 rig, M
 
 - Codex here runs through a local compression proxy (`model_provider = "caveman"`), which can show function bodies as `...` with `<<ccr:...>>` markers. Codex prompts must say so and point at the `caveman_retrieve` MCP tool. Codex's first remotion-core audit ("no findings") may have read elided bodies; it is backed by tests plus two pixel-level design-critic passes, and Gate B will use agy and a fresh Claude auditor.
 - The Codex sandbox cannot write the git index of a linked worktree, so the main session commits Codex's work with Codex co-authorship.
+- Oct 28: OAuth: the legacy Chess Code token (consented Jul 14, still refreshing Oct 28, so the consent screen is "In production") passes `auth check` with both scopes. The secrets were copied to git-ignored `data/secrets/` with owner permission.
+- Oct 28: Day-1 test upload `oriMknSnNT0` ("ChessCode API test (delete me)") is private, with publishAt 2026-10-29T04:43Z. **Owner to confirm in Studio that it shows Scheduled, not Locked**, then that it goes public, then delete it.
+- Oct 28: The bake-off showed single-pass loudnorm missing spec (-15.7 LUFS, -0.46 dBTP). `audio.loudnorm` now uses iterative gain plus limiter (-14.5 LUFS, about -1.6 dBTP).
