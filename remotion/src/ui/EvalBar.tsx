@@ -13,6 +13,8 @@ type Props = {
   length: number;
   /** Short axis in px. */
   thickness: number;
+  /** Label font size in px; defaults to tokens.size.evalLabel. */
+  labelSize?: number;
 };
 
 /**
@@ -20,7 +22,7 @@ type Props = {
  * is shown with Black at the bottom the fill starts from the opposite end, matching the board.
  * The numeric label sits just outside the bar (above it), so the caller must leave that room.
  */
-export const EvalBar: FC<Props> = ({ spec, orientation, length, thickness }) => {
+export const EvalBar: FC<Props> = ({ spec, orientation, length, thickness, labelSize = tokens.size.evalLabel }) => {
   useFonts();
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -59,7 +61,7 @@ export const EvalBar: FC<Props> = ({ spec, orientation, length, thickness }) => 
           color: tokens.color.text,
           fontFamily: tokens.font.mono,
           fontWeight: 500,
-          fontSize: tokens.size.evalLabel,
+          fontSize: labelSize,
           fontVariantNumeric: "tabular-nums",
           lineHeight: 1,
         }}

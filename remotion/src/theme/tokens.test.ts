@@ -1,10 +1,12 @@
 import { spring } from "remotion";
 import { describe, expect, it } from "vitest";
 import { BoardTheme } from "../spec/schema";
-import { boardThemes } from "./boardThemes";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { boardThemes, pieceBlack, pieceBlackInk } from "./boardThemes";
 import { fontFor } from "./fonts";
 import { uiSpring } from "./motion";
-import { contrast, tokens } from "./tokens";
+import { contrast, hue, tokens } from "./tokens";
 
 describe("tokens", () => {
   it("every text/background pair has contrast >= 4.5", () => {
@@ -56,5 +58,37 @@ describe("tokens", () => {
     for (let frame = 0; frame < 60; frame++)
       max = Math.max(max, spring({ frame, fps: 30, config: uiSpring }));
     expect(max).toBeLessThanOrEqual(1.0005);
+  });
+
+  it("black pieces have >= 3:1 against every theme's dark and light squares (and last-move tints)", () => {
+    for (const [name, t] of Object.entries(boardThemes))
+      for (const sq of [t.light, t.dark, t.lastMoveLight, t.lastMoveDark])
+        expect(contrast(pieceBlack, sq), `${name} ${sq}`).toBeGreaterThanOrEqual(3);
+  });
+
+  it("black piece SVGs use the recolor (fill and light ink), not the original terracotta", () => {
+    for (const t of ["K", "Q", "R", "B", "N", "P"]) {
+      const svg = readFileSync(resolve(__dirname, `../assets/pieces/b${t}.svg`), "utf8").toLowerCase();
+      expect(svg).toContain(pieceBlack.toLowerCase());
+      expect(svg).toContain(pieceBlackInk.toLowerCase());
+      expect(svg).not.toContain("#d1774b");
+    }
+  });
+
+  it("themes: every pair differs in dark-square hue by >= 25 degrees", () => {
+    const names = Object.keys(boardThemes) as Array<keyof typeof boardThemes>;
+    for (let i = 0; i < names.length; i++)
+      for (let j = i + 1; j < names.length; j++) {
+        const d = Math.abs(hue(boardThemes[names[i]].dark) - hue(boardThemes[names[j]].dark));
+        expect(Math.min(d, 360 - d), `${names[i]} vs ${names[j]}`).toBeGreaterThanOrEqual(25);
+      }
+  });
+
+  it("themes: light/dark square contrast stays near 3.0 to 3.25", () => {
+    for (const [name, t] of Object.entries(boardThemes)) {
+      const c = contrast(t.light, t.dark);
+      expect(c, name).toBeGreaterThanOrEqual(3.0);
+      expect(c, name).toBeLessThanOrEqual(3.25);
+    }
   });
 });

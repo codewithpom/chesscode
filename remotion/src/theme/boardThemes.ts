@@ -12,12 +12,17 @@ export type BoardPalette = {
   check: string;
 };
 
+// Black pieces: rhosgfx shapes (CC0) recolored in src/assets/pieces/b?.svg, see public/CREDITS.md.
+export const pieceBlack = "#2E323B";
+export const pieceBlackInk = "#D9DCE1";
+
 const check = "#E5484D";
 
 export const boardThemes: Record<z.infer<typeof BoardTheme>, BoardPalette> = {
   bone_slate: { light: "#E8E2D4", dark: "#6E7F86", lastMoveLight: "#DCD3B0", lastMoveDark: "#8E9A8C", check },
-  // walnut, cool_grey, warm_sand: builder choices, flagged for design review.
+  // Four hue families by dark-square hue: slate 198, walnut 26, sage 85, dusty rose 342 degrees.
+  // The enum keys are fixed by the spec schema: cool_grey is now sage green, warm_sand is dusty rose.
   walnut: { light: "#EEE0C8", dark: "#9C7658", lastMoveLight: "#E0D1A8", lastMoveDark: "#AC946E", check },
-  cool_grey: { light: "#EAEDF0", dark: "#7C8796", lastMoveLight: "#DDDAC2", lastMoveDark: "#979F96", check },
-  warm_sand: { light: "#F3EAD6", dark: "#A58B5E", lastMoveLight: "#E3D8B1", lastMoveDark: "#B2A272", check },
+  cool_grey: { light: "#F0EEDD", dark: "#7B8967", lastMoveLight: "#E1DAB6", lastMoveDark: "#96A078", check },
+  warm_sand: { light: "#F6EEEC", dark: "#A57C88", lastMoveLight: "#E5DAC0", lastMoveDark: "#B2988D", check },
 };

@@ -6,6 +6,7 @@ import fixture from "../../../spec/fixtures/cc-2026-0001-en/video_spec.json";
 import { Board } from "../board/Board";
 import { VideoSpec } from "../spec/schema";
 import { fontFor } from "../theme/fonts";
+import { shortsLayout } from "../theme/layout";
 import { tokens } from "../theme/tokens";
 import { Captions } from "../ui/Captions";
 import { EvalBar } from "../ui/EvalBar";
@@ -214,17 +215,24 @@ export const CoreGallery: FC<GalleryProps> = ({ panel }) => {
       </StudioStub>
     );
   } else {
-    // Shorts: captions, then a thin eval bar (its label sits above it), then the 960 board.
+    // Shorts: approved layout (theme/layout.ts): captions, eval label + thin bar, 864 board, mascot zone below.
     const hindi = panel === "captions-hi-shorts";
     const s = hindi ? { ...themed("bone_slate"), language: "hi" as const } : themed("bone_slate");
+    const { evalBar, board } = shortsLayout.boxes;
     body = (
       <At frame={msF(hindi ? HI_STRESS_AT + 600 : 7100)}>
         <Captions spec={hindi ? hiSpec : base} mode="shorts" />
-        <div style={{ position: "absolute", left: 60, top: 280 }}>
-          <EvalBar spec={s} orientation="horizontal" length={960} thickness={16} />
+        <div style={{ position: "absolute", left: evalBar.x, top: evalBar.y }}>
+          <EvalBar
+            spec={s}
+            orientation="horizontal"
+            length={evalBar.w}
+            thickness={evalBar.h}
+            labelSize={shortsLayout.evalLabelSize}
+          />
         </div>
-        <div style={{ position: "absolute", left: 60, top: 320 }}>
-          <Board spec={s} size={960} />
+        <div style={{ position: "absolute", left: board.x, top: board.y }}>
+          <Board spec={s} size={board.w} />
         </div>
       </At>
     );
