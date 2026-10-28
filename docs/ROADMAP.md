@@ -41,14 +41,15 @@ Phase 0 (done: a702d81) ── contract, skeleton, agents
 
 ## Workstreams running now (parallel worktrees)
 
-| Worktree / branch | Plan | Builder | Auditor (never the builder's own vendor for Codex work) |
-| --- | --- | --- | --- |
-| `.worktrees/m1-risk` / `ws/m1-risk` | `docs/superpowers/plans/2026-10-27-m1-risk-tests.md` | Codex (`codex exec -s workspace-write`) | fresh Claude subagent |
-| `.worktrees/m2-pipeline` / `ws/m2-pipeline` | `docs/superpowers/plans/2026-10-27-m2-pipeline.md` | Codex | agy + fresh Claude (Gate A) |
-| `.worktrees/remotion-core` / `ws/remotion-core` | `docs/superpowers/plans/2026-10-27-remotion-core.md` | Claude `remotion-builder` (Sonnet) | Codex read-only + `design-critic` |
-| `.worktrees/mascot-concepts` / `ws/mascot-concepts` | `docs/superpowers/plans/2026-10-27-mascot-concepts.md` | Claude main session (design judgment) | fresh Claude `design-critic` |
+Done and merged: `ws/m1-risk`, `ws/m2-pipeline`, `ws/remotion-core`, `ws/mascot-concepts` (plans `docs/superpowers/plans/2026-10-27-*.md`).
 
-Next to plan (after these land): M3 drafts (`games.yaml`, line banks), M4 rig, M5 scenes, `qa`, `upload` full, `batch.yml`/`collect.yml`.
+| Worktree / branch | Plan | Builder | Auditor |
+| --- | --- | --- | --- |
+| `.worktrees/m3-content` / `ws/m3-content` | `docs/superpowers/plans/2026-10-28-m3-content.md` | Sonnet subagent (PGN sourcing), Opus subagent (line banks), main session (game notes) | `line-checker` (Haiku) + tests; owner review |
+| `.worktrees/m4-mascot` / `ws/m4-mascot` | `docs/superpowers/plans/2026-10-28-m4-mascot-rig.md` | Claude `remotion-builder` (Sonnet) | `design-critic` + Codex read-only or fresh Claude; owner reel approval |
+| `.worktrees/m5-templates` / `ws/m5-templates` | `docs/superpowers/plans/2026-10-28-m5-templates.md` | Claude `remotion-builder` (Sonnet) | `design-critic`; Gate B: agy + fresh Claude; owner approval |
+
+Oct 28: repo secrets set with `gh secret set` (`YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET`, `YOUTUBE_REFRESH_TOKEN`, `ELEVENLABS_API_KEY`). **Missing: `ANTHROPIC_API_KEY`** (owner adds it; needed by the script stage at Batch 0). Day-1 upload confirmed Scheduled in Studio by the owner.
 
 ## If the schedule slips (spec section 13)
 
