@@ -62,3 +62,6 @@ One row per auditor finding: fix, defer or reject, with a one-line reason.
 | A2 | owner decision | Friday floor Short teases next week's long-form (EN +4 d, HI +6 d) | fix | ROADMAP decisions log, Oct 28. |
 | A2 | gateA2-claude minors | several plies on one timestamp; chapter titles cut mid-word; poses defined twice in beats.yaml; Hindi script may hit 8192 output tokens | fix | Cheap and user-visible. |
 | A2 | gateA2-claude minor | accuracy differs slightly from Lichess (no volatility weighting) | defer | Display-only; revisit if viewers compare with Lichess. |
+| A3 | gateA3-claude | all A2 fix rows verified; floor = 39 Shorts, teasers EN +4 d / HI +6 d | n/a | READY TO MERGE. |
+| A3 | gateA3-claude minor | SAN guard: ranks 1/2/7/8 squares unchecked; some phrasings slip; "knight on g5 attacks" / "हाथी a1 पर है" falsely flagged | defer | Measure on real scripts at Batch 0 (M6); tune with the Gate C chess check. |
+| A3 | gateA3-claude minor | teaser with no second beat >= 5 plies away fails at script stage | defer | Fail closed per spec section 2; spare games fill the slot. |
