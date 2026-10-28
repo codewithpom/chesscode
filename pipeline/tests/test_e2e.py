@@ -58,20 +58,32 @@ def test_e2e_golden_specs_validate(tmp_path, monkeypatch):
             return {"ok": True}
         request, _ = json.JSONDecoder().raw_decode(user)
         beats = request["facts"]["beats.json"]
-        words = (84 if request["language"] == "hi" else 90) if "5000" in current_video[0] or "Target a total of" in user else 1200
-        text = " ".join(["develops"] * words)
+        n_plies = len(request["facts"]["classified.json"])
+        short = "Target a total of" in user
+        words = (84 if request["language"] == "hi" else 90) if short or "5000" in current_video[0] else 1200
+        # sparse ply segments: plies before the first one, and gaps between them, must still be timed
+        wanted = 4 if short else 12
+        marks = sorted({1 + (n_plies - 1) * i // wanted for i in range(wanted)} | {max(1, n_plies // 3)})
+        per = words // (len(marks) + 1)
+        texts = [per] * len(marks) + [words - per * len(marks)]
+        segments = [{"kind": "cold_open", "ply": None, "text": " ".join(["develops"] * texts[-1])}]
+        segments += [{"kind": "ply", "ply": ply, "text": " ".join(["develops"] * count)} for ply, count in zip(marks, texts)]
         return {
-            "segments": [{"kind": "cold_open", "ply": None, "text": text}],
-                "mascot_lines": {beat["beat_id"]: f"{current_video[0]} {beat['beat_id']} changes everything." for beat in beats},
+            "segments": segments,
+            "mascot_lines": {beat["beat_id"]: f"{current_video[0]} {beat['beat_id']} changes everything." for beat in beats},
             "titles": ["A quiet move changes everything", "A chess game with a twist", "The position turns"] ,
             "hook": "A shifting position decides the game.",
         }
 
     monkeypatch.setattr(llm, "complete_json", fake_llm)
-    audio_source = tmp_path / "fake.mp3"
-    audio_source.write_bytes(b"fake audio")
-    monkeypatch.setattr(tts, "synthesize", lambda *args: (audio_source, [{"w": "word", "start_ms": 0, "end_ms": 10}]))
-    monkeypatch.setattr(voice, "_duration_ms", lambda path: 36000)
+
+    def fake_synthesize(provider, text, voice, language, cache_dir):
+        path = tmp_path / f"fake-{abs(hash(text))}-{len(text)}.mp3"
+        path.write_text(text, encoding="utf-8")
+        return path, [{"w": w, "start_ms": i * 400, "end_ms": i * 400 + 350} for i, w in enumerate(text.split())]
+
+    monkeypatch.setattr(tts, "synthesize", fake_synthesize)
+    monkeypatch.setattr(voice, "_duration_ms", lambda path: len(Path(path).read_text(encoding="utf-8").split()) * 400)
     monkeypatch.setattr(script, "ensure_specific", lambda output, *args: output)
 
     specs = []
@@ -85,6 +97,14 @@ def test_e2e_golden_specs_validate(tmp_path, monkeypatch):
                 specs.append(spec)
 
     assert len(specs) == 40
+    for spec in specs:
+        times = [p["show_at_ms"] for p in spec["plies"]]
+        assert times == sorted(times), spec["video_id"]
+        starts = {w["start_ms"] for seg in spec["narration"] for w in seg["words"]} | {seg["start_ms"] for seg in spec["narration"]}
+        assert set(times) <= starts, spec["video_id"]
+        first_ply_segment = next(seg for seg in spec["narration"] if seg["kind"] == "ply")
+        assert times[0] == first_ply_segment["start_ms"], spec["video_id"]
+        assert all(b["at_ms"] == times[b["ply"] - 1] for b in spec["beats"]), spec["video_id"]
     assert {spec["template"] for spec in specs} == {"studio", "shorts"}
     assert all(spec["youtube"]["publish_at"].endswith("Z") for spec in specs)
     shorts = [spec for spec in specs if spec["template"] == "shorts"]
