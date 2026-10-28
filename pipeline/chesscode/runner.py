@@ -43,11 +43,11 @@ def _input_hash(ctx: Context, inputs: list[str]) -> str:
     digest = hashlib.sha256()
     for name in inputs:
         path = Path(name)
-        candidates = [ctx.repo_root / path] if path.parts and path.parts[0] in {"config", "content"} else [ctx.spec_dir / path]
+        candidates = [ctx.repo_root / path] if path.parts and path.parts[0] in {"config", "content", "pipeline", "spec"} else [ctx.spec_dir / path]
         if path.is_absolute():
             candidates = [path]
         source = candidates[0]
-        digest.update(name.encode())
+        digest.update(path.as_posix().encode())
         if source.is_file():
             digest.update(source.read_bytes())
         elif source.is_dir():

@@ -13,3 +13,7 @@ Series format:
 - Indian Chess Heroes: A defining game by an Indian player (Anand, Humpy, Harikrishna, Gukesh, Praggnanandhaa, Arjun, Divya).
 - Opening Explained: One opening's main idea, taught through one model game.
 - Blunder Hall of Fame: Famous blunders by strong players, with the mascot at full volume.
+
+Segment structure (the timeline depends on it):
+- Start with one segment of kind "cold_open" (ply null), then segments of kind "title", "player_intro", "chapter", "key_moment", "verdict" and "outro" (ply null) as the story needs.
+- Narrate the game with segments of kind "ply", each carrying the ply number it begins at (white's first move is ply 1). Ply numbers must strictly increase. A ply segment covers every ply up to the next ply segment, so write one only where the narration reaches that move; the first one should be ply 1 or an early ply.

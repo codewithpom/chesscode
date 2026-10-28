@@ -7,7 +7,7 @@ import jsonschema
 
 from ..context import StageError
 
-INPUTS=["game.json","classified.json","beats.json","script.json","timeline.json","metadata.json",str(Path(__file__).resolve().parents[3]/"spec/video_spec.schema.json")]
+INPUTS=["game.json","classified.json","beats.json","script.json","timeline.json","metadata.json","spec/video_spec.schema.json"]
 OUTPUTS=["video_spec.json"]
 _THEMES={"legendary_games":"bone_slate","indian_chess_heroes":"walnut","opening_explained":"cool_grey","blunder_hall_of_fame":"warm_sand"}
 _POSES={"blunder":"facepalm","mistake":"side_eye","brilliant":"slow_clap","missed_win":"screaming","comeback":"shocked","long_think":"checks_watch","time_scramble":"sweating","king_walk":"binoculars","promotion":"jealous","checkmate":"mic_drop","resign":"bow","opening_exit":"thinking"}
