@@ -82,7 +82,7 @@ Next to plan (after these land): M3 drafts (`games.yaml`, line banks), M4 rig, M
 9. Codex builds; Codex-built work is audited by agy or a fresh Claude subagent (owner override of spec section 0).
 10. Shorts get their own `video_id` because the schema pattern is `cc-<year>-<4 digits>-<lang>`: Short of game N uses game number N + 5000 (e.g. `cc-2026-5042-en`).
 11. Beat pacing gaps (spec section 8 is silent): evals clamped to +/-10 pawns (mate = +/-10) before pawn-drop triggers; blunder/mistake beats also need the win% move class to agree; no beats on book plies except `opening_exit`; brilliant needs material given over reply + next move, and is suppressed at >= +5 unless the move is the engine's best; per-video caps `long_think 2, mistake 3, time_scramble 2`; full priority `checkmate > blunder > brilliant > missed_win > comeback > promotion > king_walk > time_scramble > resign > mistake > long_think > opening_exit`.
-12. M1 upload guard refuses `publishAt` less than 3 h ahead (spec: 2 h) to avoid a race between the check and upload completion; stricter, so it only shrinks the allowed window.
+12. The uploader library keeps the spec 2 h `publishAt` guard; only the day-1 test script requires >= 3 h on its CLI argument.
 
 ## Owner decisions log
 
