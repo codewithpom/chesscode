@@ -9,11 +9,13 @@ __pycache__/
 data/*.sqlite
 data/pgn/
 data/secrets/
+**/data/secrets/
 # secrets: never commit
 .env
 *.pickle
 client_secret*.json
-token*.json
+*token*.json
+**/client_secret*.json
 # large binaries
 *.exe
 *.onnx

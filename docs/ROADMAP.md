@@ -59,7 +59,7 @@ Next to plan (after these land): M3 drafts (`games.yaml`, line banks), M4 rig, M
 
 ## Open owner decisions (spec section 14)
 
-- [ ] Mascot concept (Pyaada or an alternate) and changes.
+- [x] Mascot concept: **Pyaada** (owner, Oct 28). Sheets: `design/mascot/`, comparison https://claude.ai/artifact/5NQJVWXRBKch2WyHbuSYnD
 - [ ] TTS provider and voices for EN and HI, after the bake-off.
 - [x] Repo visibility: **public** (`codewithpom/chesscode`). Consequence: logs reveal titles and games; MP4s never uploaded as artifacts; secrets only as repo secrets.
 - [ ] Palette: new Studio palette or existing ChessCode colors.
