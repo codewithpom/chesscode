@@ -46,8 +46,8 @@ export const blipFrames = (line: string, from: number, fps: number, seed: string
   wordFrames(line, from, fps, to).map((frame, i) => ({ frame, sample: (1 + Math.floor(random(`${seed}-blip-${i}`) * 6)) as Blip["sample"] }));
 
 /** Speech bubble drawn inside `box` (tail included), pointing right at the mascot. Visible from `from` to `to` (frames). */
-export const SpeechBubble: React.FC<{ line: string; from: number; to: number; box: Box; language: "en" | "hi" }> = ({
-  line, from, to, box, language,
+export const SpeechBubble: React.FC<{ line: string; from: number; to: number; box: Box; language: "en" | "hi"; tail?: boolean }> = ({
+  line, from, to, box, language, tail = true,
 }) => {
   useFonts();
   const frame = useCurrentFrame();
@@ -76,7 +76,7 @@ export const SpeechBubble: React.FC<{ line: string; from: number; to: number; bo
           <div style={{ ...text, visibility: "hidden" }}>{line}</div>
           <div style={text}>{typedText(line, frame, from, fps, to)}</div>
         </div>
-        <svg width={BUBBLE_TAIL} height={40} style={{ flex: "none", marginLeft: -4 }}>
+        <svg width={BUBBLE_TAIL} height={40} style={{ flex: "none", marginLeft: -4, visibility: tail ? "visible" : "hidden" }}>
           <path d={`M0,2 L${BUBBLE_TAIL - 2},20 L0,38`} fill={P.body} stroke={P.ink} strokeWidth={4} strokeLinejoin="round" />
           <rect x={0} y={5} width={4} height={30} fill={P.body} />
         </svg>

@@ -64,14 +64,19 @@ describe("poseAt", () => {
     expect(poseAt(380, rs, FPS, "s").arms).toBe("face");
   });
 
-  it("faint leaves the box in 12 frames and is back in by reactFrame + 45 + 12", () => {
+  it("faint tips back, falls out of frame with ease-in, and is back in by reactFrame + 45 + 12", () => {
     const rs = reactionsFor([beat("a", 10_000, 3, "faint")], FPS, 3000);
     const react = rs[0].reactFrame;
-    expect(poseAt(react, rs, FPS, "s").offsetX).toBe(0);
-    expect(poseAt(react + 12, rs, FPS, "s").offsetX).toBeGreaterThan(200);
-    expect(poseAt(react + 44, rs, FPS, "s").offsetX).toBeGreaterThan(200);
-    expect(poseAt(react + 45 + 12, rs, FPS, "s").offsetX).toBe(0);
-    expect(poseAt(react + 45 + 12, rs, FPS, "s").lean).toBeCloseTo(0, 6);
+    const at = (f: number) => poseAt(react + f, rs, FPS, "s");
+    expect(at(0).offsetY).toBeLessThan(2); // idle bob only
+    expect(at(4).lean).toBeCloseTo(-25, 0); // anticipation
+    expect(at(10).offsetY).toBeLessThan(at(14).offsetY - 60); // accelerating
+    expect(at(16).offsetY).toBeGreaterThan(500);
+    expect(at(16).lean).toBeCloseTo(90, 0);
+    expect(at(44).offsetY).toBeGreaterThan(500);
+    expect(at(45 + 12).offsetY).toBeLessThan(2);
+    expect(at(45 + 12).offsetX).toBe(0);
+    expect(at(45 + 12).lean).toBeCloseTo(0, 6);
     expect(rs[0].bubbleTo).toBeGreaterThan(react + 57);
   });
 

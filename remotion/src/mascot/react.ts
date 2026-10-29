@@ -9,9 +9,14 @@ import { lerpPose, type PoseState } from "./poseState";
 // Comic timing (docs/SPEC.md section 8): freeze 6 frames, react on frame 7, bubble text from frame 10.
 const FREEZE_FRAMES = 6;
 const BUBBLE_DELAY = 3; // frames from the reaction to the bubble (frame 7 -> frame 10)
-const FAINT_OUT = 12;
+// Faint: 4 frames of anticipation (tips back), an ease-in fall out of frame, back in 1.5 s later over 12 frames.
+const FAINT_ANTICIPATE = 4;
+const FAINT_ANTICIPATE_LEAN = -25;
+const FAINT_FALL = 12;
+const FAINT_BACK_FRAMES = 12;
 const FAINT_BACK_MS = 1500;
 const FAINT_X = POSES.faint.offsetX;
+const FAINT_Y = POSES.faint.offsetY;
 const FAINT_LEAN = POSES.faint.lean;
 const MIC_FALL = 14;
 
@@ -56,7 +61,10 @@ export const freezeAt = (frame: number, reactions: Reaction[]): number | null =>
 const ramp = (t: number, from: number, len: number): number => Math.max(0, Math.min(1, (t - from) / len));
 
 /** Where a pose ends up once its own motion is over (faint is back in the box). */
-const settled = (s: PoseState, pose: string): PoseState => (pose === "faint" ? { ...s, offsetX: 0, lean: 0 } : s);
+const settled = (s: PoseState, pose: string): PoseState => (pose === "faint" ? { ...s, offsetX: 0, offsetY: 0, lean: 0 } : s);
+
+/** Last frame of a faint phase: the mascot is back in the box from here, so the box clip can apply again. */
+export const faintEnd = (p: Phase, fps: number): number => p.start + msToFrame(FAINT_BACK_MS, fps) + FAINT_BACK_FRAMES;
 
 /** Per-pose motion on top of the sprung target, `t` frames after the reaction. */
 const motion = (pose: string, t: number, fps: number): Partial<PoseState> => {
@@ -83,9 +91,10 @@ const motion = (pose: string, t: number, fps: number): Partial<PoseState> => {
       return { propLift: POSES.mic_drop.propLift * fall * fall + bounce };
     }
     case "faint": {
-      const back = ramp(t, msToFrame(FAINT_BACK_MS, fps), FAINT_OUT);
-      const k = ramp(t, 0, FAINT_OUT) * (1 - back);
-      return { offsetX: FAINT_X * k, lean: FAINT_LEAN * k };
+      const fall = ramp(t, FAINT_ANTICIPATE, FAINT_FALL) ** 2; // ease-in: gravity
+      const back = ramp(t, msToFrame(FAINT_BACK_MS, fps), FAINT_BACK_FRAMES);
+      const lean = FAINT_ANTICIPATE_LEAN * ramp(t, 0, FAINT_ANTICIPATE) * (1 - fall) + FAINT_LEAN * fall;
+      return { offsetX: FAINT_X * fall * (1 - back), offsetY: FAINT_Y * fall * (1 - back), lean: lean * (1 - back) };
     }
     default: return {};
   }

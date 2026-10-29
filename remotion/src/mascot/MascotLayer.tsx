@@ -14,7 +14,7 @@ import type { Box } from "../theme/layout";
 import { layerRects } from "./layerLayout";
 import { P } from "./parts/kit";
 import { Pyaada } from "./Pyaada";
-import { phaseAt, poseAt, reactionsFor, type Phase } from "./react";
+import { faintEnd, phaseAt, poseAt, reactionsFor, type Phase } from "./react";
 import { blipFrames, SpeechBubble, typingEnd } from "./speech";
 
 const BLIPS = [blip1, blip2, blip3, blip4, blip5, blip6];
@@ -59,14 +59,18 @@ export const MascotLayer: React.FC<{ spec: VideoSpec; box: Box; height: number }
   const flap = talking && Math.floor((frame - active.bubbleFrom) / 3) % 2 === 0;
   const phase = phaseAt(frame, reactions, fps);
   const party = phase?.pose === "party" ? phase : null;
+  // The box clip holds everything in except a faint: he falls out of frame, so the clip is off for that stretch only
+  // (right and bottom of the box are free of board and captions; he is back in the box when it ends).
+  const falling = phase?.pose === "faint" && frame < faintEnd(phase, fps);
+  const away = state.offsetY > 200; // off screen: the bubble has nobody to point at
   return (
-    <AbsoluteFill style={{ clipPath: `inset(${box.y}px ${width - box.x - box.w}px ${frameH - box.y - box.h}px ${box.x}px)` }}>
+    <AbsoluteFill style={{ clipPath: falling ? undefined : `inset(${box.y}px ${width - box.x - box.w}px ${frameH - box.y - box.h}px ${box.x}px)` }}>
       {party && <Confetti phase={party} box={box} frame={frame} />}
       <div style={{ position: "absolute", left: mascot.x, top: mascot.y }}>
         <Pyaada state={flap ? { ...state, mouth: "open_talk" } : state} height={height} />
       </div>
       {active && (
-        <SpeechBubble line={active.beat.mascot.line} from={active.bubbleFrom} to={active.bubbleTo} box={bubble} language={spec.language} />
+        <SpeechBubble line={active.beat.mascot.line} from={active.bubbleFrom} to={active.bubbleTo} box={bubble} language={spec.language} tail={!away} />
       )}
       {reactions.flatMap((r) =>
         blipFrames(r.beat.mascot.line, r.bubbleFrom, fps, `${spec.video_id}-${r.beat.beat_id}`, r.bubbleTo)

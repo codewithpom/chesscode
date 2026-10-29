@@ -38,7 +38,7 @@ describe("MascotLayer layout", () => {
           for (let f = r.freezeFrom; f <= r.bubbleTo; f++) {
             const s = poseAt(f, rs, FPS, spec.video_id);
             const shift = s.offsetX * scale;
-            if (r.beat.mascot.pose === "faint") continue; // slides out through the clip edge, back in by +57 frames
+            if (r.beat.mascot.pose === "faint") continue; // falls out of frame (clip off for those 57 frames), back in by +57
             expect(Math.abs(shift)).toBeLessThanOrEqual(0.04 * mascotWidth(height));
           }
         }
@@ -56,7 +56,7 @@ describe("MascotLayer layout", () => {
   it("faint slides out and back within 57 frames of the reaction", () => {
     const rs = reactionsFor(REEL_SPEC.beats, FPS, 600);
     const r = rs[0];
-    expect(poseAt(r.reactFrame + 20, rs, FPS, "s").offsetX).toBeGreaterThan(200);
-    expect(poseAt(r.reactFrame + 57, rs, FPS, "s").offsetX).toBe(0);
+    expect(poseAt(r.reactFrame + 20, rs, FPS, "s").offsetY).toBeGreaterThan(200);
+    expect(poseAt(r.reactFrame + 57, rs, FPS, "s").offsetY).toBeLessThan(2); // idle bob only
   });
 });

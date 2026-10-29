@@ -17,7 +17,8 @@ export const POSES: Record<z.infer<typeof Pose>, PoseState> = {
   thinking: p({ arms: "chin", pupilX: 0.4, pupilY: -0.8, browAngle: 0.25, browY: 0.3, browRY: 0.5, mouth: "flat", headTilt: -6 }),
   side_eye: p({ eyeOpen: 0.5, pupilX: 1, browAngle: 0.6, browY: -0.4, browRY: 1.2, mouth: "flat" }),
   facepalm: p({ eyeOpen: 0, browAngle: -0.8, browY: 0.4, mouth: "frown", arms: "face", lean: -4 }),
-  faint: p({ eyeOpen: 0, browAngle: -0.8, browY: 0.2, mouth: "o", lean: 78, offsetX: 300, offsetY: 16 }),
+  // Out position: tipped over to the right and below the frame (520 rig units = past the bottom of both boxes).
+  faint: p({ eyeOpen: 0, browAngle: -0.8, mouth: "o", lean: 90, offsetX: 60, offsetY: 520 }),
   slow_clap: p({ eyeOpen: 0.7, pupilY: -0.4, browAngle: -0.3, browY: 0.4, mouth: "smirk", arms: "clap" }),
   screaming: p({ eyeScale: 1.15, browAngle: -0.9, browY: 1, mouth: "wide", squash: 0.94 }),
   shocked: p({ eyeScale: 1.18, browY: 1, mouth: "o", lean: 3, propLift: 14 }),
