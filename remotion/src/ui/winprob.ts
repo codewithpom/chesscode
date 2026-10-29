@@ -37,7 +37,8 @@ export const whipSpring: SpringConfig = {
 };
 
 export type BarPly = Pick<Ply, "ply" | "show_at_ms" | "eval" | "class">;
-export type BarBeat = Pick<Beat, "type" | "ply">;
+/** `fx` is optional so a bare {type, ply} still means the spec section 5 rule: a blunder whips. */
+export type BarBeat = Pick<Beat, "type" | "ply"> & Partial<Pick<Beat, "fx">>;
 
 /** White's share of the bar (0..100) at a frame. Pure: depends only on the frame and spec data. */
 export const barShareAt = (frame: number, fps: number, plies: BarPly[], beats: BarBeat[]): number => {
@@ -46,7 +47,8 @@ export const barShareAt = (frame: number, fps: number, plies: BarPly[], beats: B
   if (k < 0) return 50;
   const from = k === 0 ? 50 : winPct(plies[k - 1].eval);
   const to = winPct(plies[k].eval);
-  const whip = beats.some((b) => b.type === "blunder" && b.ply === plies[k].ply);
+  // Spec section 5: the bar whips on a blunder beat; any beat can ask for it with the eval_whip effect (comeback).
+  const whip = beats.some((b) => b.ply === plies[k].ply && (b.type === "blunder" || b.fx?.includes("eval_whip")));
   const t = spring({
     frame: frame - msToFrame(plies[k].show_at_ms, fps),
     fps,

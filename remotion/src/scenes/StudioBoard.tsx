@@ -8,9 +8,9 @@ import { EvalBar } from "../ui/EvalBar";
 
 const { board, evalBar } = studioLayout.boxes;
 
-/** EvalBar reads blunder beats for its whip; with eval_whip switched off the bar sees none. */
+/** EvalBar reads the beats for its whip (blunders and beats listing eval_whip); with eval_whip switched off for the template it sees none. */
 export const evalSpec = (spec: VideoSpec, template: "studio" | "shorts"): VideoSpec =>
-  templateFx[template].eval_whip ? spec : { ...spec, beats: spec.beats.filter((b) => b.type !== "blunder") };
+  templateFx[template].eval_whip ? spec : { ...spec, beats: [] };
 
 /**
  * The board at its fixed Studio place with the eval bar beside it. Reads the absolute frame. `atMs` pins the

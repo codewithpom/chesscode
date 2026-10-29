@@ -98,6 +98,15 @@ describe("barShareAt", () => {
     expect(whip).toBeLessThan(normal); // closer to the new low value
   });
 
+  it("whips on any beat whose fx lists eval_whip (a comeback), not only on blunders", () => {
+    const comeback: BarBeat = { type: "comeback", ply: 2, fx: ["eval_whip"] };
+    const quiet: BarBeat = { type: "comeback", ply: 2, fx: [] };
+    expect(barShareAt(95, FPS, plies, [comeback])).toBe(barShareAt(95, FPS, plies, [{ type: "blunder", ply: 2 }]));
+    expect(barShareAt(95, FPS, plies, [comeback])).toBeLessThan(barShareAt(95, FPS, plies, []));
+    expect(barShareAt(95, FPS, plies, [quiet])).toBe(barShareAt(95, FPS, plies, []));
+    expect(barShareAt(95, FPS, plies, [{ type: "comeback", ply: 3, fx: ["eval_whip"] }])).toBe(barShareAt(95, FPS, plies, []));
+  });
+
   it("whip spring has no overshoot", () => {
     let max = 0;
     for (let f = 0; f < 60; f++) max = Math.max(max, spring({ frame: f, fps: 30, config: whipSpring }));
