@@ -9,6 +9,21 @@ type Player = VideoSpec["game"]["white"];
 /** "GM 2850", "2850", "GM" or "" (historic players have neither). */
 export const ratingLine = (p: Player): string => [p.title, p.rating].filter((v) => v !== null).join(" ");
 
+/** Flat square in the side's piece colour (no icon). */
+export const SideChip: FC<{ side: "white" | "black"; size: number; offset?: number }> = ({ side, size, offset = 0 }) => (
+  <div
+    style={{
+      flex: "none",
+      width: size,
+      height: size,
+      marginTop: offset,
+      background: side === "white" ? boardThemes.bone_slate.light : pieceBlack,
+      border: `2px solid ${side === "white" ? tokens.color.hairline : pieceBlackInk}`,
+      boxSizing: "border-box",
+    }}
+  />
+);
+
 /**
  * One player: side chip (a flat piece-colour square), name, rating line, country code.
  * `fact` (PlayerIntro only) puts the one-line fact under the name and makes the card taller.
@@ -20,7 +35,9 @@ export const PlayerCard: FC<{
   lang: "en" | "hi";
   fact?: boolean;
   clock?: ReactNode;
-}> = ({ player, side, lang, fact = false, clock }) => {
+  /** Name and fact font size in px; defaults to tokens.size.body. The rating line is 28 px or 7/8 of it. */
+  size?: number;
+}> = ({ player, side, lang, fact = false, clock, size = tokens.size.body }) => {
   useFonts();
   const meta = [ratingLine(player), player.country].filter(Boolean).join("  ");
   return (
@@ -39,30 +56,20 @@ export const PlayerCard: FC<{
         color: tokens.color.text,
       }}
     >
-      <div
-        style={{
-          flex: "none",
-          width: 24,
-          height: 24,
-          marginTop: fact ? 8 : 0,
-          background: side === "white" ? boardThemes.bone_slate.light : pieceBlack,
-          border: `2px solid ${side === "white" ? tokens.color.hairline : pieceBlackInk}`,
-          boxSizing: "border-box",
-        }}
-      />
+      <SideChip side={side} size={size * 0.75} offset={fact ? size * 0.25 : 0} />
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: "flex", alignItems: "baseline", gap: tokens.space(3) }}>
-          <span style={{ fontSize: tokens.size.body, fontWeight: 600, lineHeight: 1.4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+          <span style={{ fontSize: size, fontWeight: 600, lineHeight: 1.4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
             {player.name}
           </span>
           {meta && (
-            <span style={{ fontFamily: tokens.font.mono, fontSize: tokens.size.min, fontVariantNumeric: "tabular-nums", color: tokens.color.muted, whiteSpace: "pre" }}>
+            <span style={{ fontFamily: tokens.font.mono, fontSize: Math.max(tokens.size.min, size * 0.875), fontVariantNumeric: "tabular-nums", color: tokens.color.muted, whiteSpace: "pre" }}>
               {meta}
             </span>
           )}
         </div>
         {fact && (
-          <div style={{ marginTop: tokens.space(1), fontSize: tokens.size.body, lineHeight: 1.45, color: tokens.color.muted, wordBreak: "keep-all" }}>
+          <div style={{ marginTop: tokens.space(1), fontSize: size, lineHeight: 1.45, color: tokens.color.muted, wordBreak: "keep-all" }}>
             {player.fact}
           </div>
         )}

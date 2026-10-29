@@ -63,6 +63,10 @@ export const studioLayout = {
     /** Mascot speech bubble zone, right of the move list and above the mascot. */
     bubble: { x: 1464, y: 336, w: 360, h: 264 },
     mascot: { x: 1624, y: 616, w: 200, h: 200 },
+    /** ColdOpen hook line, where the player cards and move list are not drawn; ends where the bubble zone starts. */
+    hook: { x: COL_X, y: 96, w: COL_W, h: 240 },
+    /** Outro: the mascot sign-off in the left third; the right two thirds are reserved for the end screen. */
+    outroMascot: { x: 96, y: 240, w: 480, h: 600 },
     /** Bottom aligned at the 96 px margin; two lines of 56 px captions fit. */
     captions: { x: COL_X, y: 822, w: COL_W, h: 162 },
   },
