@@ -6,7 +6,9 @@ import { boardStateAt } from "../board/boardState";
 import { VideoSpec } from "../spec/schema";
 import { msToFrame } from "../spec/time";
 import { moveDoneFrame } from "../board/boardState";
-import { clockFor, coldOpenSpec, currentPlyAt, keyMomentTiming, moveLabel, resultText, yearOf } from "./helpers";
+import { sceneRanges } from "./timeline";
+import { studioLayout } from "../theme/layout";
+import { captionsBoxAt, clockFor, coldOpenSpec, currentPlyAt, keyMomentTiming, moveLabel, resultText, yearOf } from "./helpers";
 
 const spec = VideoSpec.parse(
   JSON.parse(readFileSync(resolve(__dirname, "../../../spec/fixtures/cc-2026-0001-en/video_spec.json"), "utf8")),
@@ -94,5 +96,27 @@ describe("keyMomentTiming", () => {
 
   it("a short line in a long scene is not stretched past 4.5 s a move", () => {
     expect(keyMomentTiming(40000, 2).stepMs).toBe(4500);
+  });
+});
+
+describe("captionsBoxAt", () => {
+  const ranges = sceneRanges(spec); // cold open, playback, outro (from 40 s)
+  const outroStart = ranges.find((r) => r.kind === "outro")!.startMs;
+
+  it("keeps the right column until the outro, then moves the captions to the left third", () => {
+    expect(captionsBoxAt(ranges, 1000)).toBeUndefined();
+    expect(captionsBoxAt(ranges, outroStart - 1)).toBeUndefined();
+    const box = captionsBoxAt(ranges, outroStart)!;
+    expect(box).toBe(studioLayout.boxes.outroCaptions);
+    expect(box.x + box.w).toBeLessThanOrEqual(studioLayout.width / 3);
+  });
+
+  it("outro captions never touch the end-screen area, whatever outro narration there is", () => {
+    // A spoken outro that runs 6 s: every ms of it uses the left-third box.
+    const spoken = ranges.map((r) => (r.kind === "outro" ? { ...r, endMs: r.startMs + 6000 } : r));
+    for (let ms = outroStart; ms < outroStart + 6000; ms += 250) {
+      const b = captionsBoxAt(spoken, ms)!;
+      expect(b.x + b.w).toBeLessThanOrEqual(640);
+    }
   });
 });

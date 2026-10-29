@@ -8,6 +8,7 @@ import { MusicBed } from "../audio/MusicBed";
 import { NarrationTrack } from "../audio/NarrationTrack";
 import { Sfx } from "../audio/Sfx";
 import { ColdOpen } from "../scenes/ColdOpen";
+import { captionsBoxAt } from "../scenes/helpers";
 import { KeyMoment } from "../scenes/KeyMoment";
 import { Outro } from "../scenes/Outro";
 import { PlayerIntro } from "../scenes/PlayerIntro";
@@ -18,7 +19,6 @@ import { Verdict } from "../scenes/Verdict";
 import { SUPPORTED_MAJOR, VideoSpec } from "../spec/schema";
 import { frameToMs, msToFrame } from "../spec/time";
 import { useFonts } from "../theme/fonts";
-import { studioLayout } from "../theme/layout";
 import { tokens } from "../theme/tokens";
 import { Captions } from "../ui/Captions";
 
@@ -47,8 +47,7 @@ const SceneFor: FC<{ spec: VideoSpec; range: SceneRange }> = ({ spec, range }) =
 const StudioCaptions: FC<{ spec: VideoSpec; ranges: SceneRange[] }> = ({ spec, ranges }) => {
   const { fps } = useVideoConfig();
   const ms = frameToMs(useCurrentFrame(), fps);
-  const outro = ranges.some((r) => r.kind === "outro" && ms >= r.startMs && ms < r.endMs);
-  return <Captions spec={spec} mode="long" box={outro ? studioLayout.boxes.outroCaptions : undefined} />;
+  return <Captions spec={spec} mode="long" box={captionsBoxAt(ranges, ms)} />;
 };
 
 export const StudioVideo: FC<VideoSpec> = (spec) => {

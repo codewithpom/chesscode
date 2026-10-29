@@ -1,6 +1,7 @@
 import type { Ply, VideoSpec } from "../spec/schema";
 import { msToFrame } from "../spec/time";
 import { motion } from "../theme/motion";
+import { studioLayout, type Box } from "../theme/layout";
 import type { SceneRange } from "./timeline";
 
 /** The ply on screen at an absolute frame (the last whose show_at_ms has been reached), or null before the first. */
@@ -70,3 +71,7 @@ export const keyMomentTiming = (durationMs: number, moves: number): { leadMs: nu
   const leadMs = Math.min(KM_LEAD_MS, Math.max(0, room - (moves - 1) * motion.pieceMoveMs * 2));
   return { leadMs, stepMs: Math.min(KM_MAX_STEP_MS, Math.floor((room - leadMs) / (moves - 1))) };
 };
+
+/** Where the long-form captions go at `ms`: the outro moves them to the left third, the right two thirds being the end screen's. undefined = the default right column. */
+export const captionsBoxAt = (ranges: Pick<SceneRange, "kind" | "startMs" | "endMs">[], ms: number): Box | undefined =>
+  ranges.some((r) => r.kind === "outro" && ms >= r.startMs && ms < r.endMs) ? studioLayout.boxes.outroCaptions : undefined;
