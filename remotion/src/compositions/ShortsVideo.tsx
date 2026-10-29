@@ -83,9 +83,9 @@ export const ShortsVisuals: FC<VideoSpec> = (spec) => {
         <div
           style={{
             position: "absolute",
-            left: captions.x,
+            left: captions.x - 4, // 4 px wider each side than the bar, whose outline would otherwise peek out
             top: HOOK_BOX.y,
-            width: captions.w,
+            width: captions.w + 8,
             height: HOOK_BOX.h,
             display: "flex",
             alignItems: "center",
