@@ -5,7 +5,8 @@ import { buildPositions } from "../board/positions";
 import { boardStateAt } from "../board/boardState";
 import { VideoSpec } from "../spec/schema";
 import { msToFrame } from "../spec/time";
-import { clockFor, coldOpenSpec, currentPlyAt, moveLabel, resultText, yearOf } from "./helpers";
+import { moveDoneFrame } from "../board/boardState";
+import { clockFor, coldOpenSpec, currentPlyAt, keyMomentTiming, moveLabel, resultText, yearOf } from "./helpers";
 
 const spec = VideoSpec.parse(
   JSON.parse(readFileSync(resolve(__dirname, "../../../spec/fixtures/cc-2026-0001-en/video_spec.json"), "utf8")),
@@ -65,5 +66,33 @@ describe("small helpers", () => {
     expect(resultText("1/2-1/2")).toBe("½–½");
     expect(moveLabel({ ply: 19, san: "Bxb5+" })).toBe("10. Bxb5+");
     expect(moveLabel({ ply: 20, san: "Qxb5" })).toBe("10... Qxb5");
+  });
+});
+
+describe("keyMomentTiming", () => {
+  const lastDone = (durationMs: number, moves: number) => {
+    const { leadMs, stepMs } = keyMomentTiming(durationMs, moves);
+    return moveDoneFrame(leadMs + (moves - 1) * stepMs, FPS);
+  };
+
+  it("an 8-move line in a 15 s scene plays to its end (it used to start the last move at 15.5 s)", () => {
+    const { leadMs, stepMs } = keyMomentTiming(15000, 8);
+    expect(leadMs + 7 * stepMs).toBeLessThan(15000);
+    expect(lastDone(15000, 8)).toBeLessThanOrEqual(msToFrame(15000 - 1000, FPS)); // landed with the hold still to go
+    expect(stepMs).toBeLessThan(2000); // below the old 2 s floor, as the scene demands
+  });
+
+  it("every line length in every legal scene length finishes with the hold and moves one at a time", () => {
+    for (let moves = 1; moves <= 8; moves++)
+      for (let seconds = 15; seconds <= 40; seconds += 5) {
+        const { leadMs, stepMs } = keyMomentTiming(seconds * 1000, moves);
+        expect(lastDone(seconds * 1000, moves), `${moves} moves in ${seconds} s`).toBeLessThanOrEqual(msToFrame(seconds * 1000 - 1000, FPS));
+        if (moves > 1) expect(stepMs, `${moves} moves in ${seconds} s`).toBeGreaterThanOrEqual(280);
+        expect(leadMs).toBeGreaterThanOrEqual(0);
+      }
+  });
+
+  it("a short line in a long scene is not stretched past 4.5 s a move", () => {
+    expect(keyMomentTiming(40000, 2).stepMs).toBe(4500);
   });
 });

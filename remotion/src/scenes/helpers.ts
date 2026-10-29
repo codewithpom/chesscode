@@ -54,3 +54,19 @@ export const coldOpenSpec = (spec: VideoSpec, range: Pick<SceneRange, "startMs" 
     ),
   };
 };
+
+const KM_LEAD_MS = 1500; // the position holds before the line starts
+const KM_HOLD_MS = 1000; // the final position holds before the scene ends
+const KM_MAX_STEP_MS = 4500;
+
+/**
+ * Pacing of an alternative line inside a KeyMoment of `durationMs`: the first move starts after `leadMs`, a move
+ * every `stepMs`, and the last one has landed `KM_HOLD_MS` before the scene ends. The step is whatever the scene
+ * allows (up to 4.5 s), so even an 8-move line in 15 s plays to its end.
+ */
+export const keyMomentTiming = (durationMs: number, moves: number): { leadMs: number; stepMs: number } => {
+  if (moves <= 1) return { leadMs: KM_LEAD_MS, stepMs: KM_MAX_STEP_MS };
+  const room = durationMs - KM_HOLD_MS - motion.pieceMoveMs - 40; // 40 ms: one frame of rounding
+  const leadMs = Math.min(KM_LEAD_MS, Math.max(0, room - (moves - 1) * motion.pieceMoveMs * 2));
+  return { leadMs, stepMs: Math.min(KM_MAX_STEP_MS, Math.floor((room - leadMs) / (moves - 1))) };
+};
