@@ -18,6 +18,8 @@ import { fontFor, useFonts } from "../theme/fonts";
 import type { Box } from "../theme/layout";
 import { tokens } from "../theme/tokens";
 
+/** Board units: at 120 px a unit the shaft is about 26 px, readable at 320 x 180 (design review: it read as a stray stroke). */
+export const THUMB_ARROW_WIDTH = 0.22;
 export const THUMB = { width: 1280, height: 720 } as const;
 const TEXT: Box = { x: 64, y: 40, w: 1152, h: 144 };
 const BOARD: Box = { x: 736, y: 208, w: 480, h: 480 };
@@ -117,7 +119,7 @@ export const Thumbnail: FC<VideoSpec> = (spec) => {
           const o = orient(p.x, p.y, orientation);
           return <Piece key={p.id} type={p.type} color={p.color} x={o.x} y={o.y} opacity={p.opacity} scale={p.scale} />;
         })}
-        <Arrows arrows={[arrow]} orientation={orientation} />
+        <Arrows arrows={[arrow]} orientation={orientation} width={THUMB_ARROW_WIDTH} tipInset={0.5} />
       </svg>
     </AbsoluteFill>
   );

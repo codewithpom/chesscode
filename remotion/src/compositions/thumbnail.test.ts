@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { cropViewBox, cropWindow } from "./Thumbnail";
+import { arrowGeometry } from "../board/Arrows";
+import { cropViewBox, cropWindow, THUMB_ARROW_WIDTH } from "./Thumbnail";
 
 describe("cropWindow", () => {
   it("White at the bottom: ranks top to bottom, files left to right, origin is the lower-left", () => {
@@ -38,5 +39,25 @@ describe("cropViewBox", () => {
     expect(cropViewBox("e1", "white")).toBe("4 4 4 4");
     expect(cropViewBox("a5", "black")).toBe("4 4 4 4");
     expect(cropViewBox("e1", "black")).toBe("0 0 4 4");
+  });
+});
+
+describe("thumbnail arrow", () => {
+  const a = { from: "c3", to: "b5", color: "best" as const };
+  it("the head stops at the target square's edge instead of burying the piece", () => {
+    const centre = arrowGeometry(a, "white");
+    const stopped = arrowGeometry(a, "white", 0.5);
+    expect(Math.hypot(centre.x2 - stopped.x2, centre.y2 - stopped.y2)).toBeCloseTo(0.5, 6);
+    // b5 centre is (1.5, 3.5) in white's view; the stopped tip is half a unit before it along the arrow.
+    expect(Math.hypot(stopped.x2 - 1.5, stopped.y2 - 3.5)).toBeCloseTo(0.5, 6);
+  });
+  it("is thick enough to read at 320 x 180 (>= 24 px on the 480 px, 4-square crop)", () => {
+    expect(THUMB_ARROW_WIDTH * (480 / 4)).toBeGreaterThanOrEqual(24);
+  });
+  it("follows orientation (Black at the bottom)", () => {
+    const w = arrowGeometry(a, "white", 0.5);
+    const b = arrowGeometry(a, "black", 0.5);
+    expect(b.x1).toBeCloseTo(8 - w.x1, 6);
+    expect(b.y1).toBeCloseTo(8 - w.y1, 6);
   });
 });
