@@ -1,12 +1,15 @@
 import { spring } from "remotion";
 import type { Beat } from "../spec/schema";
 import { msToFrame } from "../spec/time";
-import { uiSpring } from "../theme/motion";
 import { idleAt } from "./idle";
 import { POSES } from "./poses";
 import { lerpPose, type PoseState } from "./poseState";
 
 // Comic timing (docs/SPEC.md section 8): freeze 6 frames, react on frame 7, bubble text from frame 10.
+// Mascot-only spring: critically damped (damping = 2 * sqrt(stiffness)), snappier than the shared UI spring so the
+// frame-7 reaction lands as a snap instead of a 0.5 s settle.
+const MASCOT_SPRING = { damping: 40, mass: 1, stiffness: 400 };
+const NO_BLINK_FRAMES = 30; // eyes do the acting: no blink right after a reaction starts
 const FREEZE_FRAMES = 6;
 const BUBBLE_DELAY = 3; // frames from the reaction to the bubble (frame 7 -> frame 10)
 // Faint: 4 frames of anticipation (tips back), an ease-in fall out of frame, back in 1.5 s later over 12 frames.
@@ -128,21 +131,21 @@ export const phaseAt = (frame: number, reactions: Reaction[], fps: number): Phas
   return phasesOf(r, fps).filter((p) => p.start <= frame).slice(-1)[0] ?? null;
 };
 
-type Key = { start: number; pose: string; target: PoseState };
+type Key = { start: number; pose: string; target: PoseState; react: boolean };
 
 export const poseAt = (frame: number, reactions: Reaction[], fps: number, seed: string): PoseState => {
-  const keys: Key[] = [{ start: 0, pose: "idle", target: POSES.idle }];
+  const keys: Key[] = [{ start: 0, pose: "idle", target: POSES.idle, react: false }];
   for (const r of reactions) {
-    for (const p of phasesOf(r, fps)) keys.push({ start: p.start, pose: p.pose, target: POSES[p.pose] });
-    if (r.bubbleTo > r.reactFrame) keys.push({ start: r.bubbleTo, pose: "idle", target: POSES.idle });
+    for (const p of phasesOf(r, fps)) keys.push({ start: p.start, pose: p.pose, target: POSES[p.pose], react: true });
+    if (r.bubbleTo > r.reactFrame) keys.push({ start: r.bubbleTo, pose: "idle", target: POSES.idle, react: false });
   }
   let k = 0;
   for (let i = 0; i < keys.length; i++) if (keys[i].start <= frame) k = i;
   const key = keys[k];
   const prev = k > 0 ? settled(keys[k - 1].target, keys[k - 1].pose) : POSES.idle;
-  const p = k > 0 ? spring({ frame: frame - key.start, fps, config: uiSpring }) : 1;
+  const p = k > 0 ? spring({ frame: frame - key.start, fps, config: MASCOT_SPRING }) : 1;
   const base = lerpPose(prev, key.target, p);
   const idle = idleAt(frame, fps, seed);
   const s: PoseState = { ...base, ...motion(key.pose, frame - key.start, fps) };
-  return { ...s, squash: s.squash * (idle.squash ?? 1), offsetY: s.offsetY + (idle.offsetY ?? 0), eyeOpen: Math.min(s.eyeOpen, idle.eyeOpen ?? 1) };
+  return { ...s, squash: s.squash * (idle.squash ?? 1), offsetY: s.offsetY + (idle.offsetY ?? 0), eyeOpen: key.react && frame - key.start < NO_BLINK_FRAMES ? s.eyeOpen : Math.min(s.eyeOpen, idle.eyeOpen ?? 1) };
 };

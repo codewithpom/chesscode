@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { Beat } from "../spec/schema";
 import { msToFrame } from "../spec/time";
+import { blinkStarts } from "./idle";
 import { freezeAt, phaseAt, poseAt, reactionsFor } from "./react";
 
 const FPS = 30;
@@ -106,5 +107,25 @@ describe("comeback: shocked, then party", () => {
   it("only a comeback with the default shocked pose gets the second phase", () => {
     const other = reactionsFor([beat("d", 10_000, 2, "shocked", "Oh.", "blunder")], FPS, 3000);
     expect(phaseAt(other[0].reactFrame + 60, other, FPS)?.pose).toBe("shocked");
+  });
+});
+
+describe("blinks and spring", () => {
+  it("does not blink in the first 30 frames of a reaction, but does when idle", () => {
+    const [blink] = blinkStarts(900, FPS, "s");
+    const idleRs = reactionsFor([], FPS, 3000);
+    expect(poseAt(blink + 1, idleRs, FPS, "s").eyeOpen).toBe(0);
+    // thinking has open eyes; start its reaction 5 frames before the blink.
+    const rs = reactionsFor([beat("a", ((blink - 5) * 1000) / FPS, 1, "thinking")], FPS, 3000);
+    expect(rs[0].reactFrame).toBe(blink - 5);
+    expect(poseAt(blink + 1, rs, FPS, "s").eyeOpen).toBe(1);
+    expect(poseAt(blink + 31, rs, FPS, "s").eyeOpen).toBeGreaterThan(0.5); // blinks are back after 30 frames (none due here)
+  });
+
+  it("is 90% of the way into the pose 8 frames after the reaction (frame-7 snap)", () => {
+    const rs = reactionsFor([beat("a", 10_000, 1, "shocked")], FPS, 3000);
+    const at = rs[0].reactFrame;
+    expect(poseAt(at + 8, rs, FPS, "s").eyeScale).toBeGreaterThan(1 + 0.18 * 0.9);
+    expect(poseAt(at + 1, rs, FPS, "s").eyeScale).toBeLessThan(1 + 0.18 * 0.2);
   });
 });
