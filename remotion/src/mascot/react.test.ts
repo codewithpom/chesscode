@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
 import type { Beat } from "../spec/schema";
 import { msToFrame } from "../spec/time";
-import { freezeAt, poseAt, reactionsFor } from "./react";
+import { freezeAt, phaseAt, poseAt, reactionsFor } from "./react";
 
 const FPS = 30;
-const beat = (id: string, at_ms: number, intensity: 1 | 2 | 3, pose: Beat["mascot"]["pose"], line = "Oh no, not again."): Beat => ({
-  beat_id: id, type: "blunder", ply: 10, at_ms, intensity, mascot: { pose, line }, fx: [], sfx: null,
+const beat = (id: string, at_ms: number, intensity: 1 | 2 | 3, pose: Beat["mascot"]["pose"], line = "Oh no, not again.", type: Beat["type"] = "blunder"): Beat => ({
+  beat_id: id, type, ply: 10, at_ms, intensity, mascot: { pose, line }, fx: [], sfx: null,
 });
 
 describe("reactionsFor", () => {
@@ -80,5 +80,26 @@ describe("poseAt", () => {
     const s = poseAt(rs[1].reactFrame, rs, FPS, "s");
     expect(Math.abs(s.offsetX)).toBeLessThan(1);
     expect(Math.abs(s.lean)).toBeLessThan(1);
+  });
+});
+
+describe("comeback: shocked, then party", () => {
+  const rs = reactionsFor([beat("c", 10_000, 2, "shocked", "Never mind, he is back!", "comeback")], FPS, 3000);
+  const react = rs[0].reactFrame;
+
+  it("is shocked first and celebrates 1.2 s later", () => {
+    expect(phaseAt(react, rs, FPS)).toMatchObject({ pose: "shocked", start: react });
+    expect(phaseAt(react + 35, rs, FPS)?.pose).toBe("shocked");
+    expect(phaseAt(react + 36, rs, FPS)).toMatchObject({ pose: "party", start: react + 36, beatId: "c" });
+    expect(phaseAt(rs[0].bubbleTo, rs, FPS)).toBeNull();
+    const shocked = poseAt(react + 30, rs, FPS, "s");
+    expect([shocked.mouth, shocked.arms, shocked.prop]).toEqual(["o", "none", "crown"]);
+    const party = poseAt(react + 36 + 30, rs, FPS, "s");
+    expect([party.arms, party.prop]).toEqual(["up", "party_hat"]);
+  });
+
+  it("only a comeback with the default shocked pose gets the second phase", () => {
+    const other = reactionsFor([beat("d", 10_000, 2, "shocked", "Oh.", "blunder")], FPS, 3000);
+    expect(phaseAt(other[0].reactFrame + 60, other, FPS)?.pose).toBe("shocked");
   });
 });

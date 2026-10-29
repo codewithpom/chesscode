@@ -14,7 +14,7 @@ import type { Box } from "../theme/layout";
 import { layerRects } from "./layerLayout";
 import { P } from "./parts/kit";
 import { Pyaada } from "./Pyaada";
-import { poseAt, reactionsFor, type Reaction } from "./react";
+import { phaseAt, poseAt, reactionsFor, type Phase } from "./react";
 import { blipFrames, SpeechBubble, typingEnd } from "./speech";
 
 const BLIPS = [blip1, blip2, blip3, blip4, blip5, blip6];
@@ -22,12 +22,12 @@ const BLIP_FRAMES_MS = 90;
 const CONFETTI = 28;
 const CONFETTI_COLORS = [P.accent, P.body, P.shade];
 
-const Confetti: React.FC<{ r: Reaction; box: Box; frame: number }> = ({ r, box, frame }) => {
-  const t = frame - r.reactFrame;
+const Confetti: React.FC<{ phase: Phase; box: Box; frame: number }> = ({ phase, box, frame }) => {
+  const t = frame - phase.start;
   return (
     <>
       {Array.from({ length: CONFETTI }, (_, i) => {
-        const k = (s: string) => random(`${r.beat.beat_id}-confetti-${i}-${s}`);
+        const k = (s: string) => random(`${phase.beatId}-confetti-${i}-${s}`);
         const age = t - Math.floor(k("delay") * 30);
         if (age < 0) return null;
         const size = 10 + k("size") * 8;
@@ -57,10 +57,11 @@ export const MascotLayer: React.FC<{ spec: VideoSpec; box: Box; height: number }
   const talking = active !== undefined && frame < typingEnd(active.beat.mascot.line, active.bubbleFrom, fps, active.bubbleTo);
   // Mouth flaps every 3 frames while the bubble types.
   const flap = talking && Math.floor((frame - active.bubbleFrom) / 3) % 2 === 0;
-  const party = reactions.find((r) => r.beat.mascot.pose === "party" && frame >= r.reactFrame && frame < r.bubbleTo);
+  const phase = phaseAt(frame, reactions, fps);
+  const party = phase?.pose === "party" ? phase : null;
   return (
     <AbsoluteFill style={{ clipPath: `inset(${box.y}px ${width - box.x - box.w}px ${frameH - box.y - box.h}px ${box.x}px)` }}>
-      {party && <Confetti r={party} box={box} frame={frame} />}
+      {party && <Confetti phase={party} box={box} frame={frame} />}
       <div style={{ position: "absolute", left: mascot.x, top: mascot.y }}>
         <Pyaada state={flap ? { ...state, mouth: "open_talk" } : state} height={height} />
       </div>

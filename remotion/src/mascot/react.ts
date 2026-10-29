@@ -91,12 +91,34 @@ const motion = (pose: string, t: number, fps: number): Partial<PoseState> => {
   }
 };
 
+export type PoseName = keyof typeof POSES;
+/** One stretch of a reaction in one pose. `start` is the frame the pose is entered. */
+export type Phase = { beatId: string; pose: PoseName; start: number };
+
+// Comeback is two jokes (spec 8): shocked, then party.
+const COMEBACK_SHOCK_MS = 1200;
+
+export const phasesOf = (r: Reaction, fps: number): Phase[] => {
+  const pose = r.beat.mascot.pose;
+  const out: Phase[] = [{ beatId: r.beat.beat_id, pose, start: r.reactFrame }];
+  const party = r.reactFrame + msToFrame(COMEBACK_SHOCK_MS, fps);
+  if (r.beat.type === "comeback" && pose === "shocked" && party < r.bubbleTo) out.push({ beatId: r.beat.beat_id, pose: "party", start: party });
+  return out;
+};
+
+/** The reaction pose that is active at `frame` (bubble time), or null when the mascot is idle. */
+export const phaseAt = (frame: number, reactions: Reaction[], fps: number): Phase | null => {
+  const r = reactions.find((x) => frame >= x.reactFrame && frame < x.bubbleTo);
+  if (!r) return null;
+  return phasesOf(r, fps).filter((p) => p.start <= frame).slice(-1)[0] ?? null;
+};
+
 type Key = { start: number; pose: string; target: PoseState };
 
 export const poseAt = (frame: number, reactions: Reaction[], fps: number, seed: string): PoseState => {
   const keys: Key[] = [{ start: 0, pose: "idle", target: POSES.idle }];
   for (const r of reactions) {
-    keys.push({ start: r.reactFrame, pose: r.beat.mascot.pose, target: POSES[r.beat.mascot.pose] });
+    for (const p of phasesOf(r, fps)) keys.push({ start: p.start, pose: p.pose, target: POSES[p.pose] });
     if (r.bubbleTo > r.reactFrame) keys.push({ start: r.bubbleTo, pose: "idle", target: POSES.idle });
   }
   let k = 0;
