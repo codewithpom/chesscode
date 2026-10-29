@@ -37,7 +37,7 @@ export const KeyMoment: FC<{ spec: VideoSpec; range: SceneRange }> = ({ spec, ra
       <div style={{ position: "absolute", left: label.x, top: label.y, width: label.w, height: label.h }}>
         <LowerLabel text={km.label} startMs={range.startMs} endMs={range.endMs} lang={spec.language} />
       </div>
-      <MascotSlot spec={spec} box={mascot} />
+      <MascotSlot spec={spec} box={mascot} height={studioLayout.mascotHeight} />
     </>
   );
 };

@@ -34,7 +34,7 @@ export const ColdOpen: FC<{ spec: VideoSpec; range: SceneRange }> = ({ spec, ran
           {spec.cold_open.hook}
         </div>
       </Enter>
-      <MascotSlot spec={spec} box={mascot} />
+      <MascotSlot spec={cold} box={mascot} height={studioLayout.mascotHeight} />
     </>
   );
 };

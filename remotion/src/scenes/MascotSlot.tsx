@@ -1,9 +1,12 @@
 import type { FC } from "react";
-import type { Box } from "../theme/layout";
+import { MascotLayer } from "../mascot";
 import type { VideoSpec } from "../spec/schema";
+import type { Box } from "../theme/layout";
 
 /**
- * Where the mascot goes. Task 7 (after M4 merges) puts `<MascotLayer spec box height />` here; until then the
- * box stays reserved in the layout and nothing is drawn, so no placeholder reaches a render.
+ * Pyaada and his speech bubble in `box` (the layer clips to it, except for a faint's own fall). `spec.beats` drive
+ * the reactions; mount where the frame is the video's own.
  */
-export const MascotSlot: FC<{ spec: VideoSpec; box: Box }> = () => null;
+export const MascotSlot: FC<{ spec: VideoSpec; box: Box; height: number }> = ({ spec, box, height }) => (
+  <MascotLayer spec={spec} box={box} height={height} />
+);

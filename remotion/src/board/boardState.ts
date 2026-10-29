@@ -23,6 +23,19 @@ export const squareXY = (sq: string): { x: number; y: number } => ({
 export const orient = (x: number, y: number, orientation: "white" | "black"): { x: number; y: number } =>
   orientation === "white" ? { x, y } : { x: 7 - x, y: 7 - y };
 
+/**
+ * First frame at which boardStateAt draws the ply that starts at `showAtMs` as finished (moved, capture gone,
+ * promotion pop over). Derived from the same predicate the board uses (elapsed ms through frameToMs), so rounding
+ * a frame count from 280 ms cannot land one frame early. Effects that start "when the move lands" use it.
+ */
+export const moveDoneFrame = (showAtMs: number, fps: number, promotion = false): number => {
+  const start = msToFrame(showAtMs, fps);
+  const need = motion.pieceMoveMs + (promotion ? PROMOTION_POP_MS : 0);
+  let f = start + Math.max(0, msToFrame(need, fps) - 2);
+  while (frameToMs(f - start, fps) < need) f++;
+  return f;
+};
+
 const clamp01 = (n: number): number => Math.min(1, Math.max(0, n));
 const rest = (pieces: PlacedPiece[]): BoardPiece[] =>
   pieces.map((p) => ({ ...p, ...squareXY(p.square), opacity: 1, scale: 1 }));

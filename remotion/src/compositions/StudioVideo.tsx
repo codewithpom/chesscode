@@ -3,7 +3,7 @@
 // pieces (Board, EvalBar, Captions, MoveList, fx) can all read one absolute frame.
 import type { FC } from "react";
 import { useMemo } from "react";
-import { AbsoluteFill, CalculateMetadataFunction, Sequence, useVideoConfig } from "remotion";
+import { AbsoluteFill, CalculateMetadataFunction, Sequence, useCurrentFrame, useVideoConfig } from "remotion";
 import { MusicBed } from "../audio/MusicBed";
 import { NarrationTrack } from "../audio/NarrationTrack";
 import { Sfx } from "../audio/Sfx";
@@ -16,8 +16,9 @@ import { TitleCard } from "../scenes/TitleCard";
 import { sceneRanges, type SceneRange } from "../scenes/timeline";
 import { Verdict } from "../scenes/Verdict";
 import { SUPPORTED_MAJOR, VideoSpec } from "../spec/schema";
-import { msToFrame } from "../spec/time";
+import { frameToMs, msToFrame } from "../spec/time";
 import { useFonts } from "../theme/fonts";
+import { studioLayout } from "../theme/layout";
 import { tokens } from "../theme/tokens";
 import { Captions } from "../ui/Captions";
 
@@ -42,6 +43,14 @@ const SceneFor: FC<{ spec: VideoSpec; range: SceneRange }> = ({ spec, range }) =
   }
 };
 
+/** Captions in the right column, except in the outro, where that area is reserved for the end screen. */
+const StudioCaptions: FC<{ spec: VideoSpec; ranges: SceneRange[] }> = ({ spec, ranges }) => {
+  const { fps } = useVideoConfig();
+  const ms = frameToMs(useCurrentFrame(), fps);
+  const outro = ranges.some((r) => r.kind === "outro" && ms >= r.startMs && ms < r.endMs);
+  return <Captions spec={spec} mode="long" box={outro ? studioLayout.boxes.outroCaptions : undefined} />;
+};
+
 export const StudioVideo: FC<VideoSpec> = (spec) => {
   useFonts();
   const { fps } = useVideoConfig();
@@ -58,7 +67,7 @@ export const StudioVideo: FC<VideoSpec> = (spec) => {
           </Sequence>
         );
       })}
-      <Captions spec={spec} mode="long" />
+      <StudioCaptions spec={spec} ranges={ranges} />
       <NarrationTrack segments={spec.narration} />
       <MusicBed music={spec.music} narration={spec.narration} />
       <Sfx beats={spec.beats} />

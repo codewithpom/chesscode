@@ -95,7 +95,7 @@ export const ShortsVideo: FC<VideoSpec> = (spec) => {
         <Captions spec={spec} mode="shorts" />
       )}
       <OutOfTheoryLabel beats={spec.beats} template="shorts" lang={spec.language} box={labelBox} />
-      <MascotSlot spec={spec} box={mascot} />
+      <MascotSlot spec={spec} box={mascot} height={shortsLayout.mascotHeight} />
       <NarrationTrack segments={spec.narration} />
       <MusicBed music={spec.music} narration={spec.narration} />
       <Sfx beats={spec.beats} />

@@ -9,7 +9,9 @@ import { Highlights } from "../board/Highlights";
 import { Piece } from "../board/Piece";
 import { buildPositions } from "../board/positions";
 import { Square } from "../board/Square";
-import { MascotSlot } from "../scenes/MascotSlot";
+import { Pyaada, POSES } from "../mascot";
+import { mascotWidth } from "../mascot/layerLayout";
+import type { PoseState } from "../mascot/poseState";
 import type { VideoSpec } from "../spec/schema";
 import { msToFrame } from "../spec/time";
 import { boardThemes } from "../theme/boardThemes";
@@ -21,6 +23,13 @@ export const THUMB = { width: 1280, height: 720 } as const;
 const TEXT: Box = { x: 64, y: 40, w: 1152, h: 144 };
 const BOARD: Box = { x: 736, y: 208, w: 480, h: 480 };
 const MASCOT: Box = { x: 64, y: 208, w: 640, h: 480 };
+const MASCOT_HEIGHT = 480;
+
+/** The pose as a still: faint's pose is the "fallen out of frame" end of an animation, so it is lying down in place instead. */
+const stillPose = (pose: VideoSpec["thumbnail"]["pose"]): { state: PoseState; height: number } =>
+  pose === "faint"
+    ? { state: { ...POSES.faint, offsetX: 0, offsetY: 0 }, height: 340 }
+    : { state: POSES[pose], height: MASCOT_HEIGHT };
 
 export const calculateThumbnailMetadata: CalculateMetadataFunction<VideoSpec> = () => ({
   width: THUMB.width,
@@ -57,7 +66,7 @@ const fitSize = (text: string, width: number, height: number): number =>
 export const Thumbnail: FC<VideoSpec> = (spec) => {
   useFonts();
   const { text, ply: plyNo, crop_origin, pose } = spec.thumbnail;
-  void pose; // used by the mascot layer (Task 7)
+  const mascot = stillPose(pose);
   const { orientation, theme } = spec.board;
   const palette = boardThemes[theme];
   const ply = spec.plies[plyNo - 1];
@@ -84,7 +93,15 @@ export const Thumbnail: FC<VideoSpec> = (spec) => {
       >
         {text}
       </div>
-      <MascotSlot spec={spec} box={MASCOT} />
+      <div
+        style={{
+          position: "absolute",
+          left: MASCOT.x + (pose === "faint" ? 60 : (MASCOT.w - mascotWidth(mascot.height)) / 2),
+          top: MASCOT.y + MASCOT.h - mascot.height,
+        }}
+      >
+        <Pyaada state={mascot.state} height={mascot.height} />
+      </div>
       <svg
         style={{ position: "absolute", left: BOARD.x, top: BOARD.y, display: "block" }}
         width={BOARD.w}

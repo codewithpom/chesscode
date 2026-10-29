@@ -32,7 +32,7 @@ const COLD_LEAD_MS = 800; // the position before the first ply holds this long
 const COLD_TAIL_MS = 700;
 
 /**
- * The spec as the ColdOpen shows it: plies before `cold_open.ply_from` are already on the board (no arrows),
+ * The spec as the ColdOpen shows it: beats of the shown plies move with them, plies before `cold_open.ply_from` are already on the board (no arrows),
  * ply_from..ply_to are spread over the scene range, and the later plies never appear. Board and EvalBar then
  * draw the scene from the ordinary spec data.
  */
@@ -40,13 +40,16 @@ export const coldOpenSpec = (spec: VideoSpec, range: Pick<SceneRange, "startMs" 
   const { ply_from: from, ply_to: to } = spec.cold_open;
   const n = to - from + 1;
   const step = Math.max(2 * motion.pieceMoveMs, Math.floor((range.endMs - range.startMs - COLD_LEAD_MS - COLD_TAIL_MS) / n));
+  const showAt = (ply: number): number => range.startMs + COLD_LEAD_MS + (ply - from) * step;
   return {
     ...spec,
+    // The mascot reacts when its beat's ply plays inside the cold open; later beats belong to Playback.
+    beats: spec.beats.filter((b) => b.ply >= from && b.ply <= to).map((b) => ({ ...b, at_ms: showAt(b.ply) })),
     plies: spec.plies.map((p) =>
       p.ply < from
         ? { ...p, show_at_ms: -60000, arrows: [] }
         : p.ply <= to
-          ? { ...p, show_at_ms: range.startMs + COLD_LEAD_MS + (p.ply - from) * step }
+          ? { ...p, show_at_ms: showAt(p.ply) }
           : { ...p, show_at_ms: range.endMs + 60000 },
     ),
   };

@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
+import { boardStateAt, moveDoneFrame } from "../board/boardState";
 import { buildPositions } from "../board/positions";
 import { VideoSpec, type Beat } from "../spec/schema";
 import { msToFrame } from "../spec/time";
@@ -24,7 +25,8 @@ const beat = (over: Partial<Beat>): Beat => ({
   ...over,
 });
 const AT = msToFrame(10000, FPS);
-const LAND = AT + msToFrame(280, FPS);
+// 280 ms rounds to 8 frames, but the board counts frame 8 as 267 ms: the move is done on frame 9.
+const LAND = moveDoneFrame(10000, FPS);
 
 describe("fxWindows", () => {
   it("uses the plan's frame counts", () => {
@@ -36,13 +38,30 @@ describe("fxWindows", () => {
     expect(span("board_shake")).toEqual([[AT, 6]]);
     expect(span("red_flash")).toEqual([[LAND, 8]]);
     expect(span("freeze_frame")).toEqual([[LAND, 6]]);
-    expect(span("replay_move")).toEqual([[LAND + 6, 8]]); // 280 ms = 8 frames at 30 fps, after the freeze
+    expect(LAND).toBe(AT + 9);
+    expect(span("replay_move")).toEqual([[LAND + 6, 9]]); // the move takes until the board calls it done, after the freeze
     expect(span("gold_glint")).toEqual([[LAND, 24]]);
     expect(span("stamp_brilliant")).toEqual([[LAND, 24]]);
     expect(span("ghost_arrow")).toEqual([[LAND, 60]]);
     expect(span("king_trail")).toEqual([[LAND, 90]]);
     expect(span("crown_sparkle")).toEqual([[LAND, 30]]);
     expect(span("out_of_theory_label")).toEqual([[AT, 60]]);
+  });
+
+  it("a freeze never holds a capture mid-fade: the board has finished the move on the freeze's first frame", () => {
+    // 1.e4 d5 2.exd5: ply 3 is a capture; at 30 fps the old rounding froze on 267 ms with the pawn at 10.8% opacity.
+    const positions = buildPositions("1. e4 d5 2. exd5 *");
+    const plies = [1, 2, 3].map((ply) => ({ ply, show_at_ms: 10000 + (ply - 1) * 300, arrows: [], highlights: [] }));
+    const b = beat({ ply: 3, at_ms: 10600, fx: ["freeze_frame"] });
+    const [w] = fxWindows([b], FPS);
+    const state = (f: number) => boardStateAt(f, FPS, plies, positions);
+    expect(state(w.from).pieces.every((p) => p.opacity === 1)).toBe(true);
+    expect(state(w.from - 1).pieces.some((p) => p.opacity < 1)).toBe(true); // one frame earlier it is still fading
+    for (let f = w.from; f < w.to; f++) expect(state(f)).toEqual(state(w.from));
+  });
+
+  it("freeze_frame has no window below intensity 2 (the mascot does not freeze either)", () => {
+    expect(fxWindows([beat({ intensity: 1, fx: ["freeze_frame"] })], FPS)).toEqual([]);
   });
 
   it("clock effects last until the next ply starts", () => {

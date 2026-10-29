@@ -36,6 +36,7 @@ export const Playback: FC<{ spec: VideoSpec; range: SceneRange }> = ({ spec, ran
     .map((c, i) => ({ ...c, index: i + 2, endMs: Math.min(c.startMs + CHAPTER_CARD_MS, range.endMs) }))
     .find((c) => nowMs >= c.startMs && nowMs < c.endMs);
 
+  const labelUp = theoryLabel || !!card;
   // Top card is the player at the far side of the board.
   const sides = spec.board.orientation === "white" ? (["black", "white"] as const) : (["white", "black"] as const);
   const clockSlot = (side: "white" | "black") => {
@@ -57,15 +58,18 @@ export const Playback: FC<{ spec: VideoSpec; range: SceneRange }> = ({ spec, ran
         )}
       </div>
       <OutOfTheoryLabel beats={spec.beats} template="studio" lang={spec.language} box={label} />
-      <div style={{ position: "absolute", left: cards.x, top: cards.y, width: cards.w, display: "flex", flexDirection: "column", gap: cards.h - 2 * ROW }}>
-        {sides.map((side) => (
-          <div key={side} style={{ height: ROW }}>
-            <PlayerCard player={spec.game[side]} side={side} lang={spec.language} clock={clockSlot(side)} />
-          </div>
-        ))}
-      </div>
+      {/* The cards share their slot with the label plates: a chapter card or the out-of-theory label replaces them. */}
+      {!labelUp && (
+        <div style={{ position: "absolute", left: cards.x, top: cards.y, width: cards.w, display: "flex", flexDirection: "column", gap: cards.h - 2 * ROW }}>
+          {sides.map((side) => (
+            <div key={side} style={{ height: ROW }}>
+              <PlayerCard player={spec.game[side]} side={side} lang={spec.language} clock={clockSlot(side)} />
+            </div>
+          ))}
+        </div>
+      )}
       <MoveList spec={spec} box={moveList} underline={templateFx.studio.move_underline} />
-      <MascotSlot spec={spec} box={mascot} />
+      <MascotSlot spec={spec} box={mascot} height={studioLayout.mascotHeight} />
     </>
   );
 };

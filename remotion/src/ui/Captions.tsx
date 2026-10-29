@@ -4,7 +4,7 @@ import { useCurrentFrame, useVideoConfig } from "remotion";
 import type { VideoSpec } from "../spec/schema";
 import { frameToMs } from "../spec/time";
 import { fontFor, useFonts } from "../theme/fonts";
-import { shortsLayout } from "../theme/layout";
+import { shortsLayout, type Box } from "../theme/layout";
 import { tokens } from "../theme/tokens";
 import { captionPages } from "./captionPages";
 
@@ -16,10 +16,11 @@ const LONG = { left: 1000, right: 96, bottom: 96, fontSize: tokens.size.caption,
 // Shorts: centered over the board, inside the approved layout box (clear of the YouTube UI zones).
 const SHORTS = { fontSize: 88, lineHeight: 1.3 } as const;
 
-export const Captions: FC<{ spec: VideoSpec; mode: "long" | "shorts" }> = ({ spec, mode }) => {
+/** `box` (long mode only) moves the captions out of the default right column, bottom-aligned in the box. */
+export const Captions: FC<{ spec: VideoSpec; mode: "long" | "shorts"; box?: Box }> = ({ spec, mode, box: override }) => {
   useFonts();
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
+  const { fps, height } = useVideoConfig();
   const pages = useMemo(() => captionPages(spec.narration, mode), [spec.narration, mode]);
   const nowMs = frameToMs(frame, fps);
 
@@ -37,7 +38,9 @@ export const Captions: FC<{ spec: VideoSpec; mode: "long" | "shorts" }> = ({ spe
 
   const long = mode === "long";
   const box = long
-    ? { left: LONG.left, right: LONG.right, bottom: LONG.bottom, textAlign: "left" as const }
+    ? override
+      ? { left: override.x, width: override.w, bottom: height - override.y - override.h, textAlign: "left" as const }
+      : { left: LONG.left, right: LONG.right, bottom: LONG.bottom, textAlign: "left" as const }
     : {
         left: shortsLayout.boxes.captions.x,
         width: shortsLayout.boxes.captions.w,
