@@ -6,7 +6,7 @@ import { useFonts } from "../theme/fonts";
 import { studioLayout, type Box } from "../theme/layout";
 import { motion } from "../theme/motion";
 import { tokens } from "../theme/tokens";
-import { allRows, windowStart } from "./moveRows";
+import { allRows, totalRows, windowStart } from "./moveRows";
 
 export { moveRows } from "./moveRows";
 
@@ -35,8 +35,9 @@ export const MoveList: FC<{ spec: VideoSpec; box: Box; underline?: boolean }> = 
   const current = k < 0 ? null : spec.plies[k];
   const rows = allRows(spec.plies, current?.ply ?? 0);
   const rowOf = (ply: number): number => Math.max(1, Math.ceil(ply / 2));
-  const to = windowStart(rows.length, rowOf(current?.ply ?? 0));
-  const from = windowStart(rows.length, rowOf(k > 0 ? spec.plies[k - 1].ply : 0));
+  const total = totalRows(spec.plies);
+  const to = windowStart(total, rowOf(current?.ply ?? 0));
+  const from = windowStart(total, rowOf(k > 0 ? spec.plies[k - 1].ply : 0));
   const elapsed = k < 0 ? Infinity : frameToMs(frame - msToFrame(current!.show_at_ms, fps), fps);
   const scroll = from + (to - from) * motion.enter(clamp01(elapsed / motion.uiEnterMs));
   const marked = current ? CLASS_STYLE[current.class] : undefined;
