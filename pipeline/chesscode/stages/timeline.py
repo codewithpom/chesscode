@@ -22,7 +22,8 @@ def _lay(segments: list[dict], voice: list[dict], cover: dict, reaction_plies: s
         duration = int(audio["duration_ms"]); start = cursor
         words = [{"w": w["w"], "start_ms": start+int(w["start_ms"]), "end_ms": start+int(w["end_ms"])} for w in audio["words"]]
         narration.append({"segment_id": audio["segment_id"], "kind": segment["kind"], "ply": segment.get("ply"), "text": segment["text"], "audio": audio["audio"], "start_ms": start, "duration_ms": duration, "words": words})
-        cursor = start + duration
+        # spec 5 scene lengths: a short title/intro/verdict segment holds its scene on screen for the minimum
+        cursor = max(start + duration, start + cfg.get("min_scene_ms", {}).get(segment["kind"], 0))
         if i in cover and reaction_plies & set(range(cover[i][0], cover[i][1]+1)): cursor += cfg["reaction_gap_ms"]
         elif i < len(segments)-1: cursor += cfg["segment_gap_ms"]
     return narration
@@ -87,7 +88,7 @@ def run(ctx):
         if ctx.template=="shorts":
             if not beats: raise ValueError("shorts requires at least one beat")
             beats=[short_beat(beats,timeline_cfg['beats'],teaser=parse_video_id(ctx.video_id)[1]>=6000)]
-            timeline_cfg["outro_ms"]=0; timeline_cfg["min_chapters"]=0
+            timeline_cfg["outro_ms"]=0; timeline_cfg["min_chapters"]=0; timeline_cfg["min_scene_ms"]={}
         result=layout(data["script.json"]["segments"],data["voice.json"],beats,data["classified.json"],timeline_cfg)
         (ctx.spec_dir/"timeline.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
     except Exception as exc: raise StageError(ctx.video_id,"timeline",str(exc)) from exc

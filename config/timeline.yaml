@@ -1,6 +1,8 @@
-﻿segment_gap_ms: 300
+segment_gap_ms: 300
 reaction_gap_ms: 900
 outro_ms: 20000
 min_chapters: 3
 chapter_min_ms: 10000
 piece_move_ms: 280  # a piece slide takes this long; consecutive plies are shown at least this far apart
+# Spec 5 scene minimums (long-form only): a shorter narration segment is held on screen this long.
+min_scene_ms: {cold_open: 6000, title: 2500, player_intro: 5000, verdict: 10000}

@@ -149,3 +149,17 @@ def test_chapter_titles_are_never_cut_mid_word():
     assert any(t.startswith("alpha alpha") for t in titles)
     for t in titles:
         if t.startswith("alpha"): assert long[len(t)] == " ", t
+
+
+def test_short_verdict_and_title_are_held_for_the_spec_minimum():
+    result = run([("cold_open", None), ("title", None), ("ply", 1), ("verdict", None), ("outro", None)], duration=1500)
+    n = result["narration"]
+    assert n[2]["start_ms"] - n[1]["start_ms"] >= 2500  # title card 2.5 s
+    assert n[1]["start_ms"] - n[0]["start_ms"] >= 6000  # cold open 6 s
+    assert n[4]["start_ms"] - n[3]["start_ms"] >= 10000  # verdict 10 s
+
+
+def test_shorts_have_no_scene_minimums():
+    cfg = {**CFG, "min_scene_ms": {}, "outro_ms": 0, "min_chapters": 0}  # as timeline.run sets for Shorts
+    result = run([("cold_open", None), ("ply", 1)], duration=1500, cfg=cfg)
+    assert result["narration"][1]["start_ms"] - result["narration"][0]["start_ms"] < 6000
