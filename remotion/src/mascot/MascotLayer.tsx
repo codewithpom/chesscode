@@ -62,7 +62,8 @@ export const MascotLayer: React.FC<{
   const reactions = useMemo(() => reactionsFor(spec.beats, fps, durationInFrames), [spec.beats, fps, durationInFrames]);
   const state = poseAt(frame, reactions, fps, spec.video_id);
   const { mascot, bubble } = layerRects(box, height, maxBubbleH);
-  const active = reactions.find((r) => frame >= r.bubbleFrom && frame < r.bubbleTo);
+  // A beat with an empty line reacts without a bubble (the ColdOpen replays a beat that talks later in Playback).
+  const active = reactions.find((r) => frame >= r.bubbleFrom && frame < r.bubbleTo && r.beat.mascot.line !== "");
   const talking = active !== undefined && frame < typingEnd(active.beat.mascot.line, active.bubbleFrom, fps, active.bubbleTo);
   // Mouth flaps every 3 frames while the bubble types.
   const flap = talking && Math.floor((frame - active.bubbleFrom) / 3) % 2 === 0;
@@ -81,7 +82,7 @@ export const MascotLayer: React.FC<{
       {active && (
         <SpeechBubble line={active.beat.mascot.line} from={active.bubbleFrom} to={active.bubbleTo} box={bubble} language={spec.language} tail={!away} fontSize={bubbleFont} />
       )}
-      {reactions.flatMap((r) =>
+      {reactions.filter((r) => r.beat.mascot.line !== "").flatMap((r) =>
         blipFrames(r.beat.mascot.line, r.bubbleFrom, fps, `${spec.video_id}-${r.beat.beat_id}`, r.bubbleTo)
           .filter((b) => b.frame < Math.min(r.bubbleTo, durationInFrames))
           .map((b) => (

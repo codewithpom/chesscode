@@ -46,7 +46,8 @@ export const coldOpenSpec = (spec: VideoSpec, range: Pick<SceneRange, "startMs" 
   return {
     ...spec,
     // The mascot reacts when its beat's ply plays inside the cold open; later beats belong to Playback.
-    beats: spec.beats.filter((b) => b.ply >= from && b.ply <= to).map((b) => ({ ...b, at_ms: showAt(b.ply) })),
+    // Silent (empty line): the same beat speaks when Playback reaches it, and a line is never said twice in one video.
+    beats: spec.beats.filter((b) => b.ply >= from && b.ply <= to).map((b) => ({ ...b, at_ms: showAt(b.ply), mascot: { ...b.mascot, line: "" }, sfx: null })),
     plies: spec.plies.map((p) =>
       p.ply < from
         ? { ...p, show_at_ms: -60000, arrows: [] }

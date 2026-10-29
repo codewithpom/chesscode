@@ -51,13 +51,17 @@ describe("gallery panels", () => {
     });
 
     const key = name.split("-")[0];
-    if (key === "playback" || key === "cold_open" || key === "shorts_beat") {
+    if (key === "playback" || key === "shorts_beat") {
       it(`${name}: a beat reaction and its bubble are on screen`, () => {
-        // The cold open shows the beats of its own plies, moved into its range.
-        const range = sceneRanges(spec)[0];
-        const beats = key === "cold_open" ? coldOpenSpec(spec, range).beats : spec.beats;
-        const rs = reactionsFor(beats, FPS, msToFrame(spec.duration_ms, FPS));
+        const rs = reactionsFor(spec.beats, FPS, msToFrame(spec.duration_ms, FPS));
         expect(rs.some((r) => frame >= r.bubbleFrom && frame < r.bubbleTo)).toBe(true);
+      });
+    }
+    if (key === "cold_open") {
+      it(`${name}: Pyaada reacts to the replayed beat, silently (its line is said once, in Playback)`, () => {
+        const cold = coldOpenSpec(spec, sceneRanges(spec)[0]);
+        const rs = reactionsFor(cold.beats, FPS, msToFrame(spec.duration_ms, FPS));
+        expect(rs.some((r) => frame >= r.reactFrame && frame < r.bubbleTo && r.beat.mascot.line === "")).toBe(true);
       });
     }
     if (key === "playback_blunder") {
@@ -80,5 +84,30 @@ describe("gallery panels", () => {
       for (const s of ["cold_open", "title", "player_intro", "playback", "key_moment", "verdict", "outro", "shorts_hook", "shorts_beat", "thumbnail"])
         expect(PANEL_TABLE[`${s}-${lang}`], `${s}-${lang}`).toBeDefined();
     }
+  });
+});
+
+describe("mascot lines are never said twice in a video (docs/SPEC.md section 8)", () => {
+  const said = (spec: (typeof GALLERY_SPECS)[keyof typeof GALLERY_SPECS]): string[] => {
+    const lines = spec.beats.map((b) => b.mascot.line);
+    // What the cold open adds on screen: its replayed beats, now silent.
+    const cold = coldOpenSpec(spec, sceneRanges(spec)[0]).beats.map((b) => b.mascot.line).filter((l) => l !== "");
+    const outro = spec.template === "studio" ? signOffBeats(spec, { startMs: 0 }).map((b) => b.mascot.line) : [];
+    return [...lines, ...cold, ...outro];
+  };
+
+  for (const [name, spec] of Object.entries(GALLERY_SPECS)) {
+    it(`${name}: every mascot line that is shown is different`, () => {
+      const lines = said(spec);
+      expect(new Set(lines).size).toBe(lines.length);
+      expect(lines.every((l) => l.length > 0)).toBe(true);
+    });
+  }
+
+  it("a cold open that replays a beat shows it with no bubble and no sound", () => {
+    const spec = GALLERY_SPECS.en;
+    const cold = coldOpenSpec(spec, sceneRanges(spec)[0]);
+    expect(cold.beats.length).toBeGreaterThan(0);
+    expect(cold.beats.every((b) => b.mascot.line === "" && b.sfx === null)).toBe(true);
   });
 });
