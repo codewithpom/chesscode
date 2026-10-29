@@ -1,5 +1,506 @@
-# Draft (M3): game_no order and tiers are set after the engine pass. Shorts use game_no + 5000, teasers + 6000.
+# ChessCode backlog (M3 draft for owner approval). Order = publishing order within each tier.
+# tier floor = slot A (Tue EN / Thu HI), target = slot B (Sat EN / Sun HI), spare = replacements.
+# Shorts use game_no + 5000, Friday teasers + 6000. beats = what the pipeline detected.
 - game_no: 1
+  series: legendary_games
+  tier: floor
+  source: local
+  source_id: immortal
+  pgn_file: pipeline/tests/golden/pgn/immortal.pgn
+  white_country: null
+  black_country: null
+  white: Adolf Anderssen
+  black: Lionel Kieseritzky
+  event: London casual
+  game_year: 1851
+  title_hint: He gave up everything and still won
+  notes: Anderssen gives away both rooks and his queen, then mates with three minor pieces.
+  beats:
+  - opening_exit@5.Bxb5
+  - mistake@8.Nh4
+  - blunder@11...cxb5
+  - blunder@18.Bd6
+  - checkmate@23.Be7# (i3)
+- game_no: 2
+  series: indian_chess_heroes
+  tier: floor
+  source: local
+  source_id: ding-gukesh-wch2024-g14
+  pgn_file: pipeline/tests/golden/pgn/ding-gukesh-wch2024-g14.pgn
+  white_country: CN
+  black_country: IN
+  white: Ding, Liren
+  black: Gukesh D
+  event: FIDE World Championship Match 2024
+  game_year: 2024
+  title_hint: The move that made Gukesh world champion
+  notes: 'World Championship decider: a drawn endgame until 55.Rf2 hands Gukesh the title at 18.'
+  beats:
+  - long_think@7.c4
+  - long_think@10...Bc5
+  - blunder@55.Rf2 (i3)
+  - resign@58...Ke5 (i2)
+- game_no: 3
+  series: opening_explained
+  tier: floor
+  source: local
+  source_id: carlsen-radjabov-bilbao2008
+  pgn_file: content/pgn/carlsen-radjabov-bilbao2008.pgn
+  white_country: 'NO'
+  black_country: AZ
+  white: Carlsen,M
+  black: Radjabov,T
+  event: Grand Slam Final
+  game_year: 2008
+  title_hint: How to attack the Dragon
+  notes: 'Sicilian Dragon, Yugoslav Attack: the opposite-side race taught through a clean Carlsen attack.'
+  beats:
+  - opening_exit@11.Bb3
+  - mistake@24...Ra6
+  - mistake@27...dxe5
+  - blunder@31...Be6 (i3)
+  - brilliant@34.Ng5+
+  - resign@37.Rg1 (i2)
+- game_no: 4
+  series: blunder_hall_of_fame
+  tier: floor
+  source: local
+  source_id: deepfritz-kramnik-2006-g02
+  pgn_file: content/pgn/deepfritz-kramnik-2006-g02.pgn
+  white_country: null
+  black_country: RU
+  white: DEEP FRITZ
+  black: Kramnik,V
+  event: The Duel
+  game_year: 2006
+  title_hint: A world champion missed mate in one
+  notes: 'World champion Kramnik misses a mate in one against Deep Fritz: 34...Qe3?? 35.Qh7#.'
+  beats:
+  - opening_exit@4.a4
+  - mistake@31...a4
+  - checkmate@35.Qh7# (i3)
+- game_no: 5
+  series: legendary_games
+  tier: floor
+  source: local
+  source_id: opera
+  pgn_file: pipeline/tests/golden/pgn/opera.pgn
+  white_country: null
+  black_country: null
+  white: Paul Morphy
+  black: Duke Karl / Count Isouard
+  event: Paris Opera
+  game_year: 1858
+  title_hint: Seventeen moves of perfect chess
+  notes: 'Morphy against two nobles at the opera: rapid development, a queen sacrifice and mate on move 17.'
+  beats:
+  - opening_exit@4...Bxf3
+  - checkmate@17.Rd8# (i3)
+- game_no: 6
+  series: indian_chess_heroes
+  tier: floor
+  source: local
+  source_id: gukesh-ding-wch2024-g3
+  pgn_file: pipeline/tests/golden/pgn/gukesh-ding-wch2024-g3.pgn
+  white_country: IN
+  black_country: CN
+  white: Gukesh D
+  black: Ding, Liren
+  event: FIDE World Championship Match 2024
+  game_year: 2024
+  title_hint: Gukesh's first blow against Ding
+  notes: Gukesh's first win of the 2024 title match, out-preparing Ding in the opening.
+  beats:
+  - opening_exit@4.cxd5
+  - long_think@9...Qxb3
+  - long_think@13...Nbd7
+  - mistake@18...Rh5
+  - resign@37...Rh5 (i2)
+- game_no: 7
+  series: opening_explained
+  tier: floor
+  source: local
+  source_id: spassky-bronstein-1960
+  pgn_file: content/pgn/spassky-bronstein-1960.pgn
+  white_country: null
+  black_country: null
+  white: Spassky, Boris V
+  black: Bronstein, David I
+  event: URS-ch27
+  game_year: 1960
+  title_hint: The King's Gambit still bites
+  notes: 'King''s Gambit at its most romantic: Spassky''s attack against Bronstein, 1960.'
+  beats:
+  - opening_exit@4...Bd6
+  - blunder@15...Nf8
+  - resign@23.Qe4+ (i2)
+- game_no: 8
+  series: blunder_hall_of_fame
+  tier: floor
+  source: local
+  source_id: spassky-fischer-wch1972-g01
+  pgn_file: content/pgn/spassky-fischer-wch1972-g01.pgn
+  white_country: null
+  black_country: null
+  white: Spassky, Boris V
+  black: Fischer, Robert James
+  event: World Championship 28th
+  game_year: 1972
+  title_hint: Fischer's bishop gets trapped
+  notes: Fischer grabs a poisoned pawn with 29...Bxh2 in game one of the 1972 match and loses.
+  beats:
+  - opening_exit@5.e3
+  - brilliant@34...Bxg3
+  - mistake@39...f5
+  - resign@56.Kd6 (i2)
+- game_no: 9
+  series: legendary_games
+  tier: floor
+  source: local
+  source_id: century
+  pgn_file: pipeline/tests/golden/pgn/century.pgn
+  white_country: null
+  black_country: null
+  white: Donald Byrne
+  black: Robert James Fischer
+  event: Rosenwald Memorial
+  game_year: 1956
+  title_hint: A 13-year-old sacrifices his queen
+  notes: Thirteen-year-old Fischer's queen sacrifice 17...Be6 against Donald Byrne.
+  beats:
+  - opening_exit@5.Bf4
+  - blunder@11.Bg5
+  - blunder@18.Bxb6
+  - brilliant@25.Qxb6
+  - brilliant@29...Bf8
+  - checkmate@41...Rc2# (i3)
+- game_no: 10
+  series: indian_chess_heroes
+  tier: floor
+  source: local
+  source_id: gukesh-carlsen-norway2025-r06
+  pgn_file: content/pgn/gukesh-carlsen-norway2025-r06.pgn
+  white_country: IN
+  black_country: 'NO'
+  white: Gukesh,D
+  black: Carlsen,M
+  event: 13th Norway Chess 2025
+  game_year: 2025
+  title_hint: Gukesh beats Carlsen at his own event
+  notes: Gukesh beats Carlsen in classical chess at Norway 2025 after Carlsen's late blunder.
+  beats:
+  - opening_exit@5.c3
+  - brilliant@32.Nf3
+  - blunder@44...f6
+  - blunder@52...Ne2+ (i3)
+  - resign@62.Kf4 (i2)
+- game_no: 11
+  series: opening_explained
+  tier: floor
+  source: local
+  source_id: carlsen-so-sinquefield2019
+  pgn_file: content/pgn/carlsen-so-sinquefield2019.pgn
+  white_country: 'NO'
+  black_country: US
+  white: Carlsen,M
+  black: So,W
+  event: 7th Sinquefield Cup 2019
+  game_year: 2019
+  title_hint: The quiet Italian that isn't quiet
+  notes: 'The Italian Game (Giuoco Piano) as top players play it now: slow build-up, then a kingside push.'
+  beats:
+  - opening_exit@7.h3
+  - mistake@31...Ne7
+  - resign@43.d6 (i2)
+- game_no: 12
+  series: blunder_hall_of_fame
+  tier: floor
+  source: local
+  source_id: chigorin-steinitz-wch1892-g23
+  pgn_file: content/pgn/chigorin-steinitz-wch1892-g23.pgn
+  white_country: null
+  black_country: null
+  white: Chigorin, Mikhail
+  black: Steinitz, William
+  event: World Championship 4th
+  game_year: 1892
+  title_hint: A blunder that decided a world title
+  notes: 'World Championship 1892: Chigorin, a piece up, plays 32.Bxh7?? and allows mate in two.'
+  beats:
+  - opening_exit@5.Be2
+  - blunder@23...Nd4 (i2)
+  - resign@32...Rxh2+ (i2)
+- game_no: 13
+  series: legendary_games
+  tier: floor
+  source: local
+  source_id: kasparov-topalov
+  pgn_file: pipeline/tests/golden/pgn/kasparov-topalov.pgn
+  white_country: null
+  black_country: BG
+  white: Garry Kasparov
+  black: Veselin Topalov
+  event: Hoogovens
+  game_year: 1999
+  title_hint: Kasparov's greatest attack
+  notes: Kasparov's 24.Rxd4!! and a king hunt across the board at Wijk aan Zee 1999.
+  beats:
+  - opening_exit@4...Bg7
+  - king_walk@25...Kb6
+  - brilliant@29...Bb7
+  - brilliant@38...bxc4
+  - resign@44.Qa7 (i2)
+- game_no: 14
+  series: indian_chess_heroes
+  tier: target
+  source: local
+  source_id: lei-humpy-cand2024-r14
+  pgn_file: pipeline/tests/golden/pgn/lei-humpy-cand2024-r14.pgn
+  white_country: CN
+  black_country: IN
+  white: Lei, Tingjie
+  black: Koneru, Humpy
+  event: FIDE Women's Candidates 2024
+  game_year: 2024
+  title_hint: Humpy's Candidates finale
+  notes: Humpy closes the 2024 Candidates with a win over Lei Tingjie.
+  beats:
+  - long_think@6...d6
+  - long_think@10...g5
+  - brilliant@23.Qxa5
+  - mistake@26.Nxf7+
+  - mistake@31.Rxe6
+  - mistake@36...Rh6
+  - promotion@46...c1=Q
+  - resign@62...Kxa1 (i2)
+- game_no: 15
+  series: opening_explained
+  tier: target
+  source: local
+  source_id: kasparov-leko-tilburg1997
+  pgn_file: content/pgn/kasparov-leko-tilburg1997.pgn
+  white_country: null
+  black_country: HU
+  white: Kasparov, Gary
+  black: Leko, Peter
+  event: Tilburg Fontys
+  game_year: 1997
+  title_hint: Why Kasparov loved the Scotch
+  notes: 'The Scotch Game: Kasparov''s open lines and fast development against Leko.'
+  beats:
+  - opening_exit@5.c3
+  - mistake@12...Nxe4
+  - resign@31.Bxe6 (i2)
+- game_no: 16
+  series: blunder_hall_of_fame
+  tier: target
+  source: local
+  source_id: carlsen-anand-wch2014-g06
+  pgn_file: content/pgn/carlsen-anand-wch2014-g06.pgn
+  white_country: 'NO'
+  black_country: IN
+  white: Carlsen, Magnus
+  black: Anand, Viswanathan
+  event: WCh 2014
+  game_year: 2014
+  title_hint: Two world champions miss the same move
+  notes: Carlsen's 26.Kd2?? lets Anand win with 26...Nxe5, and Anand misses it.
+  beats:
+  - opening_exit@7.Qd3
+  - blunder@26.Kd2
+  - mistake@32...Bc6
+  - resign@38.Re7+ (i2)
+- game_no: 17
+  series: legendary_games
+  tier: target
+  source: local
+  source_id: reti-tartakower-1910
+  pgn_file: content/pgn/reti-tartakower-1910.pgn
+  white_country: null
+  black_country: null
+  white: Reti, Richard
+  black: Tartakower, Saviely
+  event: Vienna
+  game_year: 1910
+  title_hint: Mate in eleven moves with a queen sacrifice
+  notes: Reti's 9.Qd8+!! queen sacrifice and 11.Bd8# in a Caro-Kann miniature.
+  beats:
+  - opening_exit@5.Qd3
+  - checkmate@11.Bd8# (i3)
+- game_no: 18
+  series: indian_chess_heroes
+  tier: target
+  source: local
+  source_id: pragg-gukesh-cand2024-r2
+  pgn_file: pipeline/tests/golden/pgn/pragg-gukesh-cand2024-r2.pgn
+  white_country: IN
+  black_country: IN
+  white: Praggnanandhaa R
+  black: Gukesh D
+  event: FIDE Candidates 2024
+  game_year: 2024
+  title_hint: Pragg vs Gukesh at the Candidates
+  notes: Two Indian teenagers face each other at the 2024 Candidates.
+  beats:
+  - opening_exit@5.Nc3
+  - long_think@9...a6
+  - long_think@12...Na5
+  - mistake@17.Qc2
+  - mistake@25.Qg4
+  - resign@33...Rxf2 (i2)
+- game_no: 19
+  series: opening_explained
+  tier: target
+  source: local
+  source_id: karpov-kasparov-linares1993
+  pgn_file: content/pgn/karpov-kasparov-linares1993.pgn
+  white_country: null
+  black_country: null
+  white: Karpov, Anatoly
+  black: Kasparov, Gary
+  event: Linares
+  game_year: 1993
+  title_hint: The King's Indian attack, explained
+  notes: 'King''s Indian Defence: Kasparov''s kingside storm against Karpov''s Saemisch.'
+  beats:
+  - opening_exit@8.Qd2
+  - mistake@15.Nb1
+  - brilliant@24.Qd4
+  - resign@27...Nf2 (i2)
+- game_no: 20
+  series: blunder_hall_of_fame
+  tier: target
+  source: local
+  source_id: nepomniachtchi-carlsen-wch2021-g09
+  pgn_file: content/pgn/nepomniachtchi-carlsen-wch2021-g09.pgn
+  white_country: RU
+  black_country: 'NO'
+  white: Nepomniachtchi,I
+  black: Carlsen,M
+  event: WCh 2021
+  game_year: 2021
+  title_hint: One move trapped the bishop for good
+  notes: Nepomniachtchi traps his own bishop with 27.c4?? in the 2021 title match.
+  beats:
+  - opening_exit@2.g3
+  - blunder@27.c5
+  - brilliant@31.a4
+  - resign@39...Ra8 (i2)
+- game_no: 21
+  series: legendary_games
+  tier: target
+  source: local
+  source_id: topalov-shirov-1998
+  pgn_file: content/pgn/topalov-shirov-1998.pgn
+  white_country: BG
+  black_country: ES
+  white: Topalov, Veselin
+  black: Shirov, Alexei
+  event: Linares
+  game_year: 1998
+  title_hint: The most famous bishop move ever
+  notes: Shirov's 47...Bh3!! gives a whole bishop to win a bishops endgame.
+  beats:
+  - opening_exit@7.Bb5+
+  - blunder@26.Bd2 (i2)
+  - comeback@28...Bxe5
+  - brilliant@32.Qe2
+  - comeback@34...Bxe3
+  - mistake@37.Bh6
+  - brilliant@47...Bh3
+  - resign@53...Kb3 (i2)
+- game_no: 22
+  series: indian_chess_heroes
+  tier: target
+  source: local
+  source_id: praggnanandhaa-carlsen-norway2024
+  pgn_file: content/pgn/praggnanandhaa-carlsen-norway2024.pgn
+  white_country: IN
+  black_country: 'NO'
+  white: Praggnanandhaa,R
+  black: Carlsen,M
+  event: 12th Norway Chess 2024
+  game_year: 2024
+  title_hint: Pragg's first classical win over Carlsen
+  notes: Praggnanandhaa's first classical win over Magnus Carlsen, Norway Chess 2024.
+  beats:
+  - opening_exit@5...Qc7
+  - resign@37.Rxh7 (i2)
+- game_no: 23
+  series: opening_explained
+  tier: target
+  source: local
+  source_id: anand-topalov-corus2008
+  pgn_file: content/pgn/anand-topalov-corus2008.pgn
+  white_country: IN
+  black_country: BG
+  white: Anand,V
+  black: Topalov,V
+  event: Corus A
+  game_year: 2008
+  title_hint: The Najdorf in one game
+  notes: 'Sicilian Najdorf: a sharp model game between Anand and Topalov.'
+  beats:
+  - opening_exit@8...h5
+  - resign@40.Qxc5 (i2)
+- game_no: 24
+  series: blunder_hall_of_fame
+  tier: target
+  source: local
+  source_id: petrosian-bronstein-cand1956
+  pgn_file: content/pgn/petrosian-bronstein-cand1956.pgn
+  white_country: null
+  black_country: null
+  white: Petrosian, Tigran V
+  black: Bronstein, David I
+  event: Candidats Tournament
+  game_year: 1956
+  title_hint: Petrosian's one-move queen blunder
+  notes: Petrosian, famous for never blundering, leaves his queen en prise against Bronstein.
+  beats:
+  - opening_exit@3.g3
+  - king_walk@25...Kh8
+  - resign@36...Nxd6 (i2)
+- game_no: 25
+  series: legendary_games
+  tier: target
+  source: local
+  source_id: lasker-thomas-1912
+  pgn_file: content/pgn/lasker-thomas-1912.pgn
+  white_country: null
+  black_country: null
+  white: Lasker, Edward
+  black: Thomas, George Alan
+  event: Casual game
+  game_year: 1912
+  title_hint: The king walked to his own death
+  notes: Edward Lasker's queen sacrifice and king hunt ending in 18.Kd2#.
+  beats:
+  - opening_exit@2.Nf3
+  - blunder@10...Qe7 (i3)
+  - checkmate@18.Kd2# (i3)
+- game_no: 26
+  series: indian_chess_heroes
+  tier: target
+  source: local
+  source_id: vidit-pragg-cand2024-r3
+  pgn_file: pipeline/tests/golden/pgn/vidit-pragg-cand2024-r3.pgn
+  white_country: IN
+  black_country: IN
+  white: Vidit, Santosh Gujrathi
+  black: Praggnanandhaa R
+  event: FIDE Candidates 2024
+  game_year: 2024
+  title_hint: Vidit vs Pragg at the Candidates
+  notes: Vidit against Praggnanandhaa in an all-Indian Candidates round.
+  beats:
+  - opening_exit@5.d4
+  - long_think@8.Nxd4
+  - long_think@11.Qe2
+  - mistake@19...O-O-O
+  - blunder@35.Nxb7
+  - resign@45...Rhf5+ (i2)
+- game_no: 27
   series: blunder_hall_of_fame
   tier: spare
   source: local
@@ -13,23 +514,11 @@
   game_year: 2013
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 2
-  series: blunder_hall_of_fame
-  tier: spare
-  source: local
-  source_id: carlsen-anand-wch2014-g06
-  pgn_file: content/pgn/carlsen-anand-wch2014-g06.pgn
-  white_country: 'NO'
-  black_country: IN
-  white: Carlsen, Magnus
-  black: Anand, Viswanathan
-  event: WCh 2014
-  game_year: 2014
-  title_hint: ''
-  notes: ''
-  beats: []
-- game_no: 3
+  beats:
+  - opening_exit@7...exd5
+  - mistake@18...Nc7
+  - resign@28...Qe1 (i2)
+- game_no: 28
   series: blunder_hall_of_fame
   tier: spare
   source: local
@@ -43,8 +532,14 @@
   game_year: 2016
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 4
+  beats:
+  - opening_exit@5...Be7
+  - blunder@35.c5
+  - brilliant@39...Kg8
+  - comeback@42.Qxg6+
+  - comeback@45.f5
+  - resign@52...a2 (i2)
+- game_no: 29
   series: blunder_hall_of_fame
   tier: spare
   source: local
@@ -58,23 +553,11 @@
   game_year: 2021
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 5
-  series: blunder_hall_of_fame
-  tier: spare
-  source: local
-  source_id: chigorin-steinitz-wch1892-g23
-  pgn_file: content/pgn/chigorin-steinitz-wch1892-g23.pgn
-  white_country: null
-  black_country: null
-  white: Chigorin, Mikhail
-  black: Steinitz, William
-  event: World Championship 4th
-  game_year: 1892
-  title_hint: ''
-  notes: ''
-  beats: []
-- game_no: 6
+  beats:
+  - opening_exit@5...Nd7
+  - mistake@24...Rd6
+  - resign@46.Qf3 (i2)
+- game_no: 30
   series: blunder_hall_of_fame
   tier: spare
   source: local
@@ -88,23 +571,10 @@
   game_year: 1997
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 7
-  series: blunder_hall_of_fame
-  tier: spare
-  source: local
-  source_id: deepfritz-kramnik-2006-g02
-  pgn_file: content/pgn/deepfritz-kramnik-2006-g02.pgn
-  white_country: null
-  black_country: RU
-  white: DEEP FRITZ
-  black: Kramnik,V
-  event: The Duel
-  game_year: 2006
-  title_hint: ''
-  notes: ''
-  beats: []
-- game_no: 8
+  beats:
+  - brilliant@8.Nxe6
+  - resign@19.c4 (i2)
+- game_no: 31
   series: blunder_hall_of_fame
   tier: spare
   source: local
@@ -118,8 +588,12 @@
   game_year: 2007
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 9
+  beats:
+  - opening_exit@5...b5
+  - brilliant@34...Rxf4
+  - blunder@41...b3
+  - resign@48.Qxd2 (i2)
+- game_no: 32
   series: blunder_hall_of_fame
   tier: spare
   source: local
@@ -133,8 +607,13 @@
   game_year: 2018
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 10
+  beats:
+  - opening_exit@2...d5
+  - blunder@20.Be2
+  - mistake@23...bxc6
+  - mistake@26...Kh8
+  - resign@41.Rd3 (i2)
+- game_no: 33
   series: blunder_hall_of_fame
   tier: spare
   source: local
@@ -148,8 +627,10 @@
   game_year: 1981
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 11
+  beats:
+  - opening_exit@11...Bf5
+  - resign@41...Bxg2 (i2)
+- game_no: 34
   series: blunder_hall_of_fame
   tier: spare
   source: local
@@ -163,23 +644,14 @@
   game_year: 1978
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 12
-  series: blunder_hall_of_fame
-  tier: spare
-  source: local
-  source_id: nepomniachtchi-carlsen-wch2021-g09
-  pgn_file: content/pgn/nepomniachtchi-carlsen-wch2021-g09.pgn
-  white_country: RU
-  black_country: 'NO'
-  white: Nepomniachtchi,I
-  black: Carlsen,M
-  event: WCh 2021
-  game_year: 2021
-  title_hint: ''
-  notes: ''
-  beats: []
-- game_no: 13
+  beats:
+  - opening_exit@6.d5
+  - mistake@19...cxd4
+  - blunder@23.Qxa6 (i2)
+  - mistake@30.Nf3
+  - mistake@35...Ke3
+  - resign@39...Nf3+ (i2)
+- game_no: 35
   series: blunder_hall_of_fame
   tier: spare
   source: local
@@ -193,23 +665,11 @@
   game_year: 2023
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 14
-  series: blunder_hall_of_fame
-  tier: spare
-  source: local
-  source_id: petrosian-bronstein-cand1956
-  pgn_file: content/pgn/petrosian-bronstein-cand1956.pgn
-  white_country: null
-  black_country: null
-  white: Petrosian, Tigran V
-  black: Bronstein, David I
-  event: Candidats Tournament
-  game_year: 1956
-  title_hint: ''
-  notes: ''
-  beats: []
-- game_no: 15
+  beats:
+  - opening_exit@4...cxd4
+  - blunder@33...Rd3
+  - resign@37...Qxc3 (i2)
+- game_no: 36
   series: blunder_hall_of_fame
   tier: spare
   source: local
@@ -223,8 +683,10 @@
   game_year: 2002
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 16
+  beats:
+  - opening_exit@9...h6
+  - resign@42...Kc8 (i2)
+- game_no: 37
   series: blunder_hall_of_fame
   tier: spare
   source: local
@@ -238,23 +700,11 @@
   game_year: 2013
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 17
-  series: blunder_hall_of_fame
-  tier: spare
-  source: local
-  source_id: spassky-fischer-wch1972-g01
-  pgn_file: content/pgn/spassky-fischer-wch1972-g01.pgn
-  white_country: null
-  black_country: null
-  white: Spassky, Boris V
-  black: Fischer, Robert James
-  event: World Championship 28th
-  game_year: 1972
-  title_hint: ''
-  notes: ''
-  beats: []
-- game_no: 18
+  beats:
+  - opening_exit@5.c3
+  - mistake@49.Kg2
+  - resign@54...Nf4+ (i2)
+- game_no: 38
   series: blunder_hall_of_fame
   tier: spare
   source: local
@@ -268,8 +718,13 @@
   game_year: 1892
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 19
+  beats:
+  - mistake@10.Qe2
+  - blunder@21...Re7 (i2)
+  - comeback@25.Ka1
+  - comeback@28.Qxg6
+  - resign@30...Ne7 (i2)
+- game_no: 39
   series: blunder_hall_of_fame
   tier: spare
   source: local
@@ -283,8 +738,16 @@
   game_year: 2006
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 20
+  beats:
+  - opening_exit@8...Nbd7
+  - blunder@31...Bxf8 (i3)
+  - brilliant@38.Kg2
+  - comeback@42...a5
+  - blunder@47.Bxa3
+  - blunder@49...Rf1
+  - blunder@55.Ne6+
+  - resign@63...Re3 (i2)
+- game_no: 40
   series: indian_chess_heroes
   tier: spare
   source: local
@@ -298,8 +761,11 @@
   game_year: 2014
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 21
+  beats:
+  - opening_exit@7...c6
+  - brilliant@31...Rxe5
+  - resign@34.Rc1 (i2)
+- game_no: 41
   series: indian_chess_heroes
   tier: spare
   source: local
@@ -314,7 +780,7 @@
   title_hint: ''
   notes: ''
   beats: []
-- game_no: 22
+- game_no: 42
   series: indian_chess_heroes
   tier: spare
   source: local
@@ -328,8 +794,10 @@
   game_year: 1995
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 23
+  beats:
+  - opening_exit@7...Be7
+  - resign@35.Kh2 (i2)
+- game_no: 43
   series: indian_chess_heroes
   tier: spare
   source: local
@@ -343,23 +811,11 @@
   game_year: 2013
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 24
-  series: indian_chess_heroes
-  tier: spare
-  source: local
-  source_id: ding-gukesh-wch2024-g14
-  pgn_file: pipeline/tests/golden/pgn/ding-gukesh-wch2024-g14.pgn
-  white_country: CN
-  black_country: IN
-  white: Ding, Liren
-  black: Gukesh D
-  event: FIDE World Championship Match 2024
-  game_year: 2024
-  title_hint: ''
-  notes: ''
-  beats: []
-- game_no: 25
+  beats:
+  - opening_exit@10...Bb7
+  - blunder@16.Be2
+  - resign@23...Be3 (i2)
+- game_no: 44
   series: indian_chess_heroes
   tier: spare
   source: local
@@ -373,38 +829,13 @@
   game_year: 2024
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 26
-  series: indian_chess_heroes
-  tier: spare
-  source: local
-  source_id: gukesh-carlsen-norway2025-r06
-  pgn_file: content/pgn/gukesh-carlsen-norway2025-r06.pgn
-  white_country: IN
-  black_country: 'NO'
-  white: Gukesh,D
-  black: Carlsen,M
-  event: 13th Norway Chess 2025
-  game_year: 2025
-  title_hint: ''
-  notes: ''
-  beats: []
-- game_no: 27
-  series: indian_chess_heroes
-  tier: spare
-  source: local
-  source_id: gukesh-ding-wch2024-g3
-  pgn_file: pipeline/tests/golden/pgn/gukesh-ding-wch2024-g3.pgn
-  white_country: IN
-  black_country: CN
-  white: Gukesh D
-  black: Ding, Liren
-  event: FIDE World Championship Match 2024
-  game_year: 2024
-  title_hint: ''
-  notes: ''
-  beats: []
-- game_no: 28
+  beats:
+  - opening_exit@5...b6
+  - brilliant@22...c5
+  - mistake@36...Qb5
+  - blunder@44...Qg4 (i2)
+  - resign@60.Kf3 (i2)
+- game_no: 45
   series: indian_chess_heroes
   tier: spare
   source: local
@@ -418,8 +849,13 @@
   game_year: 2024
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 29
+  beats:
+  - opening_exit@3.Nc3
+  - mistake@21...exf4
+  - mistake@25.Nxf4
+  - blunder@71...h3 (i3)
+  - resign@80.Ke4 (i2)
+- game_no: 46
   series: indian_chess_heroes
   tier: spare
   source: local
@@ -433,8 +869,11 @@
   game_year: 2014
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 30
+  beats:
+  - opening_exit@3...Nd7
+  - blunder@29...Qc5 (i3)
+  - resign@33.Ng5 (i2)
+- game_no: 47
   series: indian_chess_heroes
   tier: spare
   source: local
@@ -448,8 +887,10 @@
   game_year: 2025
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 31
+  beats:
+  - opening_exit@5...d5
+  - resign@53.Ra8 (i2)
+- game_no: 48
   series: indian_chess_heroes
   tier: spare
   source: local
@@ -464,7 +905,7 @@
   title_hint: ''
   notes: ''
   beats: []
-- game_no: 32
+- game_no: 49
   series: indian_chess_heroes
   tier: spare
   source: local
@@ -478,53 +919,12 @@
   game_year: 2008
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 33
-  series: indian_chess_heroes
-  tier: spare
-  source: local
-  source_id: lei-humpy-cand2024-r14
-  pgn_file: pipeline/tests/golden/pgn/lei-humpy-cand2024-r14.pgn
-  white_country: CN
-  black_country: IN
-  white: Lei, Tingjie
-  black: Koneru, Humpy
-  event: FIDE Women's Candidates 2024
-  game_year: 2024
-  title_hint: ''
-  notes: ''
-  beats: []
-- game_no: 34
-  series: indian_chess_heroes
-  tier: spare
-  source: local
-  source_id: pragg-gukesh-cand2024-r2
-  pgn_file: pipeline/tests/golden/pgn/pragg-gukesh-cand2024-r2.pgn
-  white_country: IN
-  black_country: IN
-  white: Praggnanandhaa R
-  black: Gukesh D
-  event: FIDE Candidates 2024
-  game_year: 2024
-  title_hint: ''
-  notes: ''
-  beats: []
-- game_no: 35
-  series: indian_chess_heroes
-  tier: spare
-  source: local
-  source_id: praggnanandhaa-carlsen-norway2024
-  pgn_file: content/pgn/praggnanandhaa-carlsen-norway2024.pgn
-  white_country: IN
-  black_country: 'NO'
-  white: Praggnanandhaa,R
-  black: Carlsen,M
-  event: 12th Norway Chess 2024
-  game_year: 2024
-  title_hint: ''
-  notes: ''
-  beats: []
-- game_no: 36
+  beats:
+  - opening_exit@11...axb5
+  - king_walk@25...Kh6
+  - blunder@33.Bd3 (i3)
+  - resign@41...Bb1+ (i2)
+- game_no: 50
   series: indian_chess_heroes
   tier: spare
   source: local
@@ -539,7 +939,7 @@
   title_hint: ''
   notes: ''
   beats: []
-- game_no: 37
+- game_no: 51
   series: indian_chess_heroes
   tier: spare
   source: local
@@ -553,23 +953,11 @@
   game_year: 2024
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 38
-  series: indian_chess_heroes
-  tier: spare
-  source: local
-  source_id: vidit-pragg-cand2024-r3
-  pgn_file: pipeline/tests/golden/pgn/vidit-pragg-cand2024-r3.pgn
-  white_country: IN
-  black_country: IN
-  white: Vidit, Santosh Gujrathi
-  black: Praggnanandhaa R
-  event: FIDE Candidates 2024
-  game_year: 2024
-  title_hint: ''
-  notes: ''
-  beats: []
-- game_no: 39
+  beats:
+  - opening_exit@5.c3
+  - blunder@33...Qb2 (i3)
+  - resign@36.Rxg6+ (i2)
+- game_no: 52
   series: legendary_games
   tier: spare
   source: local
@@ -584,7 +972,7 @@
   title_hint: ''
   notes: ''
   beats: []
-- game_no: 40
+- game_no: 53
   series: legendary_games
   tier: spare
   source: local
@@ -598,8 +986,12 @@
   game_year: 1963
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 41
+  beats:
+  - opening_exit@3...c6
+  - blunder@15.Qc2
+  - king_walk@19.Kxg2
+  - resign@21...Qd7 (i2)
+- game_no: 54
   series: legendary_games
   tier: spare
   source: local
@@ -613,23 +1005,10 @@
   game_year: 2016
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 42
-  series: legendary_games
-  tier: spare
-  source: local
-  source_id: century
-  pgn_file: pipeline/tests/golden/pgn/century.pgn
-  white_country: null
-  black_country: null
-  white: Donald Byrne
-  black: Robert James Fischer
-  event: Rosenwald Memorial
-  game_year: 1956
-  title_hint: ''
-  notes: ''
-  beats: []
-- game_no: 43
+  beats:
+  - opening_exit@6.Nb3
+  - resign@50.Qh6+ (i2)
+- game_no: 55
   series: legendary_games
   tier: spare
   source: local
@@ -643,8 +1022,13 @@
   game_year: 1852
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 44
+  beats:
+  - opening_exit@8.Qb3
+  - mistake@11...b5
+  - blunder@15...Qf5
+  - blunder@19...Qxf3 (i2)
+  - checkmate@24.Bxe7# (i3)
+- game_no: 56
   series: legendary_games
   tier: spare
   source: local
@@ -658,23 +1042,10 @@
   game_year: 1972
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 45
-  series: legendary_games
-  tier: spare
-  source: local
-  source_id: immortal
-  pgn_file: pipeline/tests/golden/pgn/immortal.pgn
-  white_country: null
-  black_country: null
-  white: Adolf Anderssen
-  black: Lionel Kieseritzky
-  event: London casual
-  game_year: 1851
-  title_hint: ''
-  notes: ''
-  beats: []
-- game_no: 46
+  beats:
+  - opening_exit@12.Qa4
+  - resign@41.Qf4 (i2)
+- game_no: 57
   series: legendary_games
   tier: spare
   source: local
@@ -688,53 +1059,12 @@
   game_year: 1985
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 47
-  series: legendary_games
-  tier: spare
-  source: local
-  source_id: kasparov-topalov
-  pgn_file: pipeline/tests/golden/pgn/kasparov-topalov.pgn
-  white_country: null
-  black_country: BG
-  white: Garry Kasparov
-  black: Veselin Topalov
-  event: Hoogovens
-  game_year: 1999
-  title_hint: ''
-  notes: ''
-  beats: []
-- game_no: 48
-  series: legendary_games
-  tier: spare
-  source: local
-  source_id: lasker-thomas-1912
-  pgn_file: content/pgn/lasker-thomas-1912.pgn
-  white_country: null
-  black_country: null
-  white: Lasker, Edward
-  black: Thomas, George Alan
-  event: Casual game
-  game_year: 1912
-  title_hint: ''
-  notes: ''
-  beats: []
-- game_no: 49
-  series: legendary_games
-  tier: spare
-  source: local
-  source_id: opera
-  pgn_file: pipeline/tests/golden/pgn/opera.pgn
-  white_country: null
-  black_country: null
-  white: Paul Morphy
-  black: Duke Karl / Count Isouard
-  event: Paris Opera
-  game_year: 1858
-  title_hint: ''
-  notes: ''
-  beats: []
-- game_no: 50
+  beats:
+  - opening_exit@9.cxd5
+  - mistake@17.Nab1
+  - brilliant@33...Ne4
+  - resign@40...Re1+ (i2)
+- game_no: 58
   series: legendary_games
   tier: spare
   source: local
@@ -748,23 +1078,15 @@
   game_year: 1958
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 51
-  series: legendary_games
-  tier: spare
-  source: local
-  source_id: reti-tartakower-1910
-  pgn_file: content/pgn/reti-tartakower-1910.pgn
-  white_country: null
-  black_country: null
-  white: Reti, Richard
-  black: Tartakower, Saviely
-  event: Vienna
-  game_year: 1910
-  title_hint: ''
-  notes: ''
-  beats: []
-- game_no: 52
+  beats:
+  - opening_exit@4.e4
+  - mistake@10.Nge2
+  - mistake@13.f3
+  - mistake@20.Bc2
+  - blunder@24.Rh1
+  - blunder@27.a4 (i3)
+  - resign@33...Nc6+ (i2)
+- game_no: 59
   series: legendary_games
   tier: spare
   source: local
@@ -778,8 +1100,11 @@
   game_year: 1907
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 53
+  beats:
+  - opening_exit@3.e3
+  - blunder@19.e5
+  - resign@25...Rh3 (i2)
+- game_no: 60
   series: legendary_games
   tier: spare
   source: local
@@ -793,8 +1118,12 @@
   game_year: 1923
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 54
+  beats:
+  - opening_exit@6...O-O
+  - mistake@17.Qd1
+  - mistake@22.Qg5
+  - resign@25...h6 (i2)
+- game_no: 61
   series: legendary_games
   tier: spare
   source: local
@@ -808,8 +1137,11 @@
   game_year: 1991
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 55
+  beats:
+  - opening_exit@7.Qe2
+  - mistake@22...Qc6
+  - resign@34.Kg5 (i2)
+- game_no: 62
   series: legendary_games
   tier: spare
   source: local
@@ -823,23 +1155,12 @@
   game_year: 1895
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 56
-  series: legendary_games
-  tier: spare
-  source: local
-  source_id: topalov-shirov-1998
-  pgn_file: content/pgn/topalov-shirov-1998.pgn
-  white_country: BG
-  black_country: ES
-  white: Topalov, Veselin
-  black: Shirov, Alexei
-  event: Linares
-  game_year: 1998
-  title_hint: ''
-  notes: ''
-  beats: []
-- game_no: 57
+  beats:
+  - mistake@7...d5
+  - mistake@16...c6
+  - brilliant@21...Ke8
+  - resign@25.Rxh7+ (i2)
+- game_no: 63
   series: legendary_games
   tier: spare
   source: local
@@ -853,8 +1174,12 @@
   game_year: 1883
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 58
+  beats:
+  - opening_exit@2.e3
+  - blunder@22...Nxf6
+  - brilliant@29.Rf8+
+  - resign@33.Qxe7 (i2)
+- game_no: 64
   series: opening_explained
   tier: spare
   source: local
@@ -868,8 +1193,11 @@
   game_year: 2012
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 59
+  beats:
+  - opening_exit@12...Qc7
+  - mistake@20...Ra4
+  - resign@36.Kb2 (i2)
+- game_no: 65
   series: opening_explained
   tier: spare
   source: local
@@ -883,23 +1211,12 @@
   game_year: 2007
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 60
-  series: opening_explained
-  tier: spare
-  source: local
-  source_id: anand-topalov-corus2008
-  pgn_file: content/pgn/anand-topalov-corus2008.pgn
-  white_country: IN
-  black_country: BG
-  white: Anand,V
-  black: Topalov,V
-  event: Corus A
-  game_year: 2008
-  title_hint: ''
-  notes: ''
-  beats: []
-- game_no: 61
+  beats:
+  - opening_exit@12.Re1
+  - mistake@32...Nf6
+  - mistake@35...Ba7
+  - resign@39.Bxg5 (i2)
+- game_no: 66
   series: opening_explained
   tier: spare
   source: local
@@ -913,8 +1230,10 @@
   game_year: 1991
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 62
+  beats:
+  - opening_exit@6...b6
+  - resign@28...Rb3+ (i2)
+- game_no: 67
   series: opening_explained
   tier: spare
   source: local
@@ -928,38 +1247,11 @@
   game_year: 1951
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 63
-  series: opening_explained
-  tier: spare
-  source: local
-  source_id: carlsen-radjabov-bilbao2008
-  pgn_file: content/pgn/carlsen-radjabov-bilbao2008.pgn
-  white_country: 'NO'
-  black_country: AZ
-  white: Carlsen,M
-  black: Radjabov,T
-  event: Grand Slam Final
-  game_year: 2008
-  title_hint: ''
-  notes: ''
-  beats: []
-- game_no: 64
-  series: opening_explained
-  tier: spare
-  source: local
-  source_id: carlsen-so-sinquefield2019
-  pgn_file: content/pgn/carlsen-so-sinquefield2019.pgn
-  white_country: 'NO'
-  black_country: US
-  white: Carlsen,M
-  black: So,W
-  event: 7th Sinquefield Cup 2019
-  game_year: 2019
-  title_hint: ''
-  notes: ''
-  beats: []
-- game_no: 65
+  beats:
+  - opening_exit@3.g3
+  - blunder@32...fxg4
+  - resign@38.Qxg8+ (i2)
+- game_no: 68
   series: opening_explained
   tier: spare
   source: local
@@ -973,23 +1265,12 @@
   game_year: 2012
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 66
-  series: opening_explained
-  tier: spare
-  source: local
-  source_id: karpov-kasparov-linares1993
-  pgn_file: content/pgn/karpov-kasparov-linares1993.pgn
-  white_country: null
-  black_country: null
-  white: Karpov, Anatoly
-  black: Kasparov, Gary
-  event: Linares
-  game_year: 1993
-  title_hint: ''
-  notes: ''
-  beats: []
-- game_no: 67
+  beats:
+  - opening_exit@5...O-O
+  - blunder@26.Bb5 (i2)
+  - brilliant@31.Rxf4
+  - resign@34...Qb6+ (i2)
+- game_no: 69
   series: opening_explained
   tier: spare
   source: local
@@ -1003,8 +1284,12 @@
   game_year: 1992
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 68
+  beats:
+  - opening_exit@8.Be2
+  - mistake@33...Ra3
+  - blunder@38...Raa2 (i3)
+  - resign@45.d6 (i2)
+- game_no: 70
   series: opening_explained
   tier: spare
   source: local
@@ -1018,8 +1303,10 @@
   game_year: 1997
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 69
+  beats:
+  - opening_exit@5.Nxe5
+  - resign@33.c7 (i2)
+- game_no: 71
   series: opening_explained
   tier: spare
   source: local
@@ -1033,8 +1320,10 @@
   game_year: 1995
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 70
+  beats:
+  - opening_exit@7.Be2
+  - resign@25.Re1 (i2)
+- game_no: 72
   series: opening_explained
   tier: spare
   source: local
@@ -1048,23 +1337,11 @@
   game_year: 1999
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 71
-  series: opening_explained
-  tier: spare
-  source: local
-  source_id: kasparov-leko-tilburg1997
-  pgn_file: content/pgn/kasparov-leko-tilburg1997.pgn
-  white_country: null
-  black_country: HU
-  white: Kasparov, Gary
-  black: Leko, Peter
-  event: Tilburg Fontys
-  game_year: 1997
-  title_hint: ''
-  notes: ''
-  beats: []
-- game_no: 72
+  beats:
+  - opening_exit@6...cxd4
+  - brilliant@12.Rxb7
+  - resign@33.c6 (i2)
+- game_no: 73
   series: opening_explained
   tier: spare
   source: local
@@ -1078,8 +1355,10 @@
   game_year: 2000
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 73
+  beats:
+  - opening_exit@8.Be3
+  - resign@40.Bd5 (i2)
+- game_no: 74
   series: opening_explained
   tier: spare
   source: local
@@ -1093,8 +1372,11 @@
   game_year: 2010
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 74
+  beats:
+  - opening_exit@6.e3
+  - blunder@16...Qe7
+  - resign@41.a7 (i2)
+- game_no: 75
   series: opening_explained
   tier: spare
   source: local
@@ -1108,25 +1390,10 @@
   game_year: 2020
   title_hint: ''
   notes: ''
-  beats: []
-- game_no: 75
-  series: opening_explained
-  tier: spare
-  source: local
-  source_id: spassky-bronstein-1960
-  pgn_file: content/pgn/spassky-bronstein-1960.pgn
-  white_country: null
-  black_country: null
-  white: Spassky, Boris V
-  black: Bronstein, David I
-  event: URS-ch27
-  game_year: 1960
-  title_hint: ''
-  notes: ''
   beats:
-  - opening_exit@4...Bd6
-  - blunder@15...Nf8
-  - resign@23.Qe4+ (i2)
+  - opening_exit@8.h5
+  - king_walk@26...Kf7
+  - resign@42.g7 (i2)
 - game_no: 76
   series: opening_explained
   tier: spare
@@ -1141,4 +1408,9 @@
   game_year: 1967
   title_hint: ''
   notes: ''
-  beats: []
+  beats:
+  - opening_exit@5.c4
+  - mistake@31...gxh4
+  - brilliant@36...Rg8
+  - promotion@42.b8=Q+
+  - resign@45.Kf1 (i2)
