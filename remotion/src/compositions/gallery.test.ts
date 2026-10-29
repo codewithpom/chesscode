@@ -23,6 +23,34 @@ describe("gallery specs", () => {
     });
   }
 
+  it("the board holds for the reaction: the ply after an intensity 2-3 beat starts 900 ms or more later (section 8)", () => {
+    for (const lang of ["en", "hi"] as const) {
+      const spec = long(lang);
+      for (const b of spec.beats.filter((x) => x.intensity >= 2)) {
+        const next = spec.plies.find((p) => p.ply === b.ply + 1)!;
+        expect(next.show_at_ms - b.at_ms, `${lang} ${b.beat_id}`).toBeGreaterThanOrEqual(900);
+      }
+    }
+  });
+
+  it("the cold open is 6 s or longer (docs/SPEC.md section 5: 6 to 10 s)", () => {
+    for (const lang of ["en", "hi"] as const) {
+      const [cold] = sceneRanges(long(lang));
+      expect(cold.kind).toBe("cold_open");
+      expect(cold.endMs - cold.startMs).toBeGreaterThanOrEqual(6000);
+    }
+  });
+
+  it("English narration is the real voice: every segment has its own audio file inside its scene window", () => {
+    const spec = long("en");
+    expect(new Set(spec.narration.map((n) => n.audio)).size).toBe(spec.narration.length);
+    spec.narration.forEach((n, i) => {
+      const next = spec.narration[i + 1];
+      if (next) expect(n.start_ms + n.duration_ms).toBeLessThanOrEqual(next.start_ms);
+      expect(n.words[0].start_ms).toBeGreaterThanOrEqual(n.start_ms);
+    });
+  });
+
   it("Hindi narration, captions text, facts and labels are Devanagari", () => {
     const hi = long("hi");
     const dev = /[ऀ-ॿ]/;

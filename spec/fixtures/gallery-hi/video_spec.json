@@ -527,7 +527,7 @@
       "best_uci": "e7b4",
       "class": "good",
       "clock_ms": null,
-      "show_at_ms": 45360,
+      "show_at_ms": 46080,
       "arrows": [],
       "highlights": [
         {
@@ -552,7 +552,7 @@
       "best_uci": "c4b5",
       "class": "good",
       "clock_ms": null,
-      "show_at_ms": 45840,
+      "show_at_ms": 46400,
       "arrows": [],
       "highlights": [
         {
@@ -581,7 +581,7 @@
       "best_uci": "b8d7",
       "class": "good",
       "clock_ms": null,
-      "show_at_ms": 46320,
+      "show_at_ms": 46720,
       "arrows": [],
       "highlights": [
         {
@@ -890,87 +890,87 @@
       "text": "एक वज़ीर की कुर्बानी। बस दो मोहरे बचे। ऐसी मात जो आज भी पढ़ाई जाती है।",
       "audio": "audio/silent.mp3",
       "start_ms": 0,
-      "duration_ms": 4900,
+      "duration_ms": 5000,
       "words": [
         {
           "w": "एक",
           "start_ms": 0,
-          "end_ms": 255
+          "end_ms": 261
         },
         {
           "w": "वज़ीर",
-          "start_ms": 275,
-          "end_ms": 530
+          "start_ms": 281,
+          "end_ms": 542
         },
         {
           "w": "की",
-          "start_ms": 550,
-          "end_ms": 805
+          "start_ms": 562,
+          "end_ms": 823
         },
         {
           "w": "कुर्बानी।",
-          "start_ms": 825,
-          "end_ms": 1080
+          "start_ms": 843,
+          "end_ms": 1104
         },
         {
           "w": "बस",
-          "start_ms": 1100,
-          "end_ms": 1355
+          "start_ms": 1124,
+          "end_ms": 1385
         },
         {
           "w": "दो",
-          "start_ms": 1375,
-          "end_ms": 1630
+          "start_ms": 1405,
+          "end_ms": 1666
         },
         {
           "w": "मोहरे",
-          "start_ms": 1650,
-          "end_ms": 1905
+          "start_ms": 1686,
+          "end_ms": 1947
         },
         {
           "w": "बचे।",
-          "start_ms": 1925,
-          "end_ms": 2180
+          "start_ms": 1967,
+          "end_ms": 2228
         },
         {
           "w": "ऐसी",
-          "start_ms": 2200,
-          "end_ms": 2455
+          "start_ms": 2248,
+          "end_ms": 2509
         },
         {
           "w": "मात",
-          "start_ms": 2475,
-          "end_ms": 2730
+          "start_ms": 2529,
+          "end_ms": 2790
         },
         {
           "w": "जो",
-          "start_ms": 2750,
-          "end_ms": 3005
+          "start_ms": 2810,
+          "end_ms": 3071
         },
         {
           "w": "आज",
-          "start_ms": 3025,
-          "end_ms": 3280
+          "start_ms": 3091,
+          "end_ms": 3352
         },
         {
           "w": "भी",
-          "start_ms": 3300,
-          "end_ms": 3555
+          "start_ms": 3372,
+          "end_ms": 3633
         },
         {
           "w": "पढ़ाई",
-          "start_ms": 3575,
-          "end_ms": 3830
+          "start_ms": 3653,
+          "end_ms": 3914
         },
         {
           "w": "जाती",
-          "start_ms": 3850,
-          "end_ms": 4105
+          "start_ms": 3934,
+          "end_ms": 4195
         },
         {
           "w": "है।",
-          "start_ms": 4125,
-          "end_ms": 4380
+          "start_ms": 4215,
+          "end_ms": 4476
         }
       ]
     },
@@ -980,38 +980,38 @@
       "ply": null,
       "text": "मॉर्फ़ी बनाम दो रईस, पेरिस, 1858।",
       "audio": "audio/silent.mp3",
-      "start_ms": 5300,
-      "duration_ms": 2500,
+      "start_ms": 6000,
+      "duration_ms": 2400,
       "words": [
         {
           "w": "मॉर्फ़ी",
-          "start_ms": 5300,
-          "end_ms": 5655
+          "start_ms": 6000,
+          "end_ms": 6340
         },
         {
           "w": "बनाम",
-          "start_ms": 5675,
-          "end_ms": 6030
+          "start_ms": 6360,
+          "end_ms": 6700
         },
         {
           "w": "दो",
-          "start_ms": 6050,
-          "end_ms": 6405
+          "start_ms": 6720,
+          "end_ms": 7060
         },
         {
           "w": "रईस,",
-          "start_ms": 6425,
-          "end_ms": 6780
+          "start_ms": 7080,
+          "end_ms": 7420
         },
         {
           "w": "पेरिस,",
-          "start_ms": 6800,
-          "end_ms": 7155
+          "start_ms": 7440,
+          "end_ms": 7780
         },
         {
           "w": "1858।",
-          "start_ms": 7175,
-          "end_ms": 7530
+          "start_ms": 7800,
+          "end_ms": 8140
         }
       ]
     },
@@ -1021,83 +1021,83 @@
       "ply": null,
       "text": "एक नौजवान अमेरिकी प्रतिभा, और सामने एक ड्यूक और एक काउंट जो मिलकर सोचते हैं।",
       "audio": "audio/silent.mp3",
-      "start_ms": 8100,
-      "duration_ms": 5000,
+      "start_ms": 8800,
+      "duration_ms": 4800,
       "words": [
         {
           "w": "एक",
-          "start_ms": 8100,
-          "end_ms": 8380
+          "start_ms": 8800,
+          "end_ms": 9068
         },
         {
           "w": "नौजवान",
-          "start_ms": 8400,
-          "end_ms": 8680
+          "start_ms": 9088,
+          "end_ms": 9356
         },
         {
           "w": "अमेरिकी",
-          "start_ms": 8700,
-          "end_ms": 8980
+          "start_ms": 9376,
+          "end_ms": 9644
         },
         {
           "w": "प्रतिभा,",
-          "start_ms": 9000,
-          "end_ms": 9280
+          "start_ms": 9664,
+          "end_ms": 9932
         },
         {
           "w": "और",
-          "start_ms": 9300,
-          "end_ms": 9580
+          "start_ms": 9952,
+          "end_ms": 10220
         },
         {
           "w": "सामने",
-          "start_ms": 9600,
-          "end_ms": 9880
+          "start_ms": 10240,
+          "end_ms": 10508
         },
         {
           "w": "एक",
-          "start_ms": 9900,
-          "end_ms": 10180
+          "start_ms": 10528,
+          "end_ms": 10796
         },
         {
           "w": "ड्यूक",
-          "start_ms": 10200,
-          "end_ms": 10480
+          "start_ms": 10816,
+          "end_ms": 11084
         },
         {
           "w": "और",
-          "start_ms": 10500,
-          "end_ms": 10780
+          "start_ms": 11104,
+          "end_ms": 11372
         },
         {
           "w": "एक",
-          "start_ms": 10800,
-          "end_ms": 11080
+          "start_ms": 11392,
+          "end_ms": 11660
         },
         {
           "w": "काउंट",
-          "start_ms": 11100,
-          "end_ms": 11380
+          "start_ms": 11680,
+          "end_ms": 11948
         },
         {
           "w": "जो",
-          "start_ms": 11400,
-          "end_ms": 11680
+          "start_ms": 11968,
+          "end_ms": 12236
         },
         {
           "w": "मिलकर",
-          "start_ms": 11700,
-          "end_ms": 11980
+          "start_ms": 12256,
+          "end_ms": 12524
         },
         {
           "w": "सोचते",
-          "start_ms": 12000,
-          "end_ms": 12280
+          "start_ms": 12544,
+          "end_ms": 12812
         },
         {
           "w": "हैं।",
-          "start_ms": 12300,
-          "end_ms": 12580
+          "start_ms": 12832,
+          "end_ms": 13100
         }
       ]
     },
@@ -1107,83 +1107,83 @@
       "ply": 1,
       "text": "मॉर्फ़ी राजा के प्यादे से शुरू करते हैं, और रईस उसी तरह जवाब देते हैं।",
       "audio": "audio/silent.mp3",
-      "start_ms": 13400,
-      "duration_ms": 6400,
+      "start_ms": 14000,
+      "duration_ms": 5000,
       "words": [
         {
           "w": "मॉर्फ़ी",
-          "start_ms": 13400,
-          "end_ms": 13764
+          "start_ms": 14000,
+          "end_ms": 14280
         },
         {
           "w": "राजा",
-          "start_ms": 13784,
-          "end_ms": 14148
+          "start_ms": 14300,
+          "end_ms": 14580
         },
         {
           "w": "के",
-          "start_ms": 14168,
-          "end_ms": 14532
+          "start_ms": 14600,
+          "end_ms": 14880
         },
         {
           "w": "प्यादे",
-          "start_ms": 14552,
-          "end_ms": 14916
+          "start_ms": 14900,
+          "end_ms": 15180
         },
         {
           "w": "से",
-          "start_ms": 14936,
-          "end_ms": 15300
+          "start_ms": 15200,
+          "end_ms": 15480
         },
         {
           "w": "शुरू",
-          "start_ms": 15320,
-          "end_ms": 15684
+          "start_ms": 15500,
+          "end_ms": 15780
         },
         {
           "w": "करते",
-          "start_ms": 15704,
-          "end_ms": 16068
+          "start_ms": 15800,
+          "end_ms": 16080
         },
         {
           "w": "हैं,",
-          "start_ms": 16088,
-          "end_ms": 16452
+          "start_ms": 16100,
+          "end_ms": 16380
         },
         {
           "w": "और",
-          "start_ms": 16472,
-          "end_ms": 16836
+          "start_ms": 16400,
+          "end_ms": 16680
         },
         {
           "w": "रईस",
-          "start_ms": 16856,
-          "end_ms": 17220
+          "start_ms": 16700,
+          "end_ms": 16980
         },
         {
           "w": "उसी",
-          "start_ms": 17240,
-          "end_ms": 17604
+          "start_ms": 17000,
+          "end_ms": 17280
         },
         {
           "w": "तरह",
-          "start_ms": 17624,
-          "end_ms": 17988
+          "start_ms": 17300,
+          "end_ms": 17580
         },
         {
           "w": "जवाब",
-          "start_ms": 18008,
-          "end_ms": 18372
+          "start_ms": 17600,
+          "end_ms": 17880
         },
         {
           "w": "देते",
-          "start_ms": 18392,
-          "end_ms": 18756
+          "start_ms": 17900,
+          "end_ms": 18180
         },
         {
           "w": "हैं।",
-          "start_ms": 18776,
-          "end_ms": 19140
+          "start_ms": 18200,
+          "end_ms": 18480
         }
       ]
     },
@@ -1194,72 +1194,72 @@
       "text": "काला घोड़ा जल्दी पिन करता है, और सफ़ेद पिन को बदल देता है।",
       "audio": "audio/silent.mp3",
       "start_ms": 20000,
-      "duration_ms": 4800,
+      "duration_ms": 4600,
       "words": [
         {
           "w": "काला",
           "start_ms": 20000,
-          "end_ms": 20312
+          "end_ms": 20298
         },
         {
           "w": "घोड़ा",
-          "start_ms": 20332,
-          "end_ms": 20644
+          "start_ms": 20318,
+          "end_ms": 20616
         },
         {
           "w": "जल्दी",
-          "start_ms": 20664,
-          "end_ms": 20976
+          "start_ms": 20636,
+          "end_ms": 20934
         },
         {
           "w": "पिन",
-          "start_ms": 20996,
-          "end_ms": 21308
+          "start_ms": 20954,
+          "end_ms": 21252
         },
         {
           "w": "करता",
-          "start_ms": 21328,
-          "end_ms": 21640
+          "start_ms": 21272,
+          "end_ms": 21570
         },
         {
           "w": "है,",
-          "start_ms": 21660,
-          "end_ms": 21972
+          "start_ms": 21590,
+          "end_ms": 21888
         },
         {
           "w": "और",
-          "start_ms": 21992,
-          "end_ms": 22304
+          "start_ms": 21908,
+          "end_ms": 22206
         },
         {
           "w": "सफ़ेद",
-          "start_ms": 22324,
-          "end_ms": 22636
+          "start_ms": 22226,
+          "end_ms": 22524
         },
         {
           "w": "पिन",
-          "start_ms": 22656,
-          "end_ms": 22968
+          "start_ms": 22544,
+          "end_ms": 22842
         },
         {
           "w": "को",
-          "start_ms": 22988,
-          "end_ms": 23300
+          "start_ms": 22862,
+          "end_ms": 23160
         },
         {
           "w": "बदल",
-          "start_ms": 23320,
-          "end_ms": 23632
+          "start_ms": 23180,
+          "end_ms": 23478
         },
         {
           "w": "देता",
-          "start_ms": 23652,
-          "end_ms": 23964
+          "start_ms": 23498,
+          "end_ms": 23796
         },
         {
           "w": "है।",
-          "start_ms": 23984,
-          "end_ms": 24296
+          "start_ms": 23816,
+          "end_ms": 24114
         }
       ]
     },
@@ -1402,52 +1402,52 @@
       "text": "क्वीन b3 पर f7 और b7 दोनों पर वार।",
       "audio": "audio/silent.mp3",
       "start_ms": 42100,
-      "duration_ms": 4000,
+      "duration_ms": 4500,
       "words": [
         {
           "w": "क्वीन",
           "start_ms": 42100,
-          "end_ms": 42480
+          "end_ms": 42530
         },
         {
           "w": "b3",
-          "start_ms": 42500,
-          "end_ms": 42880
+          "start_ms": 42550,
+          "end_ms": 42980
         },
         {
           "w": "पर",
-          "start_ms": 42900,
-          "end_ms": 43280
+          "start_ms": 43000,
+          "end_ms": 43430
         },
         {
           "w": "f7",
-          "start_ms": 43300,
-          "end_ms": 43680
+          "start_ms": 43450,
+          "end_ms": 43880
         },
         {
           "w": "और",
-          "start_ms": 43700,
-          "end_ms": 44080
+          "start_ms": 43900,
+          "end_ms": 44330
         },
         {
           "w": "b7",
-          "start_ms": 44100,
-          "end_ms": 44480
+          "start_ms": 44350,
+          "end_ms": 44780
         },
         {
           "w": "दोनों",
-          "start_ms": 44500,
-          "end_ms": 44880
+          "start_ms": 44800,
+          "end_ms": 45230
         },
         {
           "w": "पर",
-          "start_ms": 44900,
-          "end_ms": 45280
+          "start_ms": 45250,
+          "end_ms": 45680
         },
         {
           "w": "वार।",
-          "start_ms": 45300,
-          "end_ms": 45680
+          "start_ms": 45700,
+          "end_ms": 46130
         }
       ]
     },
@@ -1458,62 +1458,62 @@
       "text": "मॉर्फ़ी ने लगभग बिना गलती खेला। विरोधी पास भी नहीं आए।",
       "audio": "audio/silent.mp3",
       "start_ms": 47000,
-      "duration_ms": 5800,
+      "duration_ms": 5000,
       "words": [
         {
           "w": "मॉर्फ़ी",
           "start_ms": 47000,
-          "end_ms": 47454
+          "end_ms": 47389
         },
         {
           "w": "ने",
-          "start_ms": 47474,
-          "end_ms": 47928
+          "start_ms": 47409,
+          "end_ms": 47798
         },
         {
           "w": "लगभग",
-          "start_ms": 47948,
-          "end_ms": 48402
+          "start_ms": 47818,
+          "end_ms": 48207
         },
         {
           "w": "बिना",
-          "start_ms": 48422,
-          "end_ms": 48876
+          "start_ms": 48227,
+          "end_ms": 48616
         },
         {
           "w": "गलती",
-          "start_ms": 48896,
-          "end_ms": 49350
+          "start_ms": 48636,
+          "end_ms": 49025
         },
         {
           "w": "खेला।",
-          "start_ms": 49370,
-          "end_ms": 49824
+          "start_ms": 49045,
+          "end_ms": 49434
         },
         {
           "w": "विरोधी",
-          "start_ms": 49844,
-          "end_ms": 50298
+          "start_ms": 49454,
+          "end_ms": 49843
         },
         {
           "w": "पास",
-          "start_ms": 50318,
-          "end_ms": 50772
+          "start_ms": 49863,
+          "end_ms": 50252
         },
         {
           "w": "भी",
-          "start_ms": 50792,
-          "end_ms": 51246
+          "start_ms": 50272,
+          "end_ms": 50661
         },
         {
           "w": "नहीं",
-          "start_ms": 51266,
-          "end_ms": 51720
+          "start_ms": 50681,
+          "end_ms": 51070
         },
         {
           "w": "आए।",
-          "start_ms": 51740,
-          "end_ms": 52194
+          "start_ms": 51090,
+          "end_ms": 51479
         }
       ]
     },
@@ -1524,27 +1524,27 @@
       "text": "देखने के लिए शुक्रिया।",
       "audio": "audio/silent.mp3",
       "start_ms": 54200,
-      "duration_ms": 3000,
+      "duration_ms": 5000,
       "words": [
         {
           "w": "देखने",
           "start_ms": 54200,
-          "end_ms": 54855
+          "end_ms": 55305
         },
         {
           "w": "के",
-          "start_ms": 54875,
-          "end_ms": 55530
+          "start_ms": 55325,
+          "end_ms": 56430
         },
         {
           "w": "लिए",
-          "start_ms": 55550,
-          "end_ms": 56205
+          "start_ms": 56450,
+          "end_ms": 57555
         },
         {
           "w": "शुक्रिया।",
-          "start_ms": 56225,
-          "end_ms": 56880
+          "start_ms": 57575,
+          "end_ms": 58680
         }
       ]
     }

@@ -26,13 +26,13 @@ type Lang = "en" | "hi";
 type Panel = { spec: keyof typeof GALLERY_SPECS; kind: "studio" | "shorts" | "thumbnail"; ms: number; scene?: string };
 
 const studio = (lang: Lang, scene: string, ms: number): Panel => ({ spec: lang, kind: "studio", ms, scene });
-// Moments of the 60 s spec: cold open 0-5.3 s (its mate reaction at about 2.2 s), title 5.3-8.1, intro 8.1-13.4,
+// Moments of the 60 s spec: cold open 0-6 s (its reaction to the brilliant ply at about 2.5 s), title 6-8.8, intro 8.8-14,
 // playback to 27 s (the blunder at 25 s, Pyaada falling), key moment 27-42, playback to 47 (brilliant at 44.9 s),
 // verdict 47-54, outro 54-60 (waves at 54.4 s, points from 57.6 s).
 const at = (lang: Lang): Record<string, Panel> => ({
-  [`cold_open-${lang}`]: studio(lang, "cold_open", 2700),
-  [`title-${lang}`]: studio(lang, "title", 6600),
-  [`player_intro-${lang}`]: studio(lang, "player_intro", 10500),
+  [`cold_open-${lang}`]: studio(lang, "cold_open", 3000),
+  [`title-${lang}`]: studio(lang, "title", 7200),
+  [`player_intro-${lang}`]: studio(lang, "player_intro", 11000),
   [`playback-${lang}`]: studio(lang, "playback", 45600),
   [`playback_blunder-${lang}`]: studio(lang, "playback", 25400),
   [`key_moment-${lang}`]: studio(lang, "key_moment", 33000),

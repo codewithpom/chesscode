@@ -2,9 +2,11 @@
 //   npx tsx scripts/make_gallery_specs.ts
 // writes spec/fixtures/gallery-{en,hi}/ (60 s long-form: cold open, title, player intro, playback with a faint-worthy
 // blunder and a brilliant beat, one key moment, verdict, outro) and gallery-short-{en,hi}/ (the mate finish as a Short).
-// Audio is the fixture's silent MP3. Every spec is validated by the Zod schema before it is written. The Hindi is
+// English narration is the real ElevenLabs bake-off voice (build/bakeoff/elevenlabs_en.mp3, George, -14.5 LUFS), cut
+// at word boundaries into the ten segments; Hindi and the Shorts use the fixture's silent MP3. Every spec is validated by the Zod schema before it is written. The Hindi is
 // written for layout review (Devanagari at real sizes); the owner should review the wording before anything ships.
-import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { lineStates } from "../src/board/positions";
@@ -80,29 +82,107 @@ const segment = (lang: Lang, i: number, kind: VideoSpec["narration"][number]["ki
   };
 };
 
+type Word = { w: string; start_ms: number; end_ms: number };
+const ffmpegExe = (): string =>
+  execFileSync("python", ["-c", "import imageio_ffmpeg; print(imageio_ffmpeg.get_ffmpeg_exe())"], { encoding: "utf8" }).trim();
+
+/**
+ * Cuts the real narration into one slice per window: whole sentences while they fit (a pad of 80 ms before and
+ * 120 ms after), else as many whole words as fit. Words keep their timing relative to the slice start.
+ */
+const realVoice = (maxima: number[], dir: string): { audio: string; durationMs: number; words: Word[] }[] => {
+  const bakeoff = process.env.BAKEOFF_DIR ?? resolve(root, "build/bakeoff"); // the bake-off output is git-ignored; point BAKEOFF_DIR at it
+  const src = resolve(bakeoff, "elevenlabs_en.mp3");
+  if (!existsSync(src)) throw new Error(`real narration not found: ${src}`);
+  const words: Word[] = JSON.parse(readFileSync(resolve(bakeoff, "elevenlabs_en.words.json"), "utf8"));
+  mkdirSync(resolve(dir, "audio"), { recursive: true });
+  mkdirSync(resolve(dir, "narration"), { recursive: true });
+  copyFileSync(resolve(bakeoff, "elevenlabs_en.words.json"), resolve(dir, "narration/elevenlabs_en.words.json"));
+  const sentences: Word[][] = [];
+  let cur: Word[] = [];
+  for (const w of words) {
+    cur.push(w);
+    if (/[.?!]$/.test(w.w)) {
+      sentences.push(cur);
+      cur = [];
+    }
+  }
+  if (cur.length) sentences.push(cur);
+  const PAD_BEFORE = 80;
+  const PAD_AFTER = 120;
+  const out: { audio: string; durationMs: number; words: Word[] }[] = [];
+  let next = 0; // next unused sentence
+  maxima.forEach((max, i) => {
+    let take: Word[] = [];
+    while (next < sentences.length) {
+      const trial = [...take, ...sentences[next]];
+      if (trial[trial.length - 1].end_ms - trial[0].start_ms + PAD_BEFORE + PAD_AFTER > max) break;
+      take = trial;
+      next++;
+    }
+    if (take.length === 0) {
+      // No whole sentence fits: whole words of the next one.
+      const s0 = sentences[next];
+      for (const w of s0) {
+        const trial = [...take, w];
+        if (trial[trial.length - 1].end_ms - trial[0].start_ms + PAD_BEFORE + PAD_AFTER > max) break;
+        take = trial;
+      }
+      sentences[next] = s0.slice(take.length);
+      if (sentences[next].length === 0) next++;
+    }
+    const startMs = Math.max(0, take[0].start_ms - PAD_BEFORE);
+    const durationMs = take[take.length - 1].end_ms + PAD_AFTER - startMs;
+    const audio = `audio/en_seg-${String(i).padStart(3, "0")}.mp3`;
+    execFileSync(ffmpegExe(), ["-hide_banner", "-loglevel", "error", "-y", "-ss", String(startMs / 1000), "-t", String(durationMs / 1000), "-i", src, "-c:a", "libmp3lame", "-b:a", "128k", resolve(dir, audio)]);
+    out.push({ audio, durationMs, words: take.map((w) => ({ w: w.w, start_ms: w.start_ms - startMs, end_ms: w.end_ms - startMs })) });
+  });
+  return out;
+};
+
 const longForm = (lang: Lang): VideoSpec => {
   const t = T[lang];
-  // Plies 1-12 play through the first Playback (1 s apart), 13-22 through the second (480 ms apart); the rest are
-  // snapped to the verdict start, where nothing shows the board in motion.
-  const showAt = (p: number) => (p <= 12 ? 14000 + (p - 1) * 1000 : p <= 22 ? 42000 + (p - 13) * 480 : 47000);
+  // Plies 1-12 play through the first Playback (1 s apart), 13-19 through the second (480 ms apart); after the
+  // brilliant ply 19 the board holds 1.2 s for the reaction (docs/SPEC.md section 8: the pipeline leaves a gap),
+  // then plies 20-22 follow 320 ms apart. The rest snap to the verdict start, where the board is not in motion.
+  const showAt = (p: number) => (p <= 12 ? 14000 + (p - 1) * 1000 : p <= 19 ? 42000 + (p - 13) * 480 : p <= 22 ? 46080 + (p - 20) * 320 : 47000);
   const plies = base.plies.map((p) => ({
     ...p,
     show_at_ms: showAt(p.ply),
     class: p.ply === 12 ? ("blunder" as const) : p.ply === 19 ? ("brilliant" as const) : p.class === "best" ? ("good" as const) : p.class,
     eval: p.ply === 12 ? { cp: 420, mate: null } : p.eval,
   }));
-  const narration = [
-    segment(lang, 0, "cold_open", null, 0, 4900, t.cold),
-    segment(lang, 1, "title", null, 5300, 2500, t.titleSeg),
-    segment(lang, 2, "player_intro", null, 8100, 5000, t.intro),
-    segment(lang, 3, "ply", 1, 13400, 6400, t.ply1),
-    segment(lang, 4, "ply", 7, 20000, 4800, t.ply7),
-    segment(lang, 5, "ply", 12, 25000, 1800, t.ply12),
-    segment(lang, 6, "key_moment", 12, 27300, 14000, t.km),
-    segment(lang, 7, "ply", 13, 42100, 4000, t.ply13),
-    segment(lang, 8, "verdict", null, 47000, 5800, t.verdict),
-    segment(lang, 9, "outro", null, 54200, 3000, t.outro),
-  ];
+  // Scene windows (start, longest narration that fits before the next scene or segment starts).
+  const windows = [
+    { kind: "cold_open", ply: null, start: 0, max: 5800, text: t.cold },
+    { kind: "title", ply: null, start: 6000, max: 2700, text: t.titleSeg },
+    { kind: "player_intro", ply: null, start: 8800, max: 5100, text: t.intro },
+    { kind: "ply", ply: 1, start: 14000, max: 5900, text: t.ply1 },
+    { kind: "ply", ply: 7, start: 20000, max: 4900, text: t.ply7 },
+    { kind: "ply", ply: 12, start: 25000, max: 2200, text: t.ply12 },
+    { kind: "key_moment", ply: 12, start: 27300, max: 14700, text: t.km },
+    { kind: "ply", ply: 13, start: 42100, max: 4800, text: t.ply13 },
+    { kind: "verdict", ply: null, start: 47000, max: 7100, text: t.verdict },
+    { kind: "outro", ply: null, start: 54200, max: 5700, text: t.outro },
+  ] as const;
+  const dir = resolve(root, "spec/fixtures", `gallery-${lang}`);
+  const voice = lang === "en" ? realVoice(windows.map((w) => w.max), dir) : null;
+  const narration = windows.map((w, i) => {
+    if (voice) {
+      const v = voice[i];
+      return {
+        segment_id: `${lang}_seg-${String(i).padStart(3, "0")}`,
+        kind: w.kind,
+        ply: w.ply,
+        text: v.words.map((x) => x.w).join(" "),
+        audio: v.audio,
+        start_ms: w.start,
+        duration_ms: v.durationMs,
+        words: v.words.map((x) => ({ w: x.w, start_ms: w.start + x.start_ms, end_ms: w.start + x.end_ms })),
+      };
+    }
+    return segment(lang, i, w.kind, w.ply, w.start, Math.min(w.max - 300, w.kind === "key_moment" ? 14000 : w.kind === "ply" && w.ply === 12 ? 1800 : 5000), w.text);
+  });
   const mascot = { blunder: { pose: "faint" as const, line: t.lineBlunder }, brilliant: { pose: "slow_clap" as const, line: t.lineBrilliant } };
   return VideoSpec.parse({
     ...base,
