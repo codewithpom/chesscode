@@ -6,11 +6,10 @@ import { studioLayout } from "../theme/layout";
 import { tokens } from "../theme/tokens";
 import { Enter } from "../ui/Enter";
 import { coldOpenSpec } from "./helpers";
-import { MascotSlot } from "./MascotSlot";
 import { StudioBoard } from "./StudioBoard";
 import type { SceneRange } from "./timeline";
 
-const { hook, mascot } = studioLayout.boxes;
+const { hook } = studioLayout.boxes;
 
 /** The game's biggest moment first: plies cold_open.ply_from..ply_to on the board, the hook line on the right. */
 export const ColdOpen: FC<{ spec: VideoSpec; range: SceneRange }> = ({ spec, range }) => {
@@ -34,7 +33,6 @@ export const ColdOpen: FC<{ spec: VideoSpec; range: SceneRange }> = ({ spec, ran
           {spec.cold_open.hook}
         </div>
       </Enter>
-      <MascotSlot spec={cold} box={mascot} height={studioLayout.mascotHeight} />
     </>
   );
 };

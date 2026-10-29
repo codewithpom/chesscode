@@ -12,11 +12,10 @@ import { Clock } from "../ui/Clock";
 import { MoveList } from "../ui/MoveList";
 import { commonFields, PlayerCard } from "../ui/PlayerCard";
 import { clockFor, currentPlyAt } from "./helpers";
-import { MascotSlot } from "./MascotSlot";
 import { StudioBoard } from "./StudioBoard";
 import { chapterCardsFor, type SceneRange } from "./timeline";
 
-const { label, cards, moveList, mascot } = studioLayout.boxes;
+const { label, cards, moveList } = studioLayout.boxes;
 const CHAPTER_CARD_MS = 3000;
 const ROW = 56;
 
@@ -69,7 +68,6 @@ export const Playback: FC<{ spec: VideoSpec; range: SceneRange }> = ({ spec, ran
         </div>
       )}
       <MoveList spec={spec} box={moveList} underline={templateFx.studio.move_underline} />
-      <MascotSlot spec={spec} box={mascot} height={studioLayout.mascotHeight} />
     </>
   );
 };

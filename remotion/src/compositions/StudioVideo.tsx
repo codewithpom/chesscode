@@ -11,6 +11,7 @@ import { ColdOpen } from "../scenes/ColdOpen";
 import { captionsBoxAt } from "../scenes/helpers";
 import { KeyMoment } from "../scenes/KeyMoment";
 import { Outro } from "../scenes/Outro";
+import { StudioMascot } from "../scenes/StudioMascot";
 import { PlayerIntro } from "../scenes/PlayerIntro";
 import { Playback } from "../scenes/Playback";
 import { TitleCard } from "../scenes/TitleCard";
@@ -39,7 +40,7 @@ const SceneFor: FC<{ spec: VideoSpec; range: SceneRange }> = ({ spec, range }) =
     case "playback": return <Playback spec={spec} range={range} />;
     case "key_moment": return <KeyMoment spec={spec} range={range} />;
     case "verdict": return <Verdict spec={spec} range={range} />;
-    case "outro": return <Outro spec={spec} range={range} />;
+    case "outro": return <Outro />;
   }
 };
 
@@ -67,6 +68,7 @@ export const StudioVisuals: FC<VideoSpec> = (spec) => {
           </Sequence>
         );
       })}
+      <StudioMascot spec={spec} ranges={ranges} />
       <StudioCaptions spec={spec} ranges={ranges} />
     </AbsoluteFill>
   );

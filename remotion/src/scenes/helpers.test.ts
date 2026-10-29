@@ -11,7 +11,7 @@ import { reactionsFor } from "../mascot/react";
 import { strings } from "./strings";
 import { sceneRanges } from "./timeline";
 import { studioLayout } from "../theme/layout";
-import { activeLineMove, captionsBoxAt, clockFor, lineMoves, lineRows, signOffBeats, coldOpenSpec, currentPlyAt, keyMomentTiming, moveLabel, resultText, yearOf } from "./helpers";
+import { activeLineMove, captionsBoxAt, clockFor, mascotBeats, mascotPlacement, lineMoves, lineRows, signOffBeats, coldOpenSpec, currentPlyAt, keyMomentTiming, moveLabel, resultText, yearOf } from "./helpers";
 
 const spec = VideoSpec.parse(
   JSON.parse(readFileSync(resolve(__dirname, "../../../spec/fixtures/cc-2026-0001-en/video_spec.json"), "utf8")),
@@ -193,5 +193,42 @@ describe("the key-moment line as rows", () => {
     expect(activeLineMove(300, step, 4)).toBe(1);
     expect(activeLineMove(3 * step + 300, step, 4)).toBe(3);
     expect(activeLineMove(10 * step, step, 4)).toBe(3);
+  });
+});
+
+describe("one mascot layer for the whole video", () => {
+  const gallery = VideoSpec.parse(JSON.parse(readFileSync(resolve(__dirname, "../../../spec/fixtures/gallery-en/video_spec.json"), "utf8")));
+  const ranges = sceneRanges(gallery);
+  const beats = mascotBeats(gallery, ranges);
+  const total = msToFrame(gallery.duration_ms, FPS);
+  const rs = reactionsFor(beats, FPS, total);
+
+  it("has the game's beats, the cold open's silent replay and the two sign-off beats, each its own reaction", () => {
+    expect(new Set(beats.map((b) => b.beat_id)).size).toBe(beats.length);
+    expect(beats.map((b) => b.mascot.pose)).toEqual(expect.arrayContaining(["slow_clap", "faint", "wave", "point"]));
+    expect(beats.filter((b) => b.beat_id.endsWith("-cold")).every((b) => b.mascot.line === "")).toBe(true);
+  });
+
+  it("a reaction crossing a scene cut keeps its bubble: the brilliant beat's bubble runs past the Playback to Verdict cut", () => {
+    const cut = msToFrame(47000, FPS);
+    const r = rs.find((x) => x.beat.beat_id === "b-02")!;
+    expect(r.bubbleFrom).toBeLessThan(cut);
+    expect(r.bubbleTo).toBeGreaterThan(cut);
+    expect(r.bubbleTo).toBeGreaterThanOrEqual(r.bubbleFrom + msToFrame(1800, FPS)); // not clamped to the scene end
+  });
+
+  it("the box does not change at a cut between scenes that share the mascot box (faint across Playback to KeyMoment, brilliant across Playback to Verdict)", () => {
+    for (const cut of [27000, 47000]) {
+      const before = mascotPlacement(ranges, cut - 1);
+      const after = mascotPlacement(ranges, cut);
+      expect(before).not.toBeNull();
+      expect(after).toEqual(before);
+    }
+  });
+
+  it("scenes with no room for him (title card, player intro) have no mascot", () => {
+    expect(mascotPlacement(ranges, 7000)).toBeNull();
+    expect(mascotPlacement(ranges, 10000)).toBeNull();
+    expect(mascotPlacement(ranges, 58000)?.box).toBe(studioLayout.boxes.outroMascot);
   });
 });

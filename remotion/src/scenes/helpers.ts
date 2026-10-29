@@ -135,3 +135,27 @@ export const lineRows = (moves: { no: number; side: "w" | "b"; san: string }[], 
   });
   return rows;
 };
+
+/**
+ * Every beat the single Studio mascot layer reacts to: the game's own beats, the cold open's silent replay of its
+ * beat (ids suffixed so each is its own reaction), and the outro sign-off. One list for the whole video, so a
+ * reaction runs its full length across scene cuts instead of being clipped by the scene it started in.
+ */
+export const mascotBeats = (spec: VideoSpec, ranges: SceneRange[]): Beat[] => {
+  const cold = ranges.find((r) => r.kind === "cold_open");
+  const outro = ranges.find((r) => r.kind === "outro");
+  return [
+    ...(cold ? coldOpenSpec(spec, cold).beats.map((b) => ({ ...b, beat_id: `${b.beat_id}-cold` })) : []),
+    ...spec.beats,
+    ...(outro ? signOffBeats(spec, outro) : []),
+  ];
+};
+
+/** The mascot's box and height in the scene at `ms`, or null where the scene has no room for him (title card, player intro). */
+export const mascotPlacement = (ranges: Pick<SceneRange, "kind" | "startMs" | "endMs">[], ms: number): { box: Box; height: number } | null => {
+  const kind = ranges.find((r) => ms >= r.startMs && ms < r.endMs)?.kind;
+  if (kind === "outro") return { box: studioLayout.boxes.outroMascot, height: studioLayout.outroMascotHeight };
+  if (kind === "cold_open" || kind === "playback" || kind === "key_moment" || kind === "verdict")
+    return { box: studioLayout.boxes.mascot, height: studioLayout.mascotHeight };
+  return null;
+};

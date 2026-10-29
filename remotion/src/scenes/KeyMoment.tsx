@@ -9,10 +9,9 @@ import { studioLayout } from "../theme/layout";
 import { LowerLabel } from "../ui/LowerLabel";
 import { LineList } from "../ui/LineList";
 import { activeLineMove, keyMomentTiming, lineMoves, lineRows } from "./helpers";
-import { MascotSlot } from "./MascotSlot";
 import type { SceneRange } from "./timeline";
 
-const { board, label, mascot, moveList } = studioLayout.boxes;
+const { board, label, moveList } = studioLayout.boxes;
 /** Slower replay of a beat: the alternative line from the position before the beat's ply, with the label. */
 export const KeyMoment: FC<{ spec: VideoSpec; range: SceneRange }> = ({ spec, range }) => {
   useFonts();
@@ -39,7 +38,6 @@ export const KeyMoment: FC<{ spec: VideoSpec; range: SceneRange }> = ({ spec, ra
         <LowerLabel text={km.label} startMs={range.startMs} endMs={range.endMs} lang={spec.language} />
       </div>
       <LineList rows={lineRows(moves, active)} box={moveList} />
-      <MascotSlot spec={spec} box={mascot} height={studioLayout.mascotHeight} />
     </>
   );
 };
