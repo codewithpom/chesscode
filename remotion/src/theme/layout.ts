@@ -53,8 +53,8 @@ export const studioLayout = {
   moveRows: 9,
   /** Pyaada's drawn height in `boxes.mascot`. */
   mascotHeight: 200,
-  /** Pyaada's drawn height in `boxes.outroMascot`. */
-  outroMascotHeight: 300,
+  /** Pyaada's drawn height in `boxes.outroMascot` (he stands at its right edge, bubble to his left, pointing at the end screen). */
+  outroMascotHeight: 240,
   boxes: {
     evalBar: { x: 96, y: SB_Y, w: 24, h: SB },
     /** Label sits above the bar (EvalBar draws it 8 px above, 40 px tall). */
@@ -72,9 +72,9 @@ export const studioLayout = {
     /** ColdOpen hook line (no cards or move list in that scene). */
     hook: { x: COL_X, y: 96, w: COL_W, h: 240 },
     /** Outro: the mascot sign-off in the left third; the right two thirds are reserved for the end screen. */
-    outroMascot: { x: 96, y: 200, w: 480, h: 520 },
+    outroMascot: { x: 96, y: 200, w: 540, h: 520 },
     /** Outro captions, in the left third under the mascot, up to three lines (the right two thirds stay empty). */
-    outroCaptions: { x: 96, y: 744, w: 480, h: 240 },
+    outroCaptions: { x: 96, y: 744, w: 540, h: 240 },
     /** Bottom aligned at the 96 px margin; two lines of 56 px captions fit. */
     captions: { x: COL_X, y: 822, w: COL_W, h: 162 },
   },

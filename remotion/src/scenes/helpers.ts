@@ -1,4 +1,5 @@
-import type { Ply, VideoSpec } from "../spec/schema";
+import type { Beat, Ply, VideoSpec } from "../spec/schema";
+import { strings } from "./strings";
 import { msToFrame } from "../spec/time";
 import { motion } from "../theme/motion";
 import { studioLayout, type Box } from "../theme/layout";
@@ -75,3 +76,19 @@ export const keyMomentTiming = (durationMs: number, moves: number): { leadMs: nu
 /** Where the long-form captions go at `ms`: the outro moves them to the left third, the right two thirds being the end screen's. undefined = the default right column. */
 export const captionsBoxAt = (ranges: Pick<SceneRange, "kind" | "startMs" | "endMs">[], ms: number): Box | undefined =>
   ranges.some((r) => r.kind === "outro" && ms >= r.startMs && ms < r.endMs) ? studioLayout.boxes.outroCaptions : undefined;
+
+const SIGN_OFF_WAVE_AT_MS = 400; // after the cut to the outro
+const SIGN_OFF_POINT_AT_MS = 3600; // the wave bubble has run its course (1.8 s + 60 ms a character)
+
+/**
+ * The outro sign-off as two beats for the mascot layer: Pyaada waves with a line, then points toward the reserved
+ * end-screen area with another. Only these two react in the outro, so a late beat of the game cannot talk over them.
+ */
+export const signOffBeats = (spec: VideoSpec, range: Pick<SceneRange, "startMs">): Beat[] => {
+  const t = strings[spec.language];
+  const base = { type: "resign" as const, ply: spec.plies.length, intensity: 1, fx: [], sfx: null };
+  return [
+    { ...base, beat_id: "outro-wave", at_ms: range.startMs + SIGN_OFF_WAVE_AT_MS, mascot: { pose: "wave", line: t.signOffWave } },
+    { ...base, beat_id: "outro-point", at_ms: range.startMs + SIGN_OFF_POINT_AT_MS, mascot: { pose: "point", line: t.signOffPoint } },
+  ];
+};

@@ -4,6 +4,7 @@ import fixture from "../../spec/fixtures/cc-2026-0001-en/video_spec.json";
 import shortFixture from "../../spec/fixtures/cc-2026-0002-en/video_spec.json";
 import { calculateShortsMetadata, ShortsVideo } from "./compositions/ShortsVideo";
 import { calculateStudioMetadata, StudioVideo } from "./compositions/StudioVideo";
+import { calculateGalleryPanelMetadata, GalleryProps as TemplatePanelProps, TemplateGallery } from "./compositions/TemplateGallery";
 import { calculateThumbnailMetadata, Thumbnail } from "./compositions/Thumbnail";
 import { MascotReel, REEL_FRAMES } from "./compositions/MascotReel";
 import { MascotSheet } from "./compositions/MascotSheet";
@@ -33,6 +34,18 @@ export const RemotionRoot: React.FC = () => (
       fps={30}
       width={1080}
       height={1920}
+    />
+    {/* Review stills of every template and scene, EN and HI: `remotion still TemplateGallery --props='{"panel":"playback-en"}'`. */}
+    <Composition
+      id="TemplateGallery"
+      component={TemplateGallery}
+      schema={TemplatePanelProps}
+      defaultProps={{ panel: "playback-en" }}
+      calculateMetadata={calculateGalleryPanelMetadata}
+      durationInFrames={1}
+      fps={30}
+      width={1920}
+      height={1080}
     />
     {/* Rendered with `remotion still Thumbnail`: one frame, 1280 x 720. */}
     <Composition

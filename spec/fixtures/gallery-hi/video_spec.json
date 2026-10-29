@@ -1,0 +1,1655 @@
+{
+  "spec_version": "1.1.0",
+  "video_id": "cc-2026-0003-hi",
+  "pair_id": "cc-2026-0003",
+  "language": "hi",
+  "template": "studio",
+  "series": "legendary_games",
+  "board": {
+    "orientation": "white",
+    "theme": "bone_slate"
+  },
+  "format": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30
+  },
+  "duration_ms": 60000,
+  "game": {
+    "source": "local",
+    "source_id": "opera-game-1858",
+    "white": {
+      "name": "Paul Morphy",
+      "rating": null,
+      "title": null,
+      "country": "US",
+      "fact": "21 की उम्र में दुनिया के अनौपचारिक सर्वश्रेष्ठ खिलाड़ी, 22 में शतरंज छोड़ दिया।"
+    },
+    "black": {
+      "name": "Duke Karl / Count Isouard",
+      "rating": null,
+      "title": null,
+      "country": null,
+      "fact": "दो रईस, अपने ही ओपेरा बॉक्स में हर चाल पर सलाह करते हुए।"
+    },
+    "event": "Paris Opera",
+    "date": "1858-11-02",
+    "result": "1-0",
+    "eco": "C41",
+    "opening": "Philidor Defense",
+    "pgn": "[Event \"Paris Opera\"]\n[Site \"Paris FRA\"]\n[Date \"1858.11.02\"]\n[White \"Paul Morphy\"]\n[Black \"Duke Karl / Count Isouard\"]\n[Result \"1-0\"]\n[ECO \"C41\"]\n\n1. e4 e5 2. Nf3 d6 3. d4 Bg4 4. dxe5 Bxf3 5. Qxf3 dxe5 6. Bc4 Nf6 7. Qb3 Qe7\n8. Nc3 c6 9. Bg5 b5 10. Nxb5 cxb5 11. Bxb5+ Nbd7 12. O-O-O Rd8 13. Rxd7 Rxd7\n14. Rd1 Qe6 15. Bxd7+ Nxd7 16. Qb8+ Nxb8 17. Rd8# 1-0"
+  },
+  "plies": [
+    {
+      "ply": 1,
+      "san": "e4",
+      "uci": "e2e4",
+      "fen_after": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1",
+      "eval": {
+        "cp": 45,
+        "mate": null
+      },
+      "best_uci": "e2e4",
+      "class": "book",
+      "clock_ms": null,
+      "show_at_ms": 14000,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "e2",
+          "kind": "last_move"
+        },
+        {
+          "square": "e4",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 2,
+      "san": "e5",
+      "uci": "e7e5",
+      "fen_after": "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "eval": {
+        "cp": 47,
+        "mate": null
+      },
+      "best_uci": "e7e6",
+      "class": "book",
+      "clock_ms": null,
+      "show_at_ms": 15000,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "e7",
+          "kind": "last_move"
+        },
+        {
+          "square": "e5",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 3,
+      "san": "Nf3",
+      "uci": "g1f3",
+      "fen_after": "rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2",
+      "eval": {
+        "cp": 37,
+        "mate": null
+      },
+      "best_uci": "g1f3",
+      "class": "book",
+      "clock_ms": null,
+      "show_at_ms": 16000,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "g1",
+          "kind": "last_move"
+        },
+        {
+          "square": "f3",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 4,
+      "san": "d6",
+      "uci": "d7d6",
+      "fen_after": "rnbqkbnr/ppp2ppp/3p4/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 3",
+      "eval": {
+        "cp": 59,
+        "mate": null
+      },
+      "best_uci": "b8c6",
+      "class": "book",
+      "clock_ms": null,
+      "show_at_ms": 17000,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "d7",
+          "kind": "last_move"
+        },
+        {
+          "square": "d6",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 5,
+      "san": "d4",
+      "uci": "d2d4",
+      "fen_after": "rnbqkbnr/ppp2ppp/3p4/4p3/3PP3/5N2/PPP2PPP/RNBQKB1R b KQkq - 0 3",
+      "eval": {
+        "cp": 71,
+        "mate": null
+      },
+      "best_uci": "d2d4",
+      "class": "book",
+      "clock_ms": null,
+      "show_at_ms": 18000,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "d2",
+          "kind": "last_move"
+        },
+        {
+          "square": "d4",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 6,
+      "san": "Bg4",
+      "uci": "c8g4",
+      "fen_after": "rn1qkbnr/ppp2ppp/3p4/4p3/3PP1b1/5N2/PPP2PPP/RNBQKB1R w KQkq - 1 4",
+      "eval": {
+        "cp": 103,
+        "mate": null
+      },
+      "best_uci": "b8d7",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 19000,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "c8",
+          "kind": "last_move"
+        },
+        {
+          "square": "g4",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 7,
+      "san": "dxe5",
+      "uci": "d4e5",
+      "fen_after": "rn1qkbnr/ppp2ppp/3p4/4P3/4P1b1/5N2/PPP2PPP/RNBQKB1R b KQkq - 0 4",
+      "eval": {
+        "cp": 94,
+        "mate": null
+      },
+      "best_uci": "d4e5",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 20000,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "d4",
+          "kind": "last_move"
+        },
+        {
+          "square": "e5",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 8,
+      "san": "Bxf3",
+      "uci": "g4f3",
+      "fen_after": "rn1qkbnr/ppp2ppp/3p4/4P3/4P3/5b2/PPP2PPP/RNBQKB1R w KQkq - 0 5",
+      "eval": {
+        "cp": 179,
+        "mate": null
+      },
+      "best_uci": "b8d7",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 21000,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "g4",
+          "kind": "last_move"
+        },
+        {
+          "square": "f3",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 9,
+      "san": "Qxf3",
+      "uci": "d1f3",
+      "fen_after": "rn1qkbnr/ppp2ppp/3p4/4P3/4P3/5Q2/PPP2PPP/RNB1KB1R b KQkq - 0 5",
+      "eval": {
+        "cp": 135,
+        "mate": null
+      },
+      "best_uci": "d1f3",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 22000,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "d1",
+          "kind": "last_move"
+        },
+        {
+          "square": "f3",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 10,
+      "san": "dxe5",
+      "uci": "d6e5",
+      "fen_after": "rn1qkbnr/ppp2ppp/8/4p3/4P3/5Q2/PPP2PPP/RNB1KB1R w KQkq - 0 6",
+      "eval": {
+        "cp": 138,
+        "mate": null
+      },
+      "best_uci": "d6e5",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 23000,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "d6",
+          "kind": "last_move"
+        },
+        {
+          "square": "e5",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 11,
+      "san": "Bc4",
+      "uci": "f1c4",
+      "fen_after": "rn1qkbnr/ppp2ppp/8/4p3/2B1P3/5Q2/PPP2PPP/RNB1K2R b KQkq - 1 6",
+      "eval": {
+        "cp": 120,
+        "mate": null
+      },
+      "best_uci": "f3b3",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 24000,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "f1",
+          "kind": "last_move"
+        },
+        {
+          "square": "c4",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 12,
+      "san": "Nf6",
+      "uci": "g8f6",
+      "fen_after": "rn1qkb1r/ppp2ppp/5n2/4p3/2B1P3/5Q2/PPP2PPP/RNB1K2R w KQkq - 2 7",
+      "eval": {
+        "cp": 420,
+        "mate": null
+      },
+      "best_uci": "d8f6",
+      "class": "blunder",
+      "clock_ms": null,
+      "show_at_ms": 25000,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "g8",
+          "kind": "last_move"
+        },
+        {
+          "square": "f6",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 13,
+      "san": "Qb3",
+      "uci": "f3b3",
+      "fen_after": "rn1qkb1r/ppp2ppp/5n2/4p3/2B1P3/1Q6/PPP2PPP/RNB1K2R b KQkq - 3 7",
+      "eval": {
+        "cp": 207,
+        "mate": null
+      },
+      "best_uci": "f3b3",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 42000,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "f3",
+          "kind": "last_move"
+        },
+        {
+          "square": "b3",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 14,
+      "san": "Qe7",
+      "uci": "d8e7",
+      "fen_after": "rn2kb1r/ppp1qppp/5n2/4p3/2B1P3/1Q6/PPP2PPP/RNB1K2R w KQkq - 4 8",
+      "eval": {
+        "cp": 223,
+        "mate": null
+      },
+      "best_uci": "f8c5",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 42480,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "d8",
+          "kind": "last_move"
+        },
+        {
+          "square": "e7",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 15,
+      "san": "Nc3",
+      "uci": "b1c3",
+      "fen_after": "rn2kb1r/ppp1qppp/5n2/4p3/2B1P3/1QN5/PPP2PPP/R1B1K2R b KQkq - 5 8",
+      "eval": {
+        "cp": 218,
+        "mate": null
+      },
+      "best_uci": "b3b7",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 42960,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "b1",
+          "kind": "last_move"
+        },
+        {
+          "square": "c3",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 16,
+      "san": "c6",
+      "uci": "c7c6",
+      "fen_after": "rn2kb1r/pp2qppp/2p2n2/4p3/2B1P3/1QN5/PPP2PPP/R1B1K2R w KQkq - 0 9",
+      "eval": {
+        "cp": 207,
+        "mate": null
+      },
+      "best_uci": "c7c6",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 43440,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "c7",
+          "kind": "last_move"
+        },
+        {
+          "square": "c6",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 17,
+      "san": "Bg5",
+      "uci": "c1g5",
+      "fen_after": "rn2kb1r/pp2qppp/2p2n2/4p1B1/2B1P3/1QN5/PPP2PPP/R3K2R b KQkq - 1 9",
+      "eval": {
+        "cp": 204,
+        "mate": null
+      },
+      "best_uci": "c1g5",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 43920,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "c1",
+          "kind": "last_move"
+        },
+        {
+          "square": "g5",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 18,
+      "san": "b5",
+      "uci": "b7b5",
+      "fen_after": "rn2kb1r/p3qppp/2p2n2/1p2p1B1/2B1P3/1QN5/PPP2PPP/R3K2R w KQkq - 0 10",
+      "eval": {
+        "cp": 281,
+        "mate": null
+      },
+      "best_uci": "e8d8",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 44400,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "b7",
+          "kind": "last_move"
+        },
+        {
+          "square": "b5",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 19,
+      "san": "Nxb5",
+      "uci": "c3b5",
+      "fen_after": "rn2kb1r/p3qppp/2p2n2/1N2p1B1/2B1P3/1Q6/PPP2PPP/R3K2R b KQkq - 0 10",
+      "eval": {
+        "cp": 297,
+        "mate": null
+      },
+      "best_uci": "c3b5",
+      "class": "brilliant",
+      "clock_ms": null,
+      "show_at_ms": 44880,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "c3",
+          "kind": "last_move"
+        },
+        {
+          "square": "b5",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 20,
+      "san": "cxb5",
+      "uci": "c6b5",
+      "fen_after": "rn2kb1r/p3qppp/5n2/1p2p1B1/2B1P3/1Q6/PPP2PPP/R3K2R w KQkq - 0 11",
+      "eval": {
+        "cp": 427,
+        "mate": null
+      },
+      "best_uci": "e7b4",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 45360,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "c6",
+          "kind": "last_move"
+        },
+        {
+          "square": "b5",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 21,
+      "san": "Bxb5+",
+      "uci": "c4b5",
+      "fen_after": "rn2kb1r/p3qppp/5n2/1B2p1B1/4P3/1Q6/PPP2PPP/R3K2R b KQkq - 0 11",
+      "eval": {
+        "cp": 492,
+        "mate": null
+      },
+      "best_uci": "c4b5",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 45840,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "c4",
+          "kind": "last_move"
+        },
+        {
+          "square": "b5",
+          "kind": "last_move"
+        },
+        {
+          "square": "e8",
+          "kind": "check"
+        }
+      ]
+    },
+    {
+      "ply": 22,
+      "san": "Nbd7",
+      "uci": "b8d7",
+      "fen_after": "r3kb1r/p2nqppp/5n2/1B2p1B1/4P3/1Q6/PPP2PPP/R3K2R w KQkq - 1 12",
+      "eval": {
+        "cp": 492,
+        "mate": null
+      },
+      "best_uci": "b8d7",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 46320,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "b8",
+          "kind": "last_move"
+        },
+        {
+          "square": "d7",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 23,
+      "san": "O-O-O",
+      "uci": "e1c1",
+      "fen_after": "r3kb1r/p2nqppp/5n2/1B2p1B1/4P3/1Q6/PPP2PPP/2KR3R b kq - 2 12",
+      "eval": {
+        "cp": 490,
+        "mate": null
+      },
+      "best_uci": "e1c1",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 47000,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "e1",
+          "kind": "last_move"
+        },
+        {
+          "square": "c1",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 24,
+      "san": "Rd8",
+      "uci": "a8d8",
+      "fen_after": "3rkb1r/p2nqppp/5n2/1B2p1B1/4P3/1Q6/PPP2PPP/2KR3R w k - 3 13",
+      "eval": {
+        "cp": 518,
+        "mate": null
+      },
+      "best_uci": "a8b8",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 47000,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "a8",
+          "kind": "last_move"
+        },
+        {
+          "square": "d8",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 25,
+      "san": "Rxd7",
+      "uci": "d1d7",
+      "fen_after": "3rkb1r/p2Rqppp/5n2/1B2p1B1/4P3/1Q6/PPP2PPP/2K4R b k - 0 13",
+      "eval": {
+        "cp": 519,
+        "mate": null
+      },
+      "best_uci": "d1d7",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 47000,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "d1",
+          "kind": "last_move"
+        },
+        {
+          "square": "d7",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 26,
+      "san": "Rxd7",
+      "uci": "d8d7",
+      "fen_after": "4kb1r/p2rqppp/5n2/1B2p1B1/4P3/1Q6/PPP2PPP/2K4R w k - 0 14",
+      "eval": {
+        "cp": 582,
+        "mate": null
+      },
+      "best_uci": "f6d7",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 47000,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "d8",
+          "kind": "last_move"
+        },
+        {
+          "square": "d7",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 27,
+      "san": "Rd1",
+      "uci": "h1d1",
+      "fen_after": "4kb1r/p2rqppp/5n2/1B2p1B1/4P3/1Q6/PPP2PPP/2KR4 b k - 1 14",
+      "eval": {
+        "cp": 545,
+        "mate": null
+      },
+      "best_uci": "h1d1",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 47000,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "h1",
+          "kind": "last_move"
+        },
+        {
+          "square": "d1",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 28,
+      "san": "Qe6",
+      "uci": "e7e6",
+      "fen_after": "4kb1r/p2r1ppp/4qn2/1B2p1B1/4P3/1Q6/PPP2PPP/2KR4 w k - 2 15",
+      "eval": {
+        "cp": 604,
+        "mate": null
+      },
+      "best_uci": "e7d6",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 47000,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "e7",
+          "kind": "last_move"
+        },
+        {
+          "square": "e6",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 29,
+      "san": "Bxd7+",
+      "uci": "b5d7",
+      "fen_after": "4kb1r/p2B1ppp/4qn2/4p1B1/4P3/1Q6/PPP2PPP/2KR4 b k - 0 15",
+      "eval": {
+        "cp": 299,
+        "mate": null
+      },
+      "best_uci": "g5f6",
+      "class": "inaccuracy",
+      "clock_ms": null,
+      "show_at_ms": 47000,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "b5",
+          "kind": "last_move"
+        },
+        {
+          "square": "d7",
+          "kind": "last_move"
+        },
+        {
+          "square": "e8",
+          "kind": "check"
+        }
+      ]
+    },
+    {
+      "ply": 30,
+      "san": "Nxd7",
+      "uci": "f6d7",
+      "fen_after": "4kb1r/p2n1ppp/4q3/4p1B1/4P3/1Q6/PPP2PPP/2KR4 w k - 0 16",
+      "eval": {
+        "cp": null,
+        "mate": 2
+      },
+      "best_uci": "f6d7",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 47000,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "f6",
+          "kind": "last_move"
+        },
+        {
+          "square": "d7",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 31,
+      "san": "Qb8+",
+      "uci": "b3b8",
+      "fen_after": "1Q2kb1r/p2n1ppp/4q3/4p1B1/4P3/8/PPP2PPP/2KR4 b k - 1 16",
+      "eval": {
+        "cp": null,
+        "mate": 1
+      },
+      "best_uci": "b3b8",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 47000,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "b3",
+          "kind": "last_move"
+        },
+        {
+          "square": "b8",
+          "kind": "last_move"
+        },
+        {
+          "square": "e8",
+          "kind": "check"
+        }
+      ]
+    },
+    {
+      "ply": 32,
+      "san": "Nxb8",
+      "uci": "d7b8",
+      "fen_after": "1n2kb1r/p4ppp/4q3/4p1B1/4P3/8/PPP2PPP/2KR4 w k - 0 17",
+      "eval": {
+        "cp": null,
+        "mate": 1
+      },
+      "best_uci": "d7b8",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 47000,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "d7",
+          "kind": "last_move"
+        },
+        {
+          "square": "b8",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 33,
+      "san": "Rd8#",
+      "uci": "d1d8",
+      "fen_after": "1n1Rkb1r/p4ppp/4q3/4p1B1/4P3/8/PPP2PPP/2K5 b k - 1 17",
+      "eval": {
+        "cp": null,
+        "mate": 1
+      },
+      "best_uci": "d1d8",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 47000,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "d1",
+          "kind": "last_move"
+        },
+        {
+          "square": "d8",
+          "kind": "last_move"
+        },
+        {
+          "square": "e8",
+          "kind": "check"
+        }
+      ]
+    }
+  ],
+  "narration": [
+    {
+      "segment_id": "hi_seg-000",
+      "kind": "cold_open",
+      "ply": null,
+      "text": "एक वज़ीर की कुर्बानी। बस दो मोहरे बचे। ऐसी मात जो आज भी पढ़ाई जाती है।",
+      "audio": "audio/silent.mp3",
+      "start_ms": 0,
+      "duration_ms": 4900,
+      "words": [
+        {
+          "w": "एक",
+          "start_ms": 0,
+          "end_ms": 255
+        },
+        {
+          "w": "वज़ीर",
+          "start_ms": 275,
+          "end_ms": 530
+        },
+        {
+          "w": "की",
+          "start_ms": 550,
+          "end_ms": 805
+        },
+        {
+          "w": "कुर्बानी।",
+          "start_ms": 825,
+          "end_ms": 1080
+        },
+        {
+          "w": "बस",
+          "start_ms": 1100,
+          "end_ms": 1355
+        },
+        {
+          "w": "दो",
+          "start_ms": 1375,
+          "end_ms": 1630
+        },
+        {
+          "w": "मोहरे",
+          "start_ms": 1650,
+          "end_ms": 1905
+        },
+        {
+          "w": "बचे।",
+          "start_ms": 1925,
+          "end_ms": 2180
+        },
+        {
+          "w": "ऐसी",
+          "start_ms": 2200,
+          "end_ms": 2455
+        },
+        {
+          "w": "मात",
+          "start_ms": 2475,
+          "end_ms": 2730
+        },
+        {
+          "w": "जो",
+          "start_ms": 2750,
+          "end_ms": 3005
+        },
+        {
+          "w": "आज",
+          "start_ms": 3025,
+          "end_ms": 3280
+        },
+        {
+          "w": "भी",
+          "start_ms": 3300,
+          "end_ms": 3555
+        },
+        {
+          "w": "पढ़ाई",
+          "start_ms": 3575,
+          "end_ms": 3830
+        },
+        {
+          "w": "जाती",
+          "start_ms": 3850,
+          "end_ms": 4105
+        },
+        {
+          "w": "है।",
+          "start_ms": 4125,
+          "end_ms": 4380
+        }
+      ]
+    },
+    {
+      "segment_id": "hi_seg-001",
+      "kind": "title",
+      "ply": null,
+      "text": "मॉर्फ़ी बनाम दो रईस, पेरिस, 1858।",
+      "audio": "audio/silent.mp3",
+      "start_ms": 5300,
+      "duration_ms": 2500,
+      "words": [
+        {
+          "w": "मॉर्फ़ी",
+          "start_ms": 5300,
+          "end_ms": 5655
+        },
+        {
+          "w": "बनाम",
+          "start_ms": 5675,
+          "end_ms": 6030
+        },
+        {
+          "w": "दो",
+          "start_ms": 6050,
+          "end_ms": 6405
+        },
+        {
+          "w": "रईस,",
+          "start_ms": 6425,
+          "end_ms": 6780
+        },
+        {
+          "w": "पेरिस,",
+          "start_ms": 6800,
+          "end_ms": 7155
+        },
+        {
+          "w": "1858।",
+          "start_ms": 7175,
+          "end_ms": 7530
+        }
+      ]
+    },
+    {
+      "segment_id": "hi_seg-002",
+      "kind": "player_intro",
+      "ply": null,
+      "text": "एक नौजवान अमेरिकी प्रतिभा, और सामने एक ड्यूक और एक काउंट जो मिलकर सोचते हैं।",
+      "audio": "audio/silent.mp3",
+      "start_ms": 8100,
+      "duration_ms": 5000,
+      "words": [
+        {
+          "w": "एक",
+          "start_ms": 8100,
+          "end_ms": 8380
+        },
+        {
+          "w": "नौजवान",
+          "start_ms": 8400,
+          "end_ms": 8680
+        },
+        {
+          "w": "अमेरिकी",
+          "start_ms": 8700,
+          "end_ms": 8980
+        },
+        {
+          "w": "प्रतिभा,",
+          "start_ms": 9000,
+          "end_ms": 9280
+        },
+        {
+          "w": "और",
+          "start_ms": 9300,
+          "end_ms": 9580
+        },
+        {
+          "w": "सामने",
+          "start_ms": 9600,
+          "end_ms": 9880
+        },
+        {
+          "w": "एक",
+          "start_ms": 9900,
+          "end_ms": 10180
+        },
+        {
+          "w": "ड्यूक",
+          "start_ms": 10200,
+          "end_ms": 10480
+        },
+        {
+          "w": "और",
+          "start_ms": 10500,
+          "end_ms": 10780
+        },
+        {
+          "w": "एक",
+          "start_ms": 10800,
+          "end_ms": 11080
+        },
+        {
+          "w": "काउंट",
+          "start_ms": 11100,
+          "end_ms": 11380
+        },
+        {
+          "w": "जो",
+          "start_ms": 11400,
+          "end_ms": 11680
+        },
+        {
+          "w": "मिलकर",
+          "start_ms": 11700,
+          "end_ms": 11980
+        },
+        {
+          "w": "सोचते",
+          "start_ms": 12000,
+          "end_ms": 12280
+        },
+        {
+          "w": "हैं।",
+          "start_ms": 12300,
+          "end_ms": 12580
+        }
+      ]
+    },
+    {
+      "segment_id": "hi_seg-003",
+      "kind": "ply",
+      "ply": 1,
+      "text": "मॉर्फ़ी राजा के प्यादे से शुरू करते हैं, और रईस उसी तरह जवाब देते हैं।",
+      "audio": "audio/silent.mp3",
+      "start_ms": 13400,
+      "duration_ms": 6400,
+      "words": [
+        {
+          "w": "मॉर्फ़ी",
+          "start_ms": 13400,
+          "end_ms": 13764
+        },
+        {
+          "w": "राजा",
+          "start_ms": 13784,
+          "end_ms": 14148
+        },
+        {
+          "w": "के",
+          "start_ms": 14168,
+          "end_ms": 14532
+        },
+        {
+          "w": "प्यादे",
+          "start_ms": 14552,
+          "end_ms": 14916
+        },
+        {
+          "w": "से",
+          "start_ms": 14936,
+          "end_ms": 15300
+        },
+        {
+          "w": "शुरू",
+          "start_ms": 15320,
+          "end_ms": 15684
+        },
+        {
+          "w": "करते",
+          "start_ms": 15704,
+          "end_ms": 16068
+        },
+        {
+          "w": "हैं,",
+          "start_ms": 16088,
+          "end_ms": 16452
+        },
+        {
+          "w": "और",
+          "start_ms": 16472,
+          "end_ms": 16836
+        },
+        {
+          "w": "रईस",
+          "start_ms": 16856,
+          "end_ms": 17220
+        },
+        {
+          "w": "उसी",
+          "start_ms": 17240,
+          "end_ms": 17604
+        },
+        {
+          "w": "तरह",
+          "start_ms": 17624,
+          "end_ms": 17988
+        },
+        {
+          "w": "जवाब",
+          "start_ms": 18008,
+          "end_ms": 18372
+        },
+        {
+          "w": "देते",
+          "start_ms": 18392,
+          "end_ms": 18756
+        },
+        {
+          "w": "हैं।",
+          "start_ms": 18776,
+          "end_ms": 19140
+        }
+      ]
+    },
+    {
+      "segment_id": "hi_seg-004",
+      "kind": "ply",
+      "ply": 7,
+      "text": "काला घोड़ा जल्दी पिन करता है, और सफ़ेद पिन को बदल देता है।",
+      "audio": "audio/silent.mp3",
+      "start_ms": 20000,
+      "duration_ms": 4800,
+      "words": [
+        {
+          "w": "काला",
+          "start_ms": 20000,
+          "end_ms": 20312
+        },
+        {
+          "w": "घोड़ा",
+          "start_ms": 20332,
+          "end_ms": 20644
+        },
+        {
+          "w": "जल्दी",
+          "start_ms": 20664,
+          "end_ms": 20976
+        },
+        {
+          "w": "पिन",
+          "start_ms": 20996,
+          "end_ms": 21308
+        },
+        {
+          "w": "करता",
+          "start_ms": 21328,
+          "end_ms": 21640
+        },
+        {
+          "w": "है,",
+          "start_ms": 21660,
+          "end_ms": 21972
+        },
+        {
+          "w": "और",
+          "start_ms": 21992,
+          "end_ms": 22304
+        },
+        {
+          "w": "सफ़ेद",
+          "start_ms": 22324,
+          "end_ms": 22636
+        },
+        {
+          "w": "पिन",
+          "start_ms": 22656,
+          "end_ms": 22968
+        },
+        {
+          "w": "को",
+          "start_ms": 22988,
+          "end_ms": 23300
+        },
+        {
+          "w": "बदल",
+          "start_ms": 23320,
+          "end_ms": 23632
+        },
+        {
+          "w": "देता",
+          "start_ms": 23652,
+          "end_ms": 23964
+        },
+        {
+          "w": "है।",
+          "start_ms": 23984,
+          "end_ms": 24296
+        }
+      ]
+    },
+    {
+      "segment_id": "hi_seg-005",
+      "kind": "ply",
+      "ply": 12,
+      "text": "काला अपना घोड़ा निकालता है।",
+      "audio": "audio/silent.mp3",
+      "start_ms": 25000,
+      "duration_ms": 1800,
+      "words": [
+        {
+          "w": "काला",
+          "start_ms": 25000,
+          "end_ms": 25304
+        },
+        {
+          "w": "अपना",
+          "start_ms": 25324,
+          "end_ms": 25628
+        },
+        {
+          "w": "घोड़ा",
+          "start_ms": 25648,
+          "end_ms": 25952
+        },
+        {
+          "w": "निकालता",
+          "start_ms": 25972,
+          "end_ms": 26276
+        },
+        {
+          "w": "है।",
+          "start_ms": 26296,
+          "end_ms": 26600
+        }
+      ]
+    },
+    {
+      "segment_id": "hi_seg-006",
+      "kind": "key_moment",
+      "ply": 12,
+      "text": "यहाँ काले के पास शांत रास्ता था: क्वीन d7 पर, और सफ़ेद का हमला देर से पहुँचता।",
+      "audio": "audio/silent.mp3",
+      "start_ms": 27300,
+      "duration_ms": 14000,
+      "words": [
+        {
+          "w": "यहाँ",
+          "start_ms": 27300,
+          "end_ms": 28021
+        },
+        {
+          "w": "काले",
+          "start_ms": 28041,
+          "end_ms": 28762
+        },
+        {
+          "w": "के",
+          "start_ms": 28782,
+          "end_ms": 29503
+        },
+        {
+          "w": "पास",
+          "start_ms": 29523,
+          "end_ms": 30244
+        },
+        {
+          "w": "शांत",
+          "start_ms": 30264,
+          "end_ms": 30985
+        },
+        {
+          "w": "रास्ता",
+          "start_ms": 31005,
+          "end_ms": 31726
+        },
+        {
+          "w": "था:",
+          "start_ms": 31746,
+          "end_ms": 32467
+        },
+        {
+          "w": "क्वीन",
+          "start_ms": 32487,
+          "end_ms": 33208
+        },
+        {
+          "w": "d7",
+          "start_ms": 33228,
+          "end_ms": 33949
+        },
+        {
+          "w": "पर,",
+          "start_ms": 33969,
+          "end_ms": 34690
+        },
+        {
+          "w": "और",
+          "start_ms": 34710,
+          "end_ms": 35431
+        },
+        {
+          "w": "सफ़ेद",
+          "start_ms": 35451,
+          "end_ms": 36172
+        },
+        {
+          "w": "का",
+          "start_ms": 36192,
+          "end_ms": 36913
+        },
+        {
+          "w": "हमला",
+          "start_ms": 36933,
+          "end_ms": 37654
+        },
+        {
+          "w": "देर",
+          "start_ms": 37674,
+          "end_ms": 38395
+        },
+        {
+          "w": "से",
+          "start_ms": 38415,
+          "end_ms": 39136
+        },
+        {
+          "w": "पहुँचता।",
+          "start_ms": 39156,
+          "end_ms": 39877
+        }
+      ]
+    },
+    {
+      "segment_id": "hi_seg-007",
+      "kind": "ply",
+      "ply": 13,
+      "text": "क्वीन b3 पर f7 और b7 दोनों पर वार।",
+      "audio": "audio/silent.mp3",
+      "start_ms": 42100,
+      "duration_ms": 4000,
+      "words": [
+        {
+          "w": "क्वीन",
+          "start_ms": 42100,
+          "end_ms": 42480
+        },
+        {
+          "w": "b3",
+          "start_ms": 42500,
+          "end_ms": 42880
+        },
+        {
+          "w": "पर",
+          "start_ms": 42900,
+          "end_ms": 43280
+        },
+        {
+          "w": "f7",
+          "start_ms": 43300,
+          "end_ms": 43680
+        },
+        {
+          "w": "और",
+          "start_ms": 43700,
+          "end_ms": 44080
+        },
+        {
+          "w": "b7",
+          "start_ms": 44100,
+          "end_ms": 44480
+        },
+        {
+          "w": "दोनों",
+          "start_ms": 44500,
+          "end_ms": 44880
+        },
+        {
+          "w": "पर",
+          "start_ms": 44900,
+          "end_ms": 45280
+        },
+        {
+          "w": "वार।",
+          "start_ms": 45300,
+          "end_ms": 45680
+        }
+      ]
+    },
+    {
+      "segment_id": "hi_seg-008",
+      "kind": "verdict",
+      "ply": null,
+      "text": "मॉर्फ़ी ने लगभग बिना गलती खेला। विरोधी पास भी नहीं आए।",
+      "audio": "audio/silent.mp3",
+      "start_ms": 47000,
+      "duration_ms": 5800,
+      "words": [
+        {
+          "w": "मॉर्फ़ी",
+          "start_ms": 47000,
+          "end_ms": 47454
+        },
+        {
+          "w": "ने",
+          "start_ms": 47474,
+          "end_ms": 47928
+        },
+        {
+          "w": "लगभग",
+          "start_ms": 47948,
+          "end_ms": 48402
+        },
+        {
+          "w": "बिना",
+          "start_ms": 48422,
+          "end_ms": 48876
+        },
+        {
+          "w": "गलती",
+          "start_ms": 48896,
+          "end_ms": 49350
+        },
+        {
+          "w": "खेला।",
+          "start_ms": 49370,
+          "end_ms": 49824
+        },
+        {
+          "w": "विरोधी",
+          "start_ms": 49844,
+          "end_ms": 50298
+        },
+        {
+          "w": "पास",
+          "start_ms": 50318,
+          "end_ms": 50772
+        },
+        {
+          "w": "भी",
+          "start_ms": 50792,
+          "end_ms": 51246
+        },
+        {
+          "w": "नहीं",
+          "start_ms": 51266,
+          "end_ms": 51720
+        },
+        {
+          "w": "आए।",
+          "start_ms": 51740,
+          "end_ms": 52194
+        }
+      ]
+    },
+    {
+      "segment_id": "hi_seg-009",
+      "kind": "outro",
+      "ply": null,
+      "text": "देखने के लिए शुक्रिया।",
+      "audio": "audio/silent.mp3",
+      "start_ms": 54200,
+      "duration_ms": 3000,
+      "words": [
+        {
+          "w": "देखने",
+          "start_ms": 54200,
+          "end_ms": 54855
+        },
+        {
+          "w": "के",
+          "start_ms": 54875,
+          "end_ms": 55530
+        },
+        {
+          "w": "लिए",
+          "start_ms": 55550,
+          "end_ms": 56205
+        },
+        {
+          "w": "शुक्रिया।",
+          "start_ms": 56225,
+          "end_ms": 56880
+        }
+      ]
+    }
+  ],
+  "beats": [
+    {
+      "beat_id": "b-01",
+      "type": "blunder",
+      "ply": 12,
+      "at_ms": 25000,
+      "intensity": 3,
+      "mascot": {
+        "pose": "faint",
+        "line": "यह घोड़ा? सच में, भाई?"
+      },
+      "fx": [
+        "board_shake",
+        "red_flash",
+        "replay_move",
+        "eval_whip"
+      ],
+      "sfx": "oof_01"
+    },
+    {
+      "beat_id": "b-02",
+      "type": "brilliant",
+      "ply": 19,
+      "at_ms": 44880,
+      "intensity": 2,
+      "mascot": {
+        "pose": "slow_clap",
+        "line": "ये हुई असली कुर्बानी।"
+      },
+      "fx": [
+        "gold_glint",
+        "stamp_brilliant"
+      ],
+      "sfx": "ding_01"
+    }
+  ],
+  "chapters": [
+    {
+      "title": "शुरुआत",
+      "start_ms": 0
+    },
+    {
+      "title": "हमला",
+      "start_ms": 20000
+    },
+    {
+      "title": "अंत",
+      "start_ms": 43000
+    }
+  ],
+  "cold_open": {
+    "ply_from": 18,
+    "ply_to": 20,
+    "hook": "ओपेरा में वज़ीर की कुर्बानी"
+  },
+  "key_moments": [
+    {
+      "beat_id": "b-01",
+      "ply": 12,
+      "start_ms": 27000,
+      "duration_ms": 15000,
+      "label": "एक शांत रास्ता",
+      "line": [
+        "d8d7",
+        "b1c3",
+        "g8f6",
+        "c1g5"
+      ]
+    }
+  ],
+  "verdict": {
+    "turning_point_ply": 12,
+    "accuracy": {
+      "white": 92,
+      "black": 61
+    }
+  },
+  "thumbnail": {
+    "text": "घोड़े की कुर्बानी",
+    "ply": 19,
+    "crop_origin": "a3",
+    "pose": "slow_clap"
+  },
+  "music": {
+    "track": "music/bed_calm_01.mp3",
+    "volume": 0.12,
+    "duck_under_voice": 0.06
+  },
+  "youtube": {
+    "title": "ओपेरा में वज़ीर कुर्बान, 17 चालों में मात",
+    "description": "Morphy's Opera Game, move by move.\n\n00:00 The opening\n00:20 The attack\n00:30 The finish\n\nccid: cc-2026-0001-en",
+    "tags": [
+      "chess",
+      "morphy",
+      "opera game"
+    ],
+    "playlist": "Legendary Games",
+    "publish_at": "2026-11-17T18:30:00Z",
+    "default_language": "hi",
+    "made_for_kids": false,
+    "contains_synthetic_media": false,
+    "thumbnail": "thumb.png"
+  }
+}

@@ -56,7 +56,8 @@ const ShortsBoard: FC<{ spec: VideoSpec }> = ({ spec }) => {
   );
 };
 
-export const ShortsVideo: FC<VideoSpec> = (spec) => {
+/** Everything visible in a Short, no audio: the gallery draws stills from it. */
+export const ShortsVisuals: FC<VideoSpec> = (spec) => {
   useFonts();
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -96,9 +97,15 @@ export const ShortsVideo: FC<VideoSpec> = (spec) => {
       )}
       <OutOfTheoryLabel beats={spec.beats} template="shorts" lang={spec.language} box={labelBox} />
       <MascotSlot spec={spec} box={mascot} height={shortsLayout.mascotHeight} />
-      <NarrationTrack segments={spec.narration} />
-      <MusicBed music={spec.music} narration={spec.narration} />
-      <Sfx beats={spec.beats} />
     </AbsoluteFill>
   );
 };
+
+export const ShortsVideo: FC<VideoSpec> = (spec) => (
+  <>
+    <ShortsVisuals {...spec} />
+    <NarrationTrack segments={spec.narration} />
+    <MusicBed music={spec.music} narration={spec.narration} />
+    <Sfx beats={spec.beats} />
+  </>
+);

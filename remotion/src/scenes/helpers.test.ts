@@ -6,9 +6,12 @@ import { boardStateAt } from "../board/boardState";
 import { VideoSpec } from "../spec/schema";
 import { msToFrame } from "../spec/time";
 import { moveDoneFrame } from "../board/boardState";
+import { layerRects, estimateLines, textHeight } from "../mascot/layerLayout";
+import { reactionsFor } from "../mascot/react";
+import { strings } from "./strings";
 import { sceneRanges } from "./timeline";
 import { studioLayout } from "../theme/layout";
-import { captionsBoxAt, clockFor, coldOpenSpec, currentPlyAt, keyMomentTiming, moveLabel, resultText, yearOf } from "./helpers";
+import { captionsBoxAt, clockFor, signOffBeats, coldOpenSpec, currentPlyAt, keyMomentTiming, moveLabel, resultText, yearOf } from "./helpers";
 
 const spec = VideoSpec.parse(
   JSON.parse(readFileSync(resolve(__dirname, "../../../spec/fixtures/cc-2026-0001-en/video_spec.json"), "utf8")),
@@ -119,4 +122,27 @@ describe("captionsBoxAt", () => {
       expect(b.x + b.w).toBeLessThanOrEqual(640);
     }
   });
+});
+
+describe("signOffBeats", () => {
+  const range = { startMs: 40000 };
+  for (const lang of ["en", "hi"] as const) {
+    const beats = signOffBeats({ ...spec, language: lang }, range);
+
+    it(`${lang}: Pyaada waves, then points, one after the other inside the outro`, () => {
+      expect(beats.map((b) => b.mascot.pose)).toEqual(["wave", "point"]);
+      expect(beats[0].at_ms).toBeGreaterThanOrEqual(range.startMs);
+      const rs = reactionsFor(beats, FPS, 1800);
+      expect(rs[0].bubbleTo).toBeLessThan(rs[1].reactFrame); // the wave bubble is gone before the point starts
+    });
+
+    it(`${lang}: short lines (8 words English, 10 Hindi) that fit the outro bubble`, () => {
+      const { bubble } = layerRects(studioLayout.boxes.outroMascot, studioLayout.outroMascotHeight);
+      for (const b of beats) {
+        expect(b.mascot.line.split(" ").length).toBeLessThanOrEqual(lang === "en" ? 8 : 10);
+        expect(textHeight(estimateLines(b.mascot.line, bubble.w))).toBeLessThanOrEqual(bubble.h);
+      }
+      expect(beats[0].mascot.line).toBe(strings[lang].signOffWave);
+    });
+  }
 });

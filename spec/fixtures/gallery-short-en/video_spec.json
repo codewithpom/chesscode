@@ -1,0 +1,1056 @@
+{
+  "spec_version": "1.1.0",
+  "video_id": "cc-2026-0004-en",
+  "pair_id": "cc-2026-0004",
+  "language": "en",
+  "template": "shorts",
+  "series": "legendary_games",
+  "board": {
+    "orientation": "white",
+    "theme": "bone_slate"
+  },
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30
+  },
+  "duration_ms": 9900,
+  "game": {
+    "source": "local",
+    "source_id": "opera-game-1858",
+    "white": {
+      "name": "Paul Morphy",
+      "rating": null,
+      "title": null,
+      "country": "US",
+      "fact": "Unofficial world's best player at 21, retired from chess at 22."
+    },
+    "black": {
+      "name": "Duke Karl / Count Isouard",
+      "rating": null,
+      "title": null,
+      "country": null,
+      "fact": "Two noblemen consulting on every move, in their own opera box."
+    },
+    "event": "Paris Opera",
+    "date": "1858-11-02",
+    "result": "1-0",
+    "eco": "C41",
+    "opening": "Philidor Defense",
+    "pgn": "[Event \"Paris Opera\"]\n[Site \"Paris FRA\"]\n[Date \"1858.11.02\"]\n[White \"Paul Morphy\"]\n[Black \"Duke Karl / Count Isouard\"]\n[Result \"1-0\"]\n[ECO \"C41\"]\n\n1. e4 e5 2. Nf3 d6 3. d4 Bg4 4. dxe5 Bxf3 5. Qxf3 dxe5 6. Bc4 Nf6 7. Qb3 Qe7\n8. Nc3 c6 9. Bg5 b5 10. Nxb5 cxb5 11. Bxb5+ Nbd7 12. O-O-O Rd8 13. Rxd7 Rxd7\n14. Rd1 Qe6 15. Bxd7+ Nxd7 16. Qb8+ Nxb8 17. Rd8# 1-0"
+  },
+  "plies": [
+    {
+      "ply": 1,
+      "san": "e4",
+      "uci": "e2e4",
+      "fen_after": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1",
+      "eval": {
+        "cp": 45,
+        "mate": null
+      },
+      "best_uci": "e2e4",
+      "class": "book",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "e2",
+          "kind": "last_move"
+        },
+        {
+          "square": "e4",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 2,
+      "san": "e5",
+      "uci": "e7e5",
+      "fen_after": "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "eval": {
+        "cp": 47,
+        "mate": null
+      },
+      "best_uci": "e7e6",
+      "class": "book",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "e7",
+          "kind": "last_move"
+        },
+        {
+          "square": "e5",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 3,
+      "san": "Nf3",
+      "uci": "g1f3",
+      "fen_after": "rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2",
+      "eval": {
+        "cp": 37,
+        "mate": null
+      },
+      "best_uci": "g1f3",
+      "class": "book",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "g1",
+          "kind": "last_move"
+        },
+        {
+          "square": "f3",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 4,
+      "san": "d6",
+      "uci": "d7d6",
+      "fen_after": "rnbqkbnr/ppp2ppp/3p4/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 3",
+      "eval": {
+        "cp": 59,
+        "mate": null
+      },
+      "best_uci": "b8c6",
+      "class": "book",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "d7",
+          "kind": "last_move"
+        },
+        {
+          "square": "d6",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 5,
+      "san": "d4",
+      "uci": "d2d4",
+      "fen_after": "rnbqkbnr/ppp2ppp/3p4/4p3/3PP3/5N2/PPP2PPP/RNBQKB1R b KQkq - 0 3",
+      "eval": {
+        "cp": 71,
+        "mate": null
+      },
+      "best_uci": "d2d4",
+      "class": "book",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "d2",
+          "kind": "last_move"
+        },
+        {
+          "square": "d4",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 6,
+      "san": "Bg4",
+      "uci": "c8g4",
+      "fen_after": "rn1qkbnr/ppp2ppp/3p4/4p3/3PP1b1/5N2/PPP2PPP/RNBQKB1R w KQkq - 1 4",
+      "eval": {
+        "cp": 103,
+        "mate": null
+      },
+      "best_uci": "b8d7",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "c8",
+          "kind": "last_move"
+        },
+        {
+          "square": "g4",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 7,
+      "san": "dxe5",
+      "uci": "d4e5",
+      "fen_after": "rn1qkbnr/ppp2ppp/3p4/4P3/4P1b1/5N2/PPP2PPP/RNBQKB1R b KQkq - 0 4",
+      "eval": {
+        "cp": 94,
+        "mate": null
+      },
+      "best_uci": "d4e5",
+      "class": "best",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "d4",
+          "kind": "last_move"
+        },
+        {
+          "square": "e5",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 8,
+      "san": "Bxf3",
+      "uci": "g4f3",
+      "fen_after": "rn1qkbnr/ppp2ppp/3p4/4P3/4P3/5b2/PPP2PPP/RNBQKB1R w KQkq - 0 5",
+      "eval": {
+        "cp": 179,
+        "mate": null
+      },
+      "best_uci": "b8d7",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "g4",
+          "kind": "last_move"
+        },
+        {
+          "square": "f3",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 9,
+      "san": "Qxf3",
+      "uci": "d1f3",
+      "fen_after": "rn1qkbnr/ppp2ppp/3p4/4P3/4P3/5Q2/PPP2PPP/RNB1KB1R b KQkq - 0 5",
+      "eval": {
+        "cp": 135,
+        "mate": null
+      },
+      "best_uci": "d1f3",
+      "class": "best",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "d1",
+          "kind": "last_move"
+        },
+        {
+          "square": "f3",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 10,
+      "san": "dxe5",
+      "uci": "d6e5",
+      "fen_after": "rn1qkbnr/ppp2ppp/8/4p3/4P3/5Q2/PPP2PPP/RNB1KB1R w KQkq - 0 6",
+      "eval": {
+        "cp": 138,
+        "mate": null
+      },
+      "best_uci": "d6e5",
+      "class": "best",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "d6",
+          "kind": "last_move"
+        },
+        {
+          "square": "e5",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 11,
+      "san": "Bc4",
+      "uci": "f1c4",
+      "fen_after": "rn1qkbnr/ppp2ppp/8/4p3/2B1P3/5Q2/PPP2PPP/RNB1K2R b KQkq - 1 6",
+      "eval": {
+        "cp": 120,
+        "mate": null
+      },
+      "best_uci": "f3b3",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "f1",
+          "kind": "last_move"
+        },
+        {
+          "square": "c4",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 12,
+      "san": "Nf6",
+      "uci": "g8f6",
+      "fen_after": "rn1qkb1r/ppp2ppp/5n2/4p3/2B1P3/5Q2/PPP2PPP/RNB1K2R w KQkq - 2 7",
+      "eval": {
+        "cp": 214,
+        "mate": null
+      },
+      "best_uci": "d8f6",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "g8",
+          "kind": "last_move"
+        },
+        {
+          "square": "f6",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 13,
+      "san": "Qb3",
+      "uci": "f3b3",
+      "fen_after": "rn1qkb1r/ppp2ppp/5n2/4p3/2B1P3/1Q6/PPP2PPP/RNB1K2R b KQkq - 3 7",
+      "eval": {
+        "cp": 207,
+        "mate": null
+      },
+      "best_uci": "f3b3",
+      "class": "best",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "f3",
+          "kind": "last_move"
+        },
+        {
+          "square": "b3",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 14,
+      "san": "Qe7",
+      "uci": "d8e7",
+      "fen_after": "rn2kb1r/ppp1qppp/5n2/4p3/2B1P3/1Q6/PPP2PPP/RNB1K2R w KQkq - 4 8",
+      "eval": {
+        "cp": 223,
+        "mate": null
+      },
+      "best_uci": "f8c5",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "d8",
+          "kind": "last_move"
+        },
+        {
+          "square": "e7",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 15,
+      "san": "Nc3",
+      "uci": "b1c3",
+      "fen_after": "rn2kb1r/ppp1qppp/5n2/4p3/2B1P3/1QN5/PPP2PPP/R1B1K2R b KQkq - 5 8",
+      "eval": {
+        "cp": 218,
+        "mate": null
+      },
+      "best_uci": "b3b7",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "b1",
+          "kind": "last_move"
+        },
+        {
+          "square": "c3",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 16,
+      "san": "c6",
+      "uci": "c7c6",
+      "fen_after": "rn2kb1r/pp2qppp/2p2n2/4p3/2B1P3/1QN5/PPP2PPP/R1B1K2R w KQkq - 0 9",
+      "eval": {
+        "cp": 207,
+        "mate": null
+      },
+      "best_uci": "c7c6",
+      "class": "best",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "c7",
+          "kind": "last_move"
+        },
+        {
+          "square": "c6",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 17,
+      "san": "Bg5",
+      "uci": "c1g5",
+      "fen_after": "rn2kb1r/pp2qppp/2p2n2/4p1B1/2B1P3/1QN5/PPP2PPP/R3K2R b KQkq - 1 9",
+      "eval": {
+        "cp": 204,
+        "mate": null
+      },
+      "best_uci": "c1g5",
+      "class": "best",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "c1",
+          "kind": "last_move"
+        },
+        {
+          "square": "g5",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 18,
+      "san": "b5",
+      "uci": "b7b5",
+      "fen_after": "rn2kb1r/p3qppp/2p2n2/1p2p1B1/2B1P3/1QN5/PPP2PPP/R3K2R w KQkq - 0 10",
+      "eval": {
+        "cp": 281,
+        "mate": null
+      },
+      "best_uci": "e8d8",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "b7",
+          "kind": "last_move"
+        },
+        {
+          "square": "b5",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 19,
+      "san": "Nxb5",
+      "uci": "c3b5",
+      "fen_after": "rn2kb1r/p3qppp/2p2n2/1N2p1B1/2B1P3/1Q6/PPP2PPP/R3K2R b KQkq - 0 10",
+      "eval": {
+        "cp": 297,
+        "mate": null
+      },
+      "best_uci": "c3b5",
+      "class": "best",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "c3",
+          "kind": "last_move"
+        },
+        {
+          "square": "b5",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 20,
+      "san": "cxb5",
+      "uci": "c6b5",
+      "fen_after": "rn2kb1r/p3qppp/5n2/1p2p1B1/2B1P3/1Q6/PPP2PPP/R3K2R w KQkq - 0 11",
+      "eval": {
+        "cp": 427,
+        "mate": null
+      },
+      "best_uci": "e7b4",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "c6",
+          "kind": "last_move"
+        },
+        {
+          "square": "b5",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 21,
+      "san": "Bxb5+",
+      "uci": "c4b5",
+      "fen_after": "rn2kb1r/p3qppp/5n2/1B2p1B1/4P3/1Q6/PPP2PPP/R3K2R b KQkq - 0 11",
+      "eval": {
+        "cp": 492,
+        "mate": null
+      },
+      "best_uci": "c4b5",
+      "class": "best",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "c4",
+          "kind": "last_move"
+        },
+        {
+          "square": "b5",
+          "kind": "last_move"
+        },
+        {
+          "square": "e8",
+          "kind": "check"
+        }
+      ]
+    },
+    {
+      "ply": 22,
+      "san": "Nbd7",
+      "uci": "b8d7",
+      "fen_after": "r3kb1r/p2nqppp/5n2/1B2p1B1/4P3/1Q6/PPP2PPP/R3K2R w KQkq - 1 12",
+      "eval": {
+        "cp": 492,
+        "mate": null
+      },
+      "best_uci": "b8d7",
+      "class": "best",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "b8",
+          "kind": "last_move"
+        },
+        {
+          "square": "d7",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 23,
+      "san": "O-O-O",
+      "uci": "e1c1",
+      "fen_after": "r3kb1r/p2nqppp/5n2/1B2p1B1/4P3/1Q6/PPP2PPP/2KR3R b kq - 2 12",
+      "eval": {
+        "cp": 490,
+        "mate": null
+      },
+      "best_uci": "e1c1",
+      "class": "best",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "e1",
+          "kind": "last_move"
+        },
+        {
+          "square": "c1",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 24,
+      "san": "Rd8",
+      "uci": "a8d8",
+      "fen_after": "3rkb1r/p2nqppp/5n2/1B2p1B1/4P3/1Q6/PPP2PPP/2KR3R w k - 3 13",
+      "eval": {
+        "cp": 518,
+        "mate": null
+      },
+      "best_uci": "a8b8",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "a8",
+          "kind": "last_move"
+        },
+        {
+          "square": "d8",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 25,
+      "san": "Rxd7",
+      "uci": "d1d7",
+      "fen_after": "3rkb1r/p2Rqppp/5n2/1B2p1B1/4P3/1Q6/PPP2PPP/2K4R b k - 0 13",
+      "eval": {
+        "cp": 519,
+        "mate": null
+      },
+      "best_uci": "d1d7",
+      "class": "best",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "d1",
+          "kind": "last_move"
+        },
+        {
+          "square": "d7",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 26,
+      "san": "Rxd7",
+      "uci": "d8d7",
+      "fen_after": "4kb1r/p2rqppp/5n2/1B2p1B1/4P3/1Q6/PPP2PPP/2K4R w k - 0 14",
+      "eval": {
+        "cp": 582,
+        "mate": null
+      },
+      "best_uci": "f6d7",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "d8",
+          "kind": "last_move"
+        },
+        {
+          "square": "d7",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 27,
+      "san": "Rd1",
+      "uci": "h1d1",
+      "fen_after": "4kb1r/p2rqppp/5n2/1B2p1B1/4P3/1Q6/PPP2PPP/2KR4 b k - 1 14",
+      "eval": {
+        "cp": 545,
+        "mate": null
+      },
+      "best_uci": "h1d1",
+      "class": "best",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "h1",
+          "kind": "last_move"
+        },
+        {
+          "square": "d1",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 28,
+      "san": "Qe6",
+      "uci": "e7e6",
+      "fen_after": "4kb1r/p2r1ppp/4qn2/1B2p1B1/4P3/1Q6/PPP2PPP/2KR4 w k - 2 15",
+      "eval": {
+        "cp": 604,
+        "mate": null
+      },
+      "best_uci": "e7d6",
+      "class": "good",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "e7",
+          "kind": "last_move"
+        },
+        {
+          "square": "e6",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 29,
+      "san": "Bxd7+",
+      "uci": "b5d7",
+      "fen_after": "4kb1r/p2B1ppp/4qn2/4p1B1/4P3/1Q6/PPP2PPP/2KR4 b k - 0 15",
+      "eval": {
+        "cp": 299,
+        "mate": null
+      },
+      "best_uci": "g5f6",
+      "class": "inaccuracy",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "b5",
+          "kind": "last_move"
+        },
+        {
+          "square": "d7",
+          "kind": "last_move"
+        },
+        {
+          "square": "e8",
+          "kind": "check"
+        }
+      ]
+    },
+    {
+      "ply": 30,
+      "san": "Nxd7",
+      "uci": "f6d7",
+      "fen_after": "4kb1r/p2n1ppp/4q3/4p1B1/4P3/1Q6/PPP2PPP/2KR4 w k - 0 16",
+      "eval": {
+        "cp": null,
+        "mate": 2
+      },
+      "best_uci": "f6d7",
+      "class": "best",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "f6",
+          "kind": "last_move"
+        },
+        {
+          "square": "d7",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 31,
+      "san": "Qb8+",
+      "uci": "b3b8",
+      "fen_after": "1Q2kb1r/p2n1ppp/4q3/4p1B1/4P3/8/PPP2PPP/2KR4 b k - 1 16",
+      "eval": {
+        "cp": null,
+        "mate": 1
+      },
+      "best_uci": "b3b8",
+      "class": "best",
+      "clock_ms": null,
+      "show_at_ms": 0,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "b3",
+          "kind": "last_move"
+        },
+        {
+          "square": "b8",
+          "kind": "last_move"
+        },
+        {
+          "square": "e8",
+          "kind": "check"
+        }
+      ]
+    },
+    {
+      "ply": 32,
+      "san": "Nxb8",
+      "uci": "d7b8",
+      "fen_after": "1n2kb1r/p4ppp/4q3/4p1B1/4P3/8/PPP2PPP/2KR4 w k - 0 17",
+      "eval": {
+        "cp": null,
+        "mate": 1
+      },
+      "best_uci": "d7b8",
+      "class": "best",
+      "clock_ms": null,
+      "show_at_ms": 1840,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "d7",
+          "kind": "last_move"
+        },
+        {
+          "square": "b8",
+          "kind": "last_move"
+        }
+      ]
+    },
+    {
+      "ply": 33,
+      "san": "Rd8#",
+      "uci": "d1d8",
+      "fen_after": "1n1Rkb1r/p4ppp/4q3/4p1B1/4P3/8/PPP2PPP/2K5 b k - 1 17",
+      "eval": {
+        "cp": null,
+        "mate": 1
+      },
+      "best_uci": "d1d8",
+      "class": "best",
+      "clock_ms": null,
+      "show_at_ms": 4900,
+      "arrows": [],
+      "highlights": [
+        {
+          "square": "d1",
+          "kind": "last_move"
+        },
+        {
+          "square": "d8",
+          "kind": "last_move"
+        },
+        {
+          "square": "e8",
+          "kind": "check"
+        }
+      ]
+    }
+  ],
+  "narration": [
+    {
+      "segment_id": "en_seg-000",
+      "kind": "ply",
+      "ply": 31,
+      "text": "Queen to b8, check! Black has to take it.",
+      "audio": "audio/silent.mp3",
+      "start_ms": 0,
+      "duration_ms": 4600,
+      "words": [
+        {
+          "w": "Queen",
+          "start_ms": 0,
+          "end_ms": 440
+        },
+        {
+          "w": "to",
+          "start_ms": 460,
+          "end_ms": 900
+        },
+        {
+          "w": "b8,",
+          "start_ms": 920,
+          "end_ms": 1360
+        },
+        {
+          "w": "check!",
+          "start_ms": 1380,
+          "end_ms": 1820
+        },
+        {
+          "w": "Black",
+          "start_ms": 1840,
+          "end_ms": 2280
+        },
+        {
+          "w": "has",
+          "start_ms": 2300,
+          "end_ms": 2740
+        },
+        {
+          "w": "to",
+          "start_ms": 2760,
+          "end_ms": 3200
+        },
+        {
+          "w": "take",
+          "start_ms": 3220,
+          "end_ms": 3660
+        },
+        {
+          "w": "it.",
+          "start_ms": 3680,
+          "end_ms": 4120
+        }
+      ]
+    },
+    {
+      "segment_id": "en_seg-001",
+      "kind": "ply",
+      "ply": 33,
+      "text": "Rook to d8. Mate. Two pieces were enough.",
+      "audio": "audio/silent.mp3",
+      "start_ms": 4900,
+      "duration_ms": 5000,
+      "words": [
+        {
+          "w": "Rook",
+          "start_ms": 4900,
+          "end_ms": 5442
+        },
+        {
+          "w": "to",
+          "start_ms": 5462,
+          "end_ms": 6004
+        },
+        {
+          "w": "d8.",
+          "start_ms": 6024,
+          "end_ms": 6566
+        },
+        {
+          "w": "Mate.",
+          "start_ms": 6586,
+          "end_ms": 7128
+        },
+        {
+          "w": "Two",
+          "start_ms": 7148,
+          "end_ms": 7690
+        },
+        {
+          "w": "pieces",
+          "start_ms": 7710,
+          "end_ms": 8252
+        },
+        {
+          "w": "were",
+          "start_ms": 8272,
+          "end_ms": 8814
+        },
+        {
+          "w": "enough.",
+          "start_ms": 8834,
+          "end_ms": 9376
+        }
+      ]
+    }
+  ],
+  "beats": [
+    {
+      "beat_id": "b-01",
+      "type": "checkmate",
+      "ply": 33,
+      "at_ms": 4900,
+      "intensity": 3,
+      "mascot": {
+        "pose": "mic_drop",
+        "line": "Two pieces. That's all he needed."
+      },
+      "fx": [
+        "freeze_frame"
+      ],
+      "sfx": "sting_01"
+    }
+  ],
+  "chapters": [
+    {
+      "title": "The finish",
+      "start_ms": 0
+    }
+  ],
+  "cold_open": {
+    "ply_from": 31,
+    "ply_to": 33,
+    "hook": "A queen sacrifice at the opera"
+  },
+  "key_moments": [],
+  "verdict": {
+    "turning_point_ply": 29,
+    "accuracy": {
+      "white": 92,
+      "black": 61
+    }
+  },
+  "thumbnail": {
+    "text": "Knight sac, wins",
+    "ply": 31,
+    "crop_origin": "a5",
+    "pose": "mic_drop"
+  },
+  "music": {
+    "track": "music/bed_calm_01.mp3",
+    "volume": 0.12,
+    "duck_under_voice": 0.06
+  },
+  "youtube": {
+    "title": "He gave up his queen at the opera (and mated in 17)",
+    "description": "Morphy's Opera Game, move by move.\n\n00:00 The opening\n00:20 The attack\n00:30 The finish\n\nccid: cc-2026-0001-en",
+    "tags": [
+      "chess",
+      "morphy",
+      "opera game"
+    ],
+    "playlist": "Legendary Games",
+    "publish_at": "2026-11-17T18:30:00Z",
+    "default_language": "en",
+    "made_for_kids": false,
+    "contains_synthetic_media": false,
+    "thumbnail": "thumb.png"
+  }
+}

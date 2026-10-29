@@ -39,7 +39,7 @@ const SceneFor: FC<{ spec: VideoSpec; range: SceneRange }> = ({ spec, range }) =
     case "playback": return <Playback spec={spec} range={range} />;
     case "key_moment": return <KeyMoment spec={spec} range={range} />;
     case "verdict": return <Verdict spec={spec} range={range} />;
-    case "outro": return <Outro spec={spec} />;
+    case "outro": return <Outro spec={spec} range={range} />;
   }
 };
 
@@ -50,7 +50,8 @@ const StudioCaptions: FC<{ spec: VideoSpec; ranges: SceneRange[] }> = ({ spec, r
   return <Captions spec={spec} mode="long" box={captionsBoxAt(ranges, ms)} />;
 };
 
-export const StudioVideo: FC<VideoSpec> = (spec) => {
+/** Everything visible in a Studio video (scenes and captions), no audio: the gallery draws stills from it. */
+export const StudioVisuals: FC<VideoSpec> = (spec) => {
   useFonts();
   const { fps } = useVideoConfig();
   const ranges = useMemo(() => sceneRanges(spec), [spec]);
@@ -67,9 +68,15 @@ export const StudioVideo: FC<VideoSpec> = (spec) => {
         );
       })}
       <StudioCaptions spec={spec} ranges={ranges} />
-      <NarrationTrack segments={spec.narration} />
-      <MusicBed music={spec.music} narration={spec.narration} />
-      <Sfx beats={spec.beats} />
     </AbsoluteFill>
   );
 };
+
+export const StudioVideo: FC<VideoSpec> = (spec) => (
+  <>
+    <StudioVisuals {...spec} />
+    <NarrationTrack segments={spec.narration} />
+    <MusicBed music={spec.music} narration={spec.narration} />
+    <Sfx beats={spec.beats} />
+  </>
+);
