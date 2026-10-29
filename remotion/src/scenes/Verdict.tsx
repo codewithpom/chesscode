@@ -21,7 +21,7 @@ export const Verdict: FC<{ spec: VideoSpec; range: SceneRange }> = ({ spec, rang
   const lab = { fontFamily: fontFor(spec.language, "ui"), fontSize: tokens.size.label, color: tokens.color.muted, marginBottom: tokens.space(1) } as const;
   return (
     <>
-      <StudioBoard spec={spec} atMs={tp.show_at_ms + 400} hideArrows showEval={false} />
+      <StudioBoard spec={spec} ply={tp.ply} hideArrows showEval={false} />
       <Enter atMs={enterAt(range.startMs, 0)} style={{ position: "absolute", left: COL.x, top: 112, width: COL.w }}>
         <div style={{ ...mono(96), lineHeight: 1.1 }}>{resultText(spec.game.result)}</div>
       </Enter>

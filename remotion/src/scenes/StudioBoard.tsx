@@ -19,13 +19,14 @@ export const evalSpec = (spec: VideoSpec, template: "studio" | "shorts"): VideoS
 export const StudioBoard: FC<{
   spec: VideoSpec;
   atMs?: number;
+  ply?: number;
   hideArrows?: boolean;
   fx?: boolean;
   showEval?: boolean;
-}> = ({ spec, atMs, hideArrows, fx = false, showEval = true }) => {
+}> = ({ spec, atMs, ply, hideArrows, fx = false, showEval = true }) => {
   const inner = (
     <div style={{ position: "relative", width: board.w, height: board.h }}>
-      <Board spec={spec} size={board.w} atMs={atMs} hideArrows={hideArrows} />
+      <Board spec={spec} size={board.w} atMs={atMs} ply={ply} hideArrows={hideArrows} />
       {fx && <BoardFx spec={spec} size={board.w} orientation={spec.board.orientation} template="studio" />}
     </div>
   );

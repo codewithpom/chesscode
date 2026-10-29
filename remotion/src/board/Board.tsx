@@ -6,7 +6,7 @@ import { boardThemes } from "../theme/boardThemes";
 import { useFonts } from "../theme/fonts";
 import { tokens } from "../theme/tokens";
 import { Arrows } from "./Arrows";
-import { boardStateAt, orient, type BoardState } from "./boardState";
+import { boardStateAt, orient, settledState, type BoardState } from "./boardState";
 import { Highlights } from "./Highlights";
 import { Piece } from "./Piece";
 import { buildPositions } from "./positions";
@@ -63,18 +63,21 @@ export const BoardView: FC<{
 
 /**
  * SVG board driven only by the spec and the current frame. `atMs` draws the game at that ms
- * instead of the current frame (cold-open remapping, freeze frames); `hideArrows` drops the move arrows.
+ * instead of the current frame (cold-open remapping, freeze frames); `ply` shows that finished position, picked by
+ * ply number (it wins over `atMs`); `hideArrows` drops the move arrows.
  */
-export const Board: FC<{ spec: VideoSpec; size: number; atMs?: number; hideArrows?: boolean }> = ({
+export const Board: FC<{ spec: VideoSpec; size: number; atMs?: number; hideArrows?: boolean; ply?: number }> = ({
   spec,
   size,
   atMs,
   hideArrows,
+  ply,
 }) => {
   const currentFrame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const frame = atMs === undefined ? currentFrame : msToFrame(atMs, fps);
-  const state = boardStateAt(frame, fps, spec.plies, buildPositions(spec.game.pgn));
+  const positions = buildPositions(spec.game.pgn);
+  const state = ply === undefined ? boardStateAt(frame, fps, spec.plies, positions) : settledState(ply, spec.plies, positions);
   return (
     <BoardView state={state} size={size} orientation={spec.board.orientation} theme={spec.board.theme} hideArrows={hideArrows} />
   );

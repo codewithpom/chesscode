@@ -105,3 +105,17 @@ export const boardStateAt = (
   // Moving pieces last so they draw above the rest.
   return { ply: p.ply, pieces: [...still, ...moving], highlights, arrows };
 };
+
+/**
+ * The finished position after `ply` (0 = the start), with that ply's last-move and check marks and, unless
+ * `arrows` is false, its arrows. Chosen by ply number, never by time, so plies shown close together cannot leak in.
+ */
+export const settledState = (ply: number, plies: PlyInput[], positions: PlyState[], arrows = true): BoardState => {
+  const p = ply > 0 ? plies[ply - 1] : undefined;
+  return {
+    ply,
+    pieces: rest(positions[ply].pieces),
+    highlights: p ? p.highlights : [],
+    arrows: p && arrows ? p.arrows.slice(0, MAX_ARROWS) : [],
+  };
+};

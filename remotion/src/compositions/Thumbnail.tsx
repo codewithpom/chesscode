@@ -4,7 +4,7 @@
 import type { FC } from "react";
 import { AbsoluteFill, CalculateMetadataFunction } from "remotion";
 import { Arrows } from "../board/Arrows";
-import { boardStateAt, orient, squareXY } from "../board/boardState";
+import { orient, settledState, squareXY } from "../board/boardState";
 import { Highlights } from "../board/Highlights";
 import { Piece } from "../board/Piece";
 import { buildPositions } from "../board/positions";
@@ -13,7 +13,6 @@ import { Pyaada, POSES } from "../mascot";
 import { mascotWidth } from "../mascot/layerLayout";
 import type { PoseState } from "../mascot/poseState";
 import type { VideoSpec } from "../spec/schema";
-import { msToFrame } from "../spec/time";
 import { boardThemes } from "../theme/boardThemes";
 import { fontFor, useFonts } from "../theme/fonts";
 import type { Box } from "../theme/layout";
@@ -70,7 +69,7 @@ export const Thumbnail: FC<VideoSpec> = (spec) => {
   const { orientation, theme } = spec.board;
   const palette = boardThemes[theme];
   const ply = spec.plies[plyNo - 1];
-  const state = boardStateAt(msToFrame(ply.show_at_ms + 600, 30), 30, spec.plies, buildPositions(spec.game.pgn));
+  const state = settledState(plyNo, spec.plies, buildPositions(spec.game.pgn));
   const arrow = ply.arrows[0] ?? { from: ply.uci.slice(0, 2), to: ply.uci.slice(2, 4), color: "best" as const };
   return (
     <AbsoluteFill style={{ backgroundColor: tokens.color.bg }}>
