@@ -22,7 +22,8 @@ type Opts = { template?: "studio" | "shorts"; plies?: Pick<Ply, "ply" | "show_at
  * One window (frames, `to` exclusive) per enabled effect of every beat. Motion effects start on the first frame
  * the board draws the move as finished (moveDoneFrame); board_shake and the out-of-theory label start at at_ms;
  * freeze_frame holds the finished move for the mascot's own freeze length (reactionsFor: 6 frames at intensity
- * 2 and 3, none at 1); replay_move re-runs the move right after the freeze; clock effects last until the next ply. eval_whip (EvalBar) and
+ * 2 and 3, none at 1); replay_move re-runs the move right after the freeze; clock effects last until the next ply.
+ * The marks on the move itself are also cut at the next ply's start (pass `plies`). eval_whip (EvalBar) and
  * move_underline (MoveList) draw themselves and have no window.
  */
 export const fxWindows = (beats: Beat[], fps: number, opts: Opts = {}): FxWindow[] => {
@@ -53,9 +54,15 @@ export const fxWindows = (beats: Beat[], fps: number, opts: Opts = {}): FxWindow
         default: return null;
       }
     };
+    // Marks that belong to the beat's move (flash, glint, stamp, arrows, trail, sparkle) end when the next ply
+    // starts: a "!!" must never sit on a board that has already moved on.
+    const nextStart = nextPly ? msToFrame(nextPly.show_at_ms, fps) : Infinity;
+    const ON_THE_MOVE: FxId[] = ["red_flash", "gold_glint", "stamp_brilliant", "ghost_arrow", "king_trail", "crown_sparkle"];
     for (const fx of beat.fx) {
       const w = on[fx] ? ply(fx) : null;
-      if (w) out.push({ fx, beat, from: w[0], to: w[1] });
+      if (!w) continue;
+      const to = ON_THE_MOVE.includes(fx) ? Math.min(w[1], nextStart) : w[1];
+      if (to > w[0]) out.push({ fx, beat, from: w[0], to });
     }
   }
   return out;

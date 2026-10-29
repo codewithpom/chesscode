@@ -20,7 +20,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "remotion" / "src" / "assets" / "sfx"
 CREDITS = ROOT / "remotion" / "public" / "CREDITS.md"
-PEAK_DB = -16.0  # target; MP3 encoding overshoots a transient by up to 3 dB, the limit is -12 dBFS
+LIMIT_DB = -15.0  # limiter ceiling; MP3 encoding overshoots a transient by up to 3 dB, the hard limit is -12 dBFS
+MOMENTARY_TARGET_LUFS = -21.0  # 6.5 LU under the -14.5 LUFS voice (design review: 6-10 LU under)
 MAX_SECONDS = 2.0
 UA = "Mozilla/5.0"
 
@@ -75,16 +76,39 @@ def licence_ok(z: zipfile.ZipFile) -> str:
     return "CC0 1.0 (Creative Commons Zero)"
 
 
-def encode(src: bytes, dst: Path, tmp: Path) -> float:
+def peak_db(exe: str, path: Path) -> float:
+    out = subprocess.run([exe, "-hide_banner", "-i", str(path), "-af", "volumedetect", "-f", "null", "-"], capture_output=True, text=True)
+    return float(re.search(r"max_volume: (-?[\d.]+) dB", out.stderr).group(1))
+
+
+def momentary_max(exe: str, path: Path) -> float:
+    """Loudest 400 ms momentary loudness (LUFS) of the file padded to 1 s, so a short sound is not read as -70."""
+    out = subprocess.run([exe, "-hide_banner", "-nostats", "-i", str(path), "-af", "apad=whole_dur=1,ebur128", "-f", "null", "-"], capture_output=True, text=True)
+    vals = [float(v) for v in re.findall(r"M:\s*(-?[\d.]+)", out.stderr)]
+    return max(vals)
+
+
+def encode(src: bytes, dst: Path, tmp: Path) -> tuple[float, float]:
+    """Trim, then raise the sound to MOMENTARY_TARGET_LUFS with a limiter at LIMIT_DB so it cannot clip: a short
+    transient cannot always get there, in which case it is as loud as the limit allows. Returns (peak dBFS, momentary max)."""
     exe = ffmpeg()
     tmp.write_bytes(src)
-    probe = subprocess.run([exe, "-hide_banner", "-i", str(tmp), "-af", "volumedetect", "-f", "null", "-"], capture_output=True, text=True)
-    peak = float(re.search(r"max_volume: (-?[\d.]+) dB", probe.stderr).group(1))
-    gain = PEAK_DB - peak
-    af = f"silenceremove=start_periods=1:start_threshold=-50dB,atrim=0:{MAX_SECONDS},afade=t=out:st={MAX_SECONDS - 0.2}:d=0.2,volume={gain:.2f}dB"
-    subprocess.run([exe, "-hide_banner", "-y", "-i", str(tmp), "-af", af, "-ar", "48000", "-ac", "1", "-b:a", "128k", str(dst)], check=True, capture_output=True)
-    out = subprocess.run([exe, "-hide_banner", "-i", str(dst), "-af", "volumedetect", "-f", "null", "-"], capture_output=True, text=True)
-    return float(re.search(r"max_volume: (-?[\d.]+) dB", out.stderr).group(1))
+    base = f"silenceremove=start_periods=1:start_threshold=-50dB,atrim=0:{MAX_SECONDS},afade=t=out:st={MAX_SECONDS - 0.2}:d=0.2"
+
+    def run(gain: float) -> Path:
+        af = f"{base},volume={gain:.2f}dB,alimiter=limit={10 ** (LIMIT_DB / 20):.4f}:level=disabled"
+        subprocess.run([exe, "-hide_banner", "-y", "-i", str(tmp), "-af", af, "-ar", "48000", "-ac", "1", "-b:a", "128k", str(dst)], check=True, capture_output=True)
+        return dst
+
+    lo, hi = -10.0, 30.0
+    for _ in range(12):  # bisection on the pre-limiter gain
+        mid = (lo + hi) / 2
+        if momentary_max(exe, run(mid)) < MOMENTARY_TARGET_LUFS:
+            lo = mid
+        else:
+            hi = mid
+    run(hi)
+    return peak_db(exe, dst), momentary_max(exe, dst)
 
 
 def main() -> None:
@@ -103,15 +127,15 @@ def main() -> None:
         licences[slug] = licence_ok(zips[slug])
     rows = []
     for sfx_id, (slug, member) in PICKS.items():
-        peak = encode(zips[slug].read(member), OUT / f"{sfx_id}.mp3", raw / "tmp.ogg")
+        peak, momentary = encode(zips[slug].read(member), OUT / f"{sfx_id}.mp3", raw / "tmp.ogg")
         assert peak <= -12.0, f"{sfx_id} peaks at {peak} dBFS"
         rows.append(f"| {sfx_id}.mp3 | {PACKS[slug]} by Kenney, `{member}` | https://kenney.nl/assets/{slug} | {licences[slug]} |")
-        print(f"{sfx_id}: {member} peak {peak} dBFS")
+        print(f"{sfx_id}: {member} peak {peak} dBFS, momentary max {momentary} LUFS")
     section = (
         "\n## Sound effects (`src/assets/sfx/`)\n\n"
         "Kenney (https://kenney.nl) packs, each with a License.txt reading \"Creative Commons Zero, CC0\" "
         "(http://creativecommons.org/publicdomain/zero/1.0/), checked at download. Converted by `scripts/fetch_sfx.py` "
-        "(48 kHz mono MP3, trimmed to 2 s, peak normalised to -16 dBFS before encoding, every file verified <= -12 dBFS).\n\n"
+        "(48 kHz mono MP3, trimmed to 2 s, raised to a -21 LUFS momentary maximum behind a -15 dBFS limiter, every file verified <= -12 dBFS).\n\n"
         "| File | Source file | Pack page | License |\n| --- | --- | --- | --- |\n" + "\n".join(rows) + "\n"
     )
     text = CREDITS.read_text(encoding="utf8")

@@ -19,6 +19,8 @@ import { blipFrames, SpeechBubble, typingEnd } from "./speech";
 
 const BLIPS = [blip1, blip2, blip3, blip4, blip5, blip6];
 const BLIP_FRAMES_MS = 90;
+/** Voice blips sit well under the narration (design review: they played at full file level, louder than the beat sfx). */
+export const BLIP_GAIN = 0.35;
 const CONFETTI = 28;
 const CONFETTI_COLORS = [P.accent, P.body, P.shade];
 
@@ -77,7 +79,7 @@ export const MascotLayer: React.FC<{ spec: VideoSpec; box: Box; height: number }
           .filter((b) => b.frame < Math.min(r.bubbleTo, durationInFrames))
           .map((b) => (
             <Sequence key={`${r.beat.beat_id}-${b.frame}`} from={b.frame} durationInFrames={msToFrame(BLIP_FRAMES_MS, fps) + 1} layout="none">
-              <Audio src={BLIPS[b.sample - 1]} />
+              <Audio src={BLIPS[b.sample - 1]} volume={BLIP_GAIN} />
             </Sequence>
           )),
       )}

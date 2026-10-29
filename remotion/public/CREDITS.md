@@ -21,7 +21,7 @@ Modification (CC0 permits it): the six black piece files (`bK bQ bR bB bN bP .sv
 
 ## Sound effects (`src/assets/sfx/`)
 
-Kenney (https://kenney.nl) packs, each with a License.txt reading "Creative Commons Zero, CC0" (http://creativecommons.org/publicdomain/zero/1.0/), checked at download. Converted by `scripts/fetch_sfx.py` (48 kHz mono MP3, trimmed to 2 s, peak normalised to -16 dBFS before encoding, every file verified <= -12 dBFS).
+Kenney (https://kenney.nl) packs, each with a License.txt reading "Creative Commons Zero, CC0" (http://creativecommons.org/publicdomain/zero/1.0/), checked at download. Converted by `scripts/fetch_sfx.py` (48 kHz mono MP3, trimmed to 2 s, raised to a -21 LUFS momentary maximum behind a -15 dBFS limiter, every file verified <= -12 dBFS).
 
 | File | Source file | Pack page | License |
 | --- | --- | --- | --- |

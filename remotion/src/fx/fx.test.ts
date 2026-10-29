@@ -71,6 +71,23 @@ describe("fxWindows", () => {
     expect(w).toEqual([expect.objectContaining({ fx: "clock_red", from: AT, to: msToFrame(16000, FPS) })]);
   });
 
+  it("the \"!!\" stamp and the other marks on a move end when the next ply starts (it sat on the wrong move)", () => {
+    const b = beat({ type: "brilliant", ply: 19, at_ms: 44880, intensity: 2, fx: ["gold_glint", "stamp_brilliant", "red_flash", "ghost_arrow", "king_trail", "crown_sparkle", "board_shake"] });
+    const next = { ply: 20, show_at_ms: 45360 }; // 480 ms later: the capture is already on the way
+    const nextFrame = msToFrame(45360, FPS);
+    const w = fxWindows([b], FPS, { plies: [next] });
+    for (const x of w.filter((x) => x.fx !== "board_shake")) expect(x.to, x.fx).toBeLessThanOrEqual(nextFrame);
+    expect(w.find((x) => x.fx === "stamp_brilliant")!.to).toBe(nextFrame);
+    expect(w.find((x) => x.fx === "board_shake")!.to).toBe(msToFrame(44880, FPS) + 6); // not a mark on the move
+    // Without a following ply the full length stands.
+    expect(fxWindows([b], FPS).find((x) => x.fx === "stamp_brilliant")!.to - msToFrame(44880, FPS)).toBeGreaterThan(24);
+  });
+
+  it("a mark whose move is already replaced by the next ply has no window", () => {
+    const b = beat({ fx: ["gold_glint"] });
+    expect(fxWindows([b], FPS, { plies: [{ ply: 6, show_at_ms: 10100 }] })).toEqual([]);
+  });
+
   it("eval_whip and move_underline draw themselves: no window", () => {
     expect(fxWindows([beat({ fx: ["eval_whip", "move_underline"] })], FPS)).toEqual([]);
   });
