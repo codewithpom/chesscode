@@ -49,7 +49,7 @@ Done and merged: `ws/m1-risk`, `ws/m2-pipeline`, `ws/remotion-core`, `ws/mascot-
 | `.worktrees/m4-mascot` / `ws/m4-mascot` | `docs/superpowers/plans/2026-10-28-m4-mascot-rig.md` | Claude `remotion-builder` (Sonnet) | `design-critic` + Codex read-only or fresh Claude; owner reel approval |
 | `.worktrees/m5-templates` / `ws/m5-templates` | `docs/superpowers/plans/2026-10-28-m5-templates.md` | Claude `remotion-builder` (Sonnet) | `design-critic`; Gate B: agy + fresh Claude; owner approval |
 
-Oct 28: repo secrets set with `gh secret set` (`YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET`, `YOUTUBE_REFRESH_TOKEN`, `ELEVENLABS_API_KEY`). **Missing: `ANTHROPIC_API_KEY`** (owner adds it; needed by the script stage at Batch 0). Day-1 upload confirmed Scheduled in Studio by the owner.
+Oct 28: repo secrets set with `gh secret set` (`YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET`, `YOUTUBE_REFRESH_TOKEN`, `ELEVENLABS_API_KEY`). **No `ANTHROPIC_API_KEY`** (owner, Oct 28: none available; make as many videos as possible by the deadline). Scripts are written offline by agents (Claude subagents, Codex, agy) through the request/answer loop in `docs/offline-llm.md`, and final scripts are committed to `content/scripts/` and replayed on Actions. Script writing is now limited by agent usage, so the floor tier is scripted first. Day-1 upload confirmed Scheduled in Studio by the owner.
 
 ## If the schedule slips (spec section 13)
 
@@ -68,7 +68,8 @@ Oct 28: repo secrets set with `gh secret set` (`YOUTUBE_CLIENT_ID`, `YOUTUBE_CLI
 - [ ] `containsSyntheticMedia`: false (default) or true.
 - [ ] End screens: skip, or add by hand to the first video of each series.
 - [ ] Exact return date (confirms the 13-week window).
-- [ ] Final `games.yaml` and reviewed line bank.
+- [x] Reviewed line bank (Oct 29, all kept).
+- [ ] Final `games.yaml`.
 
 ## Assumptions made where the spec is silent (raise to change)
 
@@ -93,6 +94,7 @@ Oct 28: repo secrets set with `gh secret set` (`YOUTUBE_CLIENT_ID`, `YOUTUBE_CLI
 ## Owner decisions log
 
 - Oct 28: mascot concept **Pyaada**.
+- Oct 29: line banks approved as written (all 672 EN + HI lines kept; review page https://claude.ai/artifact/KDwDKjyPTCnpvxqKMEDMgf). Lines live on `ws/m3-content` until M3 merges.
 - Oct 28: board pieces = rhosgfx (CC0) with black pieces recoloured to dark ink for contrast.
 - Oct 28: Shorts layout deviates from spec section 6: board **864 px** (not 960) so captions, eval bar and board fit the upper 60 % and the mascot fits below.
 - Oct 28: four series board themes get four distinct hue families (bone/slate, walnut, sage, a fourth muted hue) at the same square contrast.

@@ -74,3 +74,36 @@ def test_real_engine_depth_20_multipv_2(tmp_path):
         pytest.skip("STOCKFISH_PATH is not set")
     rows = analyze.analyse_game(PGN, lambda: chess.engine.SimpleEngine.popen_uci(path), EngineCache(tmp_path / "cache.sqlite"))
     assert rows and len(rows[0]["before"]) == 2
+
+
+def _ctx(tmp_path, source_id="opera"):
+    import shutil
+    from pathlib import Path
+    from chesscode.context import Context
+    golden = Path(__file__).parent / "golden"
+    spec = tmp_path / "spec"
+    spec.mkdir()
+    shutil.copyfile(golden / "pgn" / "opera.pgn", spec / "game.pgn")
+    repo = tmp_path / "repo"
+    (repo / "content" / "analysis").mkdir(parents=True)
+    shutil.copyfile(golden / "analysis" / "opera.json", repo / "content" / "analysis" / f"{source_id}.json")
+    return Context("cc-2026-0001-en", spec, repo, {"source_id": source_id}, "en", "studio")
+
+
+def test_committed_analysis_is_used_without_an_engine(tmp_path, monkeypatch):
+    import json
+    from chesscode.stages import analyze
+    monkeypatch.delenv("STOCKFISH_PATH", raising=False)
+    ctx = _ctx(tmp_path)
+    analyze.run(ctx)
+    assert json.loads((ctx.spec_dir / "analysis.json").read_text(encoding="utf-8"))[0]["san"] == "e4"
+
+
+def test_committed_analysis_for_another_game_is_refused(tmp_path):
+    from pathlib import Path
+    from chesscode.context import StageError
+    from chesscode.stages import analyze
+    ctx = _ctx(tmp_path)
+    (ctx.spec_dir / "game.pgn").write_text((Path(__file__).parent / "golden" / "pgn" / "immortal.pgn").read_text(encoding="utf-8"), encoding="utf-8")
+    with pytest.raises(StageError, match="does not match"):
+        analyze.run(ctx)

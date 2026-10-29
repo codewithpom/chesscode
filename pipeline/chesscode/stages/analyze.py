@@ -10,7 +10,7 @@ import chess.pgn
 from ..context import StageError
 from ..engine_cache import EngineCache
 
-INPUTS = ["game.pgn"]
+INPUTS = ["game.pgn", "content/analysis"]
 OUTPUTS = ["analysis.json"]
 
 
@@ -63,10 +63,24 @@ def analyse_game(pgn: str, engine_factory, cache: EngineCache, depth: int = 20, 
     return rows
 
 
+def _matches(rows: list[dict], pgn: str) -> bool:
+    game = chess.pgn.read_game(io.StringIO(pgn))
+    return [row.get("uci") for row in rows] == [move.uci() for move in game.mainline_moves()]
+
+
 def run(ctx) -> None:
     pgn_path = ctx.spec_dir / "game.pgn"
     if not pgn_path.is_file():
         raise StageError(ctx.video_id, "analyze", "game.pgn is missing")
+    # Committed analysis is the source of truth: engine builds, threads and hardware differ between
+    # machines, and scripts written against one analysis must replay against the same one on Actions.
+    committed = ctx.repo_root / "content" / "analysis" / f"{ctx.game.get('source_id')}.json"
+    if committed.is_file():
+        rows = json.loads(committed.read_text(encoding="utf-8"))
+        if not _matches(rows, pgn_path.read_text(encoding="utf-8")):
+            raise StageError(ctx.video_id, "analyze", f"{committed.name} does not match game.pgn move for move; delete it to re-analyse")
+        (ctx.spec_dir / "analysis.json").write_text(json.dumps(rows, indent=2) + "\n", encoding="utf-8")
+        return
     engine_path = os.environ.get("STOCKFISH_PATH")
     if not engine_path:
         raise StageError(ctx.video_id, "analyze", "STOCKFISH_PATH is not set")
@@ -74,9 +88,18 @@ def run(ctx) -> None:
     try:
         rows = analyse_game(
             pgn_path.read_text(encoding="utf-8"),
-            lambda: chess.engine.SimpleEngine.popen_uci(engine_path),
+            lambda: _engine(engine_path),
             cache,
         )
     except Exception as exc:
         raise StageError(ctx.video_id, "analyze", str(exc)) from exc
     (ctx.spec_dir / "analysis.json").write_text(json.dumps(rows, indent=2) + "\n", encoding="utf-8")
+    committed.parent.mkdir(parents=True, exist_ok=True)
+    committed.write_text(json.dumps(rows, indent=2) + "\n", encoding="utf-8")
+
+
+def _engine(path: str):
+    engine = chess.engine.SimpleEngine.popen_uci(path)
+    # More threads are fine now that the analysis is committed rather than recomputed per machine.
+    engine.configure({"Threads": int(os.environ.get("STOCKFISH_THREADS", "1")), "Hash": int(os.environ.get("STOCKFISH_HASH_MB", "64"))})
+    return engine

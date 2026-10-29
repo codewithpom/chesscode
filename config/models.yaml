@@ -1,3 +1,4 @@
+provider: auto  # anthropic when ANTHROPIC_API_KEY is set, else offline (agent-answered files in content/llm/)
 script: claude-sonnet-5-5
 script_hi: claude-sonnet-5-5  # same model; own key so Hindi (Devanagari tokenises ~3x longer) gets its own output budget
 checks: claude-haiku-5-5

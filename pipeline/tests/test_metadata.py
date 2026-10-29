@@ -44,6 +44,7 @@ def metadata_ctx(tmp_path, video_id="cc-2026-0001-en", games=None):
 
 def test_title_comes_from_the_scorer_and_credits_are_in_the_description(tmp_path, monkeypatch):
     ctx = metadata_ctx(tmp_path)
+    monkeypatch.setattr(metadata.llm, "provider", lambda: "anthropic")
     monkeypatch.setattr(metadata.llm, "complete_json", lambda *args: {"best": 2})
     metadata.run(ctx)
     result = json.loads((ctx.spec_dir / "metadata.json").read_text(encoding="utf-8"))
@@ -53,6 +54,7 @@ def test_title_comes_from_the_scorer_and_credits_are_in_the_description(tmp_path
 
 def test_scorer_index_out_of_range_stops(tmp_path, monkeypatch):
     ctx = metadata_ctx(tmp_path)
+    monkeypatch.setattr(metadata.llm, "provider", lambda: "anthropic")
     monkeypatch.setattr(metadata.llm, "complete_json", lambda *args: {"best": 9})
     with pytest.raises(StageError, match="index 9"):
         metadata.run(ctx)
@@ -64,3 +66,10 @@ def test_no_slot_error_gives_the_calendar_reason(tmp_path, monkeypatch):
     monkeypatch.setattr(metadata.llm, "complete_json", lambda *args: {"best": 0})
     with pytest.raises(StageError, match="series rule"):
         metadata.run(ctx)
+
+
+def test_offline_provider_takes_the_scripts_first_title(tmp_path, monkeypatch):
+    ctx = metadata_ctx(tmp_path)
+    monkeypatch.setattr(metadata.llm, "provider", lambda: "offline")
+    metadata.run(ctx)
+    assert json.loads((ctx.spec_dir / "metadata.json").read_text(encoding="utf-8"))["title"] == "First idea"

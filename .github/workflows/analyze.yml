@@ -1,0 +1,74 @@
+name: analyze
+
+# Stockfish analysis for content games in parallel (one job per game), so the backlog does not wait
+# on one local machine. Each job uploads content/analysis/<source_id>.json; download the artifacts
+# and commit them (analysis is committed, see pipeline/chesscode/stages/analyze.py).
+on:
+  workflow_dispatch:
+    inputs:
+      games:
+        description: 'game_no list separated by spaces, or "missing" for every game without committed analysis'
+        default: missing
+
+permissions:
+  contents: read
+
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    outputs:
+      games: ${{ steps.list.outputs.games }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install pyyaml
+      - id: list
+        env:
+          GAMES: ${{ inputs.games }}
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os, pathlib, yaml
+          games = yaml.safe_load(pathlib.Path("content/games.yaml").read_text(encoding="utf-8"))
+          wanted = os.environ["GAMES"].split()
+          if wanted == ["missing"]:
+              picked = [g["game_no"] for g in games if not pathlib.Path(f"content/analysis/{g['source_id']}.json").is_file()]
+          else:
+              picked = [int(n) for n in wanted]
+          print("games=" + json.dumps(picked))
+          PY
+
+  analyze:
+    needs: plan
+    if: needs.plan.outputs.games != '[]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        game: ${{ fromJson(needs.plan.outputs.games) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pipeline/pyproject.toml
+      - run: pip install -e pipeline
+      - name: Stockfish 18 (same version as local analysis)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download sf_18 -R official-stockfish/Stockfish -p 'stockfish-ubuntu-x86-64-avx2.tar' -D /tmp/sf
+          tar -xf /tmp/sf/stockfish-ubuntu-x86-64-avx2.tar -C /tmp/sf
+          echo "STOCKFISH_PATH=$(find /tmp/sf -type f -name 'stockfish-ubuntu-x86-64-avx2' | head -1)" >> "$GITHUB_ENV"
+      - name: Analyse
+        working-directory: pipeline
+        env:
+          STOCKFISH_THREADS: "4"
+          STOCKFISH_HASH_MB: "1024"
+        run: python -m chesscode run --video "cc-2026-$(printf '%04d' ${{ matrix.game }})-en" --until analyze
+      - uses: actions/upload-artifact@v4
+        with:
+          name: analysis-${{ matrix.game }}
+          path: content/analysis/*.json
+          retention-days: 7

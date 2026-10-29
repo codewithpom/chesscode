@@ -5,6 +5,8 @@ import shortFixture from "../../spec/fixtures/cc-2026-0002-en/video_spec.json";
 import { calculateShortsMetadata, ShortsVideo } from "./compositions/ShortsVideo";
 import { calculateStudioMetadata, StudioVideo } from "./compositions/StudioVideo";
 import { calculateThumbnailMetadata, Thumbnail } from "./compositions/Thumbnail";
+import { MascotReel, REEL_FRAMES } from "./compositions/MascotReel";
+import { MascotSheet } from "./compositions/MascotSheet";
 import { VideoSpec } from "./spec/schema";
 
 export const RemotionRoot: React.FC = () => (
@@ -56,5 +58,7 @@ export const RemotionRoot: React.FC = () => (
       width={1920}
       height={1080}
     />
+    <Composition id="MascotSheet" component={MascotSheet} durationInFrames={1} fps={30} width={1920} height={1080} />
+    <Composition id="MascotReel" component={MascotReel} durationInFrames={REEL_FRAMES} fps={30} width={1920} height={1080} />
   </>
 );
