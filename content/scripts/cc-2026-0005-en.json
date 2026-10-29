@@ -1,0 +1,133 @@
+{
+  "segments": [
+    {
+      "kind": "cold_open",
+      "ply": null,
+      "text": "Paul Morphy has a perfectly good queen on b3. On move sixteen, he sends it to b8, where Black has no choice but to capture it. Black does, and on the very next move the game is over. Seventeen moves, two opponents, one queen sacrifice. This is the Opera Game, and by the end you will see why every move before that sacrifice mattered."
+    },
+    {
+      "kind": "title",
+      "ply": null,
+      "text": "Welcome to Legendary Games. Today: Morphy's Opera Game, played in Paris in 1858."
+    },
+    {
+      "kind": "player_intro",
+      "ply": null,
+      "text": "Paul Morphy was twenty-one, from New Orleans, and on a European tour in which he beat most of the strongest players he met. In a box at the opera in Paris, he took White. Black was not one player but two: the Duke of Brunswick and Count Isouard, who talked over every move together while the opera went on around them. It is a famous setting, but the chess is the reason we still play through this game."
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "The opening: a solid defence that leaves Black short of space."
+    },
+    {
+      "kind": "ply",
+      "ply": 1,
+      "text": "Morphy opens with e4, and Black answers with e5. Nf3 attacks that pawn, and Black defends it with d6. This is the Philidor Defence. It is sturdy, because the pawn on e5 is well protected, but it has a price: Black gives up space, and the bishop on f8 and the knight on g8 have fewer good squares to go to. Keep that in mind, because the whole game is about who gets their pieces out first."
+    },
+    {
+      "kind": "ply",
+      "ply": 5,
+      "text": "Now Morphy plays d4, challenging the centre. Black replies with Bg4, pinning the knight on f3 to the queen on d1. It is a natural move, and it was well known in this opening. Morphy is not worried about the pin. He simply takes on e5 with dxe5, opening the centre while he is the one with more pieces ready to use it."
+    },
+    {
+      "kind": "ply",
+      "ply": 8,
+      "text": "Black takes the knight, Bxf3, and White recaptures with the queen, Qxf3. Then dxe5 recaptures the pawn. Count what has happened. Black has traded a developed bishop for a knight and has still not moved a single piece on the kingside except the one that was traded. White's queen, meanwhile, is already active on f3, staring down the f-file at the pawn on f7. The engine gives White a small but clear edge, about one and a half pawns, and it only grows from here."
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "The middlegame: development against material."
+    },
+    {
+      "kind": "ply",
+      "ply": 11,
+      "text": "Bc4 develops a piece and aims it straight at f7, which is the weakest point in Black's camp, because only the king guards it. Together the bishop and the queen on f3 threaten to capture on f7 with checkmate. Black has to respond, and he plays Nf6, blocking the f-file and defending f7. It looks natural, but the engine would have preferred Qf6, which defends the same pawn without getting in the way of the rest of Black's army."
+    },
+    {
+      "kind": "ply",
+      "ply": 13,
+      "text": "Now Morphy plays Qb3, and this is a lovely move. The queen leaves f3 but keeps the bishop on c4 supported, so the pressure on f7 stays, and it attacks the pawn on b7 at the same time. Black cannot cover both ideas with one move. He chooses Qe7, which defends f7, but look at the cost: the queen now blocks the bishop on f8, so Black's kingside pieces are even more stuck than before."
+    },
+    {
+      "kind": "ply",
+      "ply": 15,
+      "text": "The pawn on b7 is hanging, and the engine's top choice here was to take it with Qxb7. Morphy declines and plays Nc3 instead, bringing another piece into the game. That is the heart of his style: he does not want to win a pawn, he wants to win the initiative. Nc3 also prepares a knight jump to b5, attacking the pawn on c7, so Black answers with c6, which covers b5 and d5 and defends c7."
+    },
+    {
+      "kind": "ply",
+      "ply": 17,
+      "text": "Now Bg5. The bishop pins the knight on f6 to the queen on e7, so that knight cannot move without losing the queen. Black's whole position is tied up in knots. He tries to break free with b5, attacking the bishop on c4 with a pawn. The engine would have preferred Kd8, tucking the king away, but b5 is an understandable try, and it is also the move that costs Black the game. After it the evaluation jumps from about two pawns to three and a half."
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "The sacrifice that opens the position."
+    },
+    {
+      "kind": "ply",
+      "ply": 19,
+      "text": "Morphy answers with a knight sacrifice, Nxb5. If Black takes it with cxb5, then Bxb5+ gives check, and White has two pawns for the knight. Look at the position after that: Black's king is stuck on e8, the d-file is half open, and White has three pieces in play against Black's one developed knight. The engine suggests that Black's best try was Qb4+, offering a queen trade. Instead Black takes the knight, and the evaluation leaps past five pawns."
+    },
+    {
+      "kind": "ply",
+      "ply": 21,
+      "text": "The check forces a reply. Black blocks with Nbd7, the only sensible way to cover the diagonal, and that knight is now pinned to the king by the bishop on b5. It cannot move without exposing the king to the bishop. Remember this pin, because the whole rest of the game depends on it."
+    },
+    {
+      "kind": "ply",
+      "ply": 23,
+      "text": "Now O-O-O. Morphy castles queenside, and in a single move the king is safe and the rook arrives on d1, attacking the pinned knight on d7. This is what a lead in development looks like: a move that does two jobs. Black defends with Rd8, but Morphy does not wait. He plays Rxd7, giving up a rook for a knight, and Black recaptures with the other rook, Rxd7."
+    },
+    {
+      "kind": "ply",
+      "ply": 27,
+      "text": "Rd1 brings the second rook onto the d-file and attacks the rook on d7, which is itself pinned by the bishop on b5. Black can only add another defender with Qe6. The engine preferred Qd6, and g6 was another try, but nothing really saves Black now. Look at his army: the bishop on f8 and the rook on h8 have not moved all game, and they never will."
+    },
+    {
+      "kind": "ply",
+      "ply": 29,
+      "text": "Bxd7+ takes the rook with check, and the knight recaptures, Nxd7. White has now traded a rook for a knight and a bishop for a rook, so the material is roughly level, but the position is not. Black's king is exposed, and his pieces are on the wrong squares. The engine shows a win for White here. All of White's pieces are working together, and now Morphy has a final blow ready."
+    },
+    {
+      "kind": "ply",
+      "ply": 31,
+      "text": "Qb8+. The queen travels all the way from b3 to b8, along a file that Black's own b-pawn opened. It is a sacrifice, because the knight can take it. And that is exactly the point: Nxb8 is Black's only legal reply, since the queen on e6 and the king cannot reach b8. The knight has to leave d7 to make the capture, and that leaves the d-file wide open."
+    },
+    {
+      "kind": "key_moment",
+      "ply": 33,
+      "text": "Rd8 is checkmate. The rook gives check, and the bishop on g5 protects it, so the king cannot take. Look at the escape squares. The bishop on f8 and the pawn on f7 are Black's own pieces, in the way. The bishop on g5 covers e7, and the rook covers d7. The queen on e6 and the rook on h8 can only watch. Morphy mated with a rook and a bishop, while Black's bishop on f8 and rook on h8 never moved."
+    },
+    {
+      "kind": "verdict",
+      "ply": null,
+      "text": "The Opera Game is a model of how to use a lead in development. The engine sees the first real jump at b5: before it White is about two pawns ahead, and after Nxb5 and cxb5 that grows past five. Black never developed the kingside, so every move answered a threat without making one. Morphy did the opposite. He brought out a piece nearly every move, sacrificed material to open the d-file, used a pin to keep the Black pieces frozen, and then found the one forcing line that ended it. The lessons are simple and still true today: develop with tempo, open lines toward the king, and never grab a pawn while your opponent's pieces are still asleep."
+    },
+    {
+      "kind": "outro",
+      "ply": null,
+      "text": "That was the Opera Game. If you enjoyed it, subscribe for more legendary games explained move by move, and tell me in the comments which one to cover next. Thanks for watching."
+    }
+  ],
+  "mascot_lines": {
+    "b-01": "Fewer pieces between me and promotion.",
+    "b-02": "Queen sacrificed, and I'm still a pawn."
+  },
+  "titles": [
+    "Morphy's Opera Game: The Queen Sacrifice That Wins by Force",
+    "Why Morphy Sacrificed His Queen at the Paris Opera (1858)",
+    "Morphy vs Two Nobles: 17 Moves of Perfect Development"
+  ],
+  "hook": "Morphy sacrifices his queen on move sixteen, and the game ends on the very next move.",
+  "player_facts": {
+    "white": "Morphy, 21, was on a European tour and had already beaten many of the best players.",
+    "black": "The Duke of Brunswick and Count Isouard played as one side, consulting on each move."
+  },
+  "cold_open_hook": "He gave up his queen to mate in two moves.",
+  "thumbnail_text": "Queen for mate",
+  "key_moment_labels": {
+    "b-02": "Queen sacrifice, then mate"
+  }
+}
