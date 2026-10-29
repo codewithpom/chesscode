@@ -1,8 +1,9 @@
 """data/upload_log.csv: one row per state change, last row per video wins; `chesscode ledger check` compares it with YouTube."""
 import argparse
 import csv
+import json
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from .context import REPO_ROOT
@@ -66,7 +67,32 @@ def check(client, path: Path) -> list[str]:
     return problems
 
 
+def collect(artifacts: Path, ledger_path: Path, review_dir: Path, run_url: str) -> str:
+    """Append every downloaded result.json to the ledger, write docs/review/<batch_id>.md, return the run-summary table."""
+    results = [json.loads(p.read_text(encoding="utf-8")) for p in sorted(Path(artifacts).glob("*/result.json"))]
+    now = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    head = "| video | status | publish_at | QA | render min |\n| --- | --- | --- | --- | --- |"
+    lines, by_batch = [], {}
+    for r in results:
+        if not r.get("batch_id"): raise ValueError(f"{r['video_id']}: result.json has no batch_id")
+        append(ledger_path, {"video_id": r["video_id"], "status": r["status"], "youtube_id": r["youtube_id"], "publish_at": r["publish_at"], "title": r["title"],
+                             "qa_passed": str(r["qa_passed"]).lower(), "render_seconds": r["render_seconds"], "batch_id": r["batch_id"], "updated_at": now})
+        note = " (needs repair)" if r.get("needs_repair") else f" ({r['error']})" if r.get("error") else ""
+        lines.append(f"| {r['video_id']} | {r['status']}{note} | {r['publish_at']} | {'pass' if r['qa_passed'] else 'FAIL'} | {r['render_seconds'] / 60:.1f} |")
+        by_batch.setdefault(r["batch_id"], []).append((r, note))
+    for batch_id, rows in by_batch.items():
+        Path(review_dir).mkdir(parents=True, exist_ok=True)
+        body = [f"# Batch {batch_id}", "", f"Thumbnails and contact sheets: [workflow run]({run_url}) (artifacts `result-<video>`).", "",
+                "| video | title | publish_at | status | QA |", "| --- | --- | --- | --- | --- |"]
+        body += [f"| {r['video_id']} | {r['title'].replace('|', '/')} | {r['publish_at']} | {r['status']}{n} | {'pass' if r['qa_passed'] else 'FAIL'} |" for r, n in rows]
+        (Path(review_dir) / f"{batch_id}.md").write_text("\n".join(body) + "\n", encoding="utf-8")
+    return head + "\n" + "\n".join(lines) + "\n"
+
+
 def main(args: argparse.Namespace) -> int:
+    if args.action == "collect":
+        print(collect(Path(args.artifacts), LEDGER, REPO_ROOT / "docs" / "review", args.run_url), end="")
+        return 0
     from . import auth
     problems = check(auth.youtube_client(), LEDGER)
     for p in problems: print(p)

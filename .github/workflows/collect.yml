@@ -1,0 +1,56 @@
+name: collect
+
+# After a batch: append each job's result to data/upload_log.csv, write the run summary and docs/review/<batch_id>.md, commit.
+on:
+  workflow_run:
+    workflows: [batch]
+    types: [completed]
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  collect:
+    if: github.event.workflow_run.conclusion != 'cancelled'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    concurrency:
+      group: collect
+      cancel-in-progress: false
+    env:
+      RUN_URL: ${{ github.event.workflow_run.html_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pipeline/pyproject.toml
+      - run: pip install -e pipeline
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: result-*
+          path: collected
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Append to the ledger and write the review page
+        run: python -m chesscode ledger collect --artifacts collected --run-url "$RUN_URL" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Commit with replay-and-retry
+        env:
+          BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3; do
+            git add data/upload_log.csv docs/review
+            git diff --cached --quiet && exit 0
+            git commit -m "ledger: batch results from run ${{ github.event.workflow_run.id }}"
+            git push origin "HEAD:$BRANCH" && exit 0
+            # Another collect pushed first. Rows are only ever appended, so rebuild them on its head instead of merging the CSV.
+            git fetch origin "$BRANCH"
+            git reset --hard "origin/$BRANCH"
+            python -m chesscode ledger collect --artifacts collected --run-url "$RUN_URL" > /dev/null
+          done
+          echo "could not push the ledger after 3 tries" >&2
+          exit 1

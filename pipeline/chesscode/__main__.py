@@ -27,6 +27,7 @@ def build_parser() -> argparse.ArgumentParser:
     batch = sub.add_parser("batch")
     batch.add_argument("--video", required=True)
     batch.add_argument("--upload", action="store_true")
+    batch.add_argument("--batch-id")
 
     upload = sub.add_parser("upload")
     upload.add_argument("--video")
@@ -42,7 +43,9 @@ def build_parser() -> argparse.ArgumentParser:
     qa.add_argument("--thumb", required=True)
 
     ledger = sub.add_parser("ledger")
-    ledger.add_argument("action", choices=["check"])
+    ledger.add_argument("action", choices=["check", "collect"])
+    ledger.add_argument("--artifacts")
+    ledger.add_argument("--run-url", default="")
     return p
 
 
