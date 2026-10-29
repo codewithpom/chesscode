@@ -151,6 +151,7 @@ def run(ctx):
         wpm=140 if ctx.language=="hi" else 150
         min_words,max_words=(int(wpm*8),int(wpm*12)) if long_form else (int(wpm*35/60),int(wpm*59/60))
         km_lo,km_hi=int(wpm*18/60),int(wpm*36/60)  # inside 15-40 s with margin for voice pace
+        request["total_words"]={"min":min_words,"max":max_words}  # stated up front so the first answer can hit it
         if long_form: request["key_moment_words"]={"min":km_lo,"max":km_hi}
         user = json.dumps(request, ensure_ascii=False)
         output = llm.complete_json(model_key, system, user, SCHEMA)
