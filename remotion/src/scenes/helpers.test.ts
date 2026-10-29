@@ -11,7 +11,7 @@ import { reactionsFor } from "../mascot/react";
 import { strings } from "./strings";
 import { sceneRanges } from "./timeline";
 import { studioLayout } from "../theme/layout";
-import { captionsBoxAt, clockFor, signOffBeats, coldOpenSpec, currentPlyAt, keyMomentTiming, moveLabel, resultText, yearOf } from "./helpers";
+import { activeLineMove, captionsBoxAt, clockFor, lineMoves, lineRows, signOffBeats, coldOpenSpec, currentPlyAt, keyMomentTiming, moveLabel, resultText, yearOf } from "./helpers";
 
 const spec = VideoSpec.parse(
   JSON.parse(readFileSync(resolve(__dirname, "../../../spec/fixtures/cc-2026-0001-en/video_spec.json"), "utf8")),
@@ -160,5 +160,38 @@ describe("captionsBoxAt in scenes without a board", () => {
     expect(captionsBoxAt(ranges, 10000)).toBe(studioLayout.boxes.fullCaptions);
     expect(captionsBoxAt(ranges, 15000)).toBeUndefined();
     expect(studioLayout.boxes.fullCaptions.x).toBe(96);
+  });
+});
+
+describe("the key-moment line as rows", () => {
+  const FEN_BLACK = "rnbqkbnr/ppp1pppp/8/3p4/3P4/5N2/PPP1PPPP/RNBQKB1R b KQkq - 1 2"; // after 1.d4 d5 2.Nf3: Black to move, move 2
+  const line = ["g8f6", "c2c4", "e7e6", "b1c3"];
+  const moves = lineMoves(FEN_BLACK, line);
+
+  it("numbers the moves from the position, a Black-first line starting on move 2 with Black", () => {
+    expect(moves).toEqual([
+      { no: 2, side: "b", san: "Nf6" },
+      { no: 3, side: "w", san: "c4" },
+      { no: 3, side: "b", san: "e6" },
+      { no: 4, side: "w", san: "Nc3" },
+    ]);
+  });
+
+  it("reveals the line move by move and marks the move on show", () => {
+    expect(lineRows(moves, 0)).toEqual([{ no: 2, black: "Nf6", current: "b" }]);
+    expect(lineRows(moves, 2)).toEqual([
+      { no: 2, black: "Nf6", current: null },
+      { no: 3, white: "c4", black: "e6", current: "b" },
+    ]);
+    expect(lineRows(moves, 3)[2]).toEqual({ no: 4, white: "Nc3", current: "w" });
+  });
+
+  it("the active move follows the board: the arrow move while it waits, the sliding move while it plays", () => {
+    const step = 2000;
+    expect(activeLineMove(-500, step, 4)).toBe(0);
+    expect(activeLineMove(100, step, 4)).toBe(0);
+    expect(activeLineMove(300, step, 4)).toBe(1);
+    expect(activeLineMove(3 * step + 300, step, 4)).toBe(3);
+    expect(activeLineMove(10 * step, step, 4)).toBe(3);
   });
 });

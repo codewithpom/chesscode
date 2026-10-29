@@ -30,7 +30,7 @@ const shown: Record<string, Record<string, Box>> = {
   playback: { cards: b.cards, moveList: b.moveList, mascotBox: b.mascot, pyaada, bubble, captions: b.captions },
   playback_label: { label: b.label, moveList: b.moveList, mascotBox: b.mascot, pyaada, bubble, captions: b.captions },
   cold_open: { hook: b.hook, mascotBox: b.mascot, pyaada, bubble, captions: b.captions },
-  key_moment: { label: b.label, mascotBox: b.mascot, pyaada, bubble, captions: b.captions },
+  key_moment: { label: b.label, line: b.moveList, mascotBox: b.mascot, pyaada, bubble, captions: b.captions },
   title_card: { fullCaptions: b.fullCaptions },
   outro: {
     outroMascot: b.outroMascot,

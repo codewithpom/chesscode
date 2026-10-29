@@ -1,4 +1,7 @@
+import { Chess } from "chess.js";
 import type { Beat, Ply, VideoSpec } from "../spec/schema";
+import { nextArrowIndex } from "../board/LineBoard";
+import type { MoveRow } from "../ui/moveRows";
 import { strings } from "./strings";
 import { msToFrame } from "../spec/time";
 import { motion } from "../theme/motion";
@@ -100,4 +103,35 @@ export const signOffBeats = (spec: VideoSpec, range: Pick<SceneRange, "startMs">
     { ...base, beat_id: "outro-wave", at_ms: range.startMs + SIGN_OFF_WAVE_AT_MS, mascot: { pose: "wave", line: t.signOffWave } },
     { ...base, beat_id: "outro-point", at_ms: range.startMs + SIGN_OFF_POINT_AT_MS, mascot: { pose: "point", line: t.signOffPoint } },
   ];
+};
+
+/** The moves of an alternative line in SAN with their move numbers, from the position `fen` (White or Black to move). */
+export const lineMoves = (fen: string, uci: string[]): { no: number; side: "w" | "b"; san: string }[] => {
+  const game = new Chess(fen);
+  return uci.map((u) => {
+    const side = game.turn();
+    const no = game.moveNumber();
+    const m = game.move({ from: u.slice(0, 2), to: u.slice(2, 4), promotion: u[4] });
+    return { no, side, san: m.san };
+  });
+};
+
+/** Index of the line move on show: the one being played, or the one whose arrow is up while the board waits. */
+export const activeLineMove = (elapsedMs: number, stepMs: number, moves: number): number => {
+  const next = nextArrowIndex(elapsedMs, stepMs, moves);
+  if (next !== null) return next;
+  return Math.min(moves - 1, Math.max(0, Math.floor(elapsedMs / stepMs)));
+};
+
+/** Rows of the line revealed so far (moves 0..active), the active move marked current. A Black-first line starts on a "12..." row. */
+export const lineRows = (moves: { no: number; side: "w" | "b"; san: string }[], active: number): MoveRow[] => {
+  const rows: MoveRow[] = [];
+  moves.slice(0, active + 1).forEach((m, i) => {
+    let row = rows[rows.length - 1];
+    if (!row || row.no !== m.no) rows.push((row = { no: m.no, current: null }));
+    if (m.side === "w") row.white = m.san;
+    else row.black = m.san;
+    if (i === active) row.current = m.side;
+  });
+  return rows;
 };
