@@ -1,28 +1,1144 @@
-# Shorts use game_no + 5000 in video IDs (for example, game 42 uses 5042).
+# Draft (M3): game_no order and tiers are set after the engine pass. Shorts use game_no + 5000, teasers + 6000.
 - game_no: 1
-  series: legendary_games
-  tier: floor
+  series: blunder_hall_of_fame
+  tier: spare
   source: local
-  source_id: opera-game
-  pgn_file: pipeline/tests/golden/pgn/opera.pgn
-  white_country: null
-  black_country: null
-  notes: Morphy's Opera Game; classic game source supplied with the golden PGNs.
+  source_id: anand-carlsen-wch2013-g09
+  pgn_file: content/pgn/anand-carlsen-wch2013-g09.pgn
+  white_country: IN
+  black_country: 'NO'
+  white: Anand, Viswanathan
+  black: Carlsen, Magnus
+  event: WCh 2013
+  game_year: 2013
+  title_hint: ''
+  notes: ''
+  beats: []
 - game_no: 2
-  series: legendary_games
-  tier: floor
+  series: blunder_hall_of_fame
+  tier: spare
   source: local
-  source_id: immortal-game
-  pgn_file: pipeline/tests/golden/pgn/immortal.pgn
+  source_id: carlsen-anand-wch2014-g06
+  pgn_file: content/pgn/carlsen-anand-wch2014-g06.pgn
+  white_country: 'NO'
+  black_country: IN
+  white: Carlsen, Magnus
+  black: Anand, Viswanathan
+  event: WCh 2014
+  game_year: 2014
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 3
+  series: blunder_hall_of_fame
+  tier: spare
+  source: local
+  source_id: carlsen-karjakin-wch2016-g08
+  pgn_file: content/pgn/carlsen-karjakin-wch2016-g08.pgn
+  white_country: 'NO'
+  black_country: RU
+  white: Carlsen, Magnus
+  black: Karjakin, Sergey
+  event: WCh 2016
+  game_year: 2016
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 4
+  series: blunder_hall_of_fame
+  tier: spare
+  source: local
+  source_id: carlsen-nepomniachtchi-wch2021-g08
+  pgn_file: content/pgn/carlsen-nepomniachtchi-wch2021-g08.pgn
+  white_country: 'NO'
+  black_country: RU
+  white: Carlsen,M
+  black: Nepomniachtchi,I
+  event: WCh 2021
+  game_year: 2021
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 5
+  series: blunder_hall_of_fame
+  tier: spare
+  source: local
+  source_id: chigorin-steinitz-wch1892-g23
+  pgn_file: content/pgn/chigorin-steinitz-wch1892-g23.pgn
   white_country: null
   black_country: null
-  notes: Anderssen's Immortal Game; classic game source supplied with the golden PGNs.
-- game_no: 3
-  series: legendary_games
-  tier: floor
+  white: Chigorin, Mikhail
+  black: Steinitz, William
+  event: World Championship 4th
+  game_year: 1892
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 6
+  series: blunder_hall_of_fame
+  tier: spare
   source: local
-  source_id: evergreen-game
+  source_id: deepblue-kasparov-1997-g06
+  pgn_file: content/pgn/deepblue-kasparov-1997-g06.pgn
+  white_country: null
+  black_country: null
+  white: Comp Deep Blue
+  black: Kasparov, Gary
+  event: New York man vs machine
+  game_year: 1997
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 7
+  series: blunder_hall_of_fame
+  tier: spare
+  source: local
+  source_id: deepfritz-kramnik-2006-g02
+  pgn_file: content/pgn/deepfritz-kramnik-2006-g02.pgn
+  white_country: null
+  black_country: RU
+  white: DEEP FRITZ
+  black: Kramnik,V
+  event: The Duel
+  game_year: 2006
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 8
+  series: blunder_hall_of_fame
+  tier: spare
+  source: local
+  source_id: gelfand-aronian-wch2007-r05
+  pgn_file: content/pgn/gelfand-aronian-wch2007-r05.pgn
+  white_country: IL
+  black_country: AM
+  white: Gelfand,B
+  black: Aronian,L
+  event: WCh
+  game_year: 2007
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 9
+  series: blunder_hall_of_fame
+  tier: spare
+  source: local
+  source_id: karjakin-kramnik-cand2018-r09
+  pgn_file: content/pgn/karjakin-kramnik-cand2018-r09.pgn
+  white_country: RU
+  black_country: RU
+  white: Karjakin, Sergey
+  black: Kramnik, Vladimir
+  event: FIDE Candidates 2018
+  game_year: 2018
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 10
+  series: blunder_hall_of_fame
+  tier: spare
+  source: local
+  source_id: karpov-korchnoi-wch1981-g06
+  pgn_file: content/pgn/karpov-korchnoi-wch1981-g06.pgn
+  white_country: null
+  black_country: null
+  white: Karpov, Anatoly
+  black: Kortschnoj, Viktor
+  event: World Championship 30th
+  game_year: 1981
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 11
+  series: blunder_hall_of_fame
+  tier: spare
+  source: local
+  source_id: korchnoi-karpov-wch1978-g17
+  pgn_file: content/pgn/korchnoi-karpov-wch1978-g17.pgn
+  white_country: null
+  black_country: null
+  white: Kortschnoj, Viktor
+  black: Karpov, Anatoly
+  event: World Championship 29th
+  game_year: 1978
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 12
+  series: blunder_hall_of_fame
+  tier: spare
+  source: local
+  source_id: nepomniachtchi-carlsen-wch2021-g09
+  pgn_file: content/pgn/nepomniachtchi-carlsen-wch2021-g09.pgn
+  white_country: RU
+  black_country: 'NO'
+  white: Nepomniachtchi,I
+  black: Carlsen,M
+  event: WCh 2021
+  game_year: 2021
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 13
+  series: blunder_hall_of_fame
+  tier: spare
+  source: local
+  source_id: nepomniachtchi-ding-wch2023-g07
+  pgn_file: content/pgn/nepomniachtchi-ding-wch2023-g07.pgn
+  white_country: RU
+  black_country: CN
+  white: Nepomniachtchi,I
+  black: Ding Liren
+  event: WCh 2023
+  game_year: 2023
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 14
+  series: blunder_hall_of_fame
+  tier: spare
+  source: local
+  source_id: petrosian-bronstein-cand1956
+  pgn_file: content/pgn/petrosian-bronstein-cand1956.pgn
+  white_country: null
+  black_country: null
+  white: Petrosian, Tigran V
+  black: Bronstein, David I
+  event: Candidats Tournament
+  game_year: 1956
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 15
+  series: blunder_hall_of_fame
+  tier: spare
+  source: local
+  source_id: polgar-kasparov-2002
+  pgn_file: content/pgn/polgar-kasparov-2002.pgn
+  white_country: HU
+  black_country: null
+  white: Polgar,Ju
+  black: Kasparov,G
+  event: RUS vs. ROW
+  game_year: 2002
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 16
+  series: blunder_hall_of_fame
+  tier: spare
+  source: local
+  source_id: radjabov-aronian-cand2013-r06
+  pgn_file: content/pgn/radjabov-aronian-cand2013-r06.pgn
+  white_country: AZ
+  black_country: AM
+  white: Radjabov,T
+  black: Aronian,L
+  event: FIDE Candidates
+  game_year: 2013
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 17
+  series: blunder_hall_of_fame
+  tier: spare
+  source: local
+  source_id: spassky-fischer-wch1972-g01
+  pgn_file: content/pgn/spassky-fischer-wch1972-g01.pgn
+  white_country: null
+  black_country: null
+  white: Spassky, Boris V
+  black: Fischer, Robert James
+  event: World Championship 28th
+  game_year: 1972
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 18
+  series: blunder_hall_of_fame
+  tier: spare
+  source: local
+  source_id: steinitz-chigorin-wch1892-g10
+  pgn_file: content/pgn/steinitz-chigorin-wch1892-g10.pgn
+  white_country: null
+  black_country: null
+  white: Steinitz, William
+  black: Chigorin, Mikhail
+  event: World Championship 4th
+  game_year: 1892
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 19
+  series: blunder_hall_of_fame
+  tier: spare
+  source: local
+  source_id: topalov-kramnik-wch2006-g02
+  pgn_file: content/pgn/topalov-kramnik-wch2006-g02.pgn
+  white_country: BG
+  black_country: RU
+  white: Topalov,V
+  black: Kramnik,V
+  event: WCh
+  game_year: 2006
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 20
+  series: indian_chess_heroes
+  tier: spare
+  source: local
+  source_id: anand-carlsen-wch2014-g03
+  pgn_file: content/pgn/anand-carlsen-wch2014-g03.pgn
+  white_country: IN
+  black_country: 'NO'
+  white: Anand, Viswanathan
+  black: Carlsen, Magnus
+  event: WCh 2014
+  game_year: 2014
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 21
+  series: indian_chess_heroes
+  tier: spare
+  source: local
+  source_id: anand-gelfand-wch2012-tb-g02
+  pgn_file: content/pgn/anand-gelfand-wch2012-tb-g02.pgn
+  white_country: IN
+  black_country: IL
+  white: Anand, Viswanathan
+  black: Gelfand, Boris
+  event: WCh Rapid Tiebreak
+  game_year: 2012
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 22
+  series: indian_chess_heroes
+  tier: spare
+  source: local
+  source_id: anand-kasparov-pca1995-g09
+  pgn_file: content/pgn/anand-kasparov-pca1995-g09.pgn
+  white_country: IN
+  black_country: null
+  white: Anand, Viswanathan
+  black: Kasparov, Gary
+  event: PCA-World Championship
+  game_year: 1995
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 23
+  series: indian_chess_heroes
+  tier: spare
+  source: local
+  source_id: aronian-anand-wijk2013
+  pgn_file: content/pgn/aronian-anand-wijk2013.pgn
+  white_country: AM
+  black_country: IN
+  white: Aronian, Levon
+  black: Anand, Viswanathan
+  event: 75th Tata Steel GpA
+  game_year: 2013
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 24
+  series: indian_chess_heroes
+  tier: spare
+  source: local
+  source_id: ding-gukesh-wch2024-g14
+  pgn_file: pipeline/tests/golden/pgn/ding-gukesh-wch2024-g14.pgn
+  white_country: CN
+  black_country: IN
+  white: Ding, Liren
+  black: Gukesh D
+  event: FIDE World Championship Match 2024
+  game_year: 2024
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 25
+  series: indian_chess_heroes
+  tier: spare
+  source: local
+  source_id: erigaisi-dominguez-olympiad2024-r10
+  pgn_file: content/pgn/erigaisi-dominguez-olympiad2024-r10.pgn
+  white_country: IN
+  black_country: US
+  white: Erigaisi,Arjun
+  black: Dominguez Perez,L
+  event: 45th Olympiad 2024
+  game_year: 2024
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 26
+  series: indian_chess_heroes
+  tier: spare
+  source: local
+  source_id: gukesh-carlsen-norway2025-r06
+  pgn_file: content/pgn/gukesh-carlsen-norway2025-r06.pgn
+  white_country: IN
+  black_country: 'NO'
+  white: Gukesh,D
+  black: Carlsen,M
+  event: 13th Norway Chess 2025
+  game_year: 2025
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 27
+  series: indian_chess_heroes
+  tier: spare
+  source: local
+  source_id: gukesh-ding-wch2024-g3
+  pgn_file: pipeline/tests/golden/pgn/gukesh-ding-wch2024-g3.pgn
+  white_country: IN
+  black_country: CN
+  white: Gukesh D
+  black: Ding, Liren
+  event: FIDE World Championship Match 2024
+  game_year: 2024
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 28
+  series: indian_chess_heroes
+  tier: spare
+  source: local
+  source_id: gukesh-weiyi-olympiad2024-r07
+  pgn_file: content/pgn/gukesh-weiyi-olympiad2024-r07.pgn
+  white_country: IN
+  black_country: CN
+  white: Gukesh,D
+  black: Wei Yi
+  event: 45th Olympiad 2024
+  game_year: 2024
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 29
+  series: indian_chess_heroes
+  tier: spare
+  source: local
+  source_id: harikrishna-nakamura-tata2014
+  pgn_file: content/pgn/harikrishna-nakamura-tata2014.pgn
+  white_country: IN
+  black_country: US
+  white: Harikrishna,P
+  black: Nakamura,Hi
+  event: 76th Tata Steel Masters
+  game_year: 2014
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 30
+  series: indian_chess_heroes
+  tier: spare
+  source: local
+  source_id: koneru-divya-pune-wgp2025
+  pgn_file: content/pgn/koneru-divya-pune-wgp2025.pgn
+  white_country: IN
+  black_country: IN
+  white: Koneru,H
+  black: Divya,Deshmukh
+  event: Pune WGP 2025
+  game_year: 2025
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 31
+  series: indian_chess_heroes
+  tier: spare
+  source: local
+  source_id: koneru-divya-wwc2025-tb4
+  pgn_file: content/pgn/koneru-divya-wwc2025-tb4.pgn
+  white_country: IN
+  black_country: IN
+  white: Koneru,H
+  black: Divya,Deshmukh
+  event: FIDE Women's World Cup
+  game_year: 2025
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 32
+  series: indian_chess_heroes
+  tier: spare
+  source: local
+  source_id: kramnik-anand-wch2008-g03
+  pgn_file: content/pgn/kramnik-anand-wch2008-g03.pgn
+  white_country: RU
+  black_country: IN
+  white: Kramnik,V
+  black: Anand,V
+  event: WCh
+  game_year: 2008
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 33
+  series: indian_chess_heroes
+  tier: spare
+  source: local
+  source_id: lei-humpy-cand2024-r14
+  pgn_file: pipeline/tests/golden/pgn/lei-humpy-cand2024-r14.pgn
+  white_country: CN
+  black_country: IN
+  white: Lei, Tingjie
+  black: Koneru, Humpy
+  event: FIDE Women's Candidates 2024
+  game_year: 2024
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 34
+  series: indian_chess_heroes
+  tier: spare
+  source: local
+  source_id: pragg-gukesh-cand2024-r2
+  pgn_file: pipeline/tests/golden/pgn/pragg-gukesh-cand2024-r2.pgn
+  white_country: IN
+  black_country: IN
+  white: Praggnanandhaa R
+  black: Gukesh D
+  event: FIDE Candidates 2024
+  game_year: 2024
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 35
+  series: indian_chess_heroes
+  tier: spare
+  source: local
+  source_id: praggnanandhaa-carlsen-norway2024
+  pgn_file: content/pgn/praggnanandhaa-carlsen-norway2024.pgn
+  white_country: IN
+  black_country: 'NO'
+  white: Praggnanandhaa,R
+  black: Carlsen,M
+  event: 12th Norway Chess 2024
+  game_year: 2024
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 36
+  series: indian_chess_heroes
+  tier: spare
+  source: local
+  source_id: topalov-anand-wch2010-g12
+  pgn_file: content/pgn/topalov-anand-wch2010-g12.pgn
+  white_country: BG
+  black_country: IN
+  white: Topalov,V
+  black: Anand,V
+  event: WCh
+  game_year: 2010
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 37
+  series: indian_chess_heroes
+  tier: spare
+  source: local
+  source_id: vidit-nakamura-cand2024-r09
+  pgn_file: content/pgn/vidit-nakamura-cand2024-r09.pgn
+  white_country: IN
+  black_country: US
+  white: Vidit,S
+  black: Nakamura,Hi
+  event: FIDE Candidates 2024
+  game_year: 2024
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 38
+  series: indian_chess_heroes
+  tier: spare
+  source: local
+  source_id: vidit-pragg-cand2024-r3
+  pgn_file: pipeline/tests/golden/pgn/vidit-pragg-cand2024-r3.pgn
+  white_country: IN
+  black_country: IN
+  white: Vidit, Santosh Gujrathi
+  black: Praggnanandhaa R
+  event: FIDE Candidates 2024
+  game_year: 2024
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 39
+  series: legendary_games
+  tier: spare
+  source: local
+  source_id: botvinnik-capablanca-avro1938
+  pgn_file: content/pgn/botvinnik-capablanca-avro1938.pgn
+  white_country: null
+  black_country: null
+  white: Botvinnik, Mikhail
+  black: Capablanca, Jose Raul
+  event: AVRO
+  game_year: 1938
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 40
+  series: legendary_games
+  tier: spare
+  source: local
+  source_id: byrne-fischer-1963
+  pgn_file: content/pgn/byrne-fischer-1963.pgn
+  white_country: null
+  black_country: null
+  white: Byrne, Robert E
+  black: Fischer, Robert James
+  event: USA-ch
+  game_year: 1963
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 41
+  series: legendary_games
+  tier: spare
+  source: local
+  source_id: carlsen-karjakin-wch2016-tb4
+  pgn_file: content/pgn/carlsen-karjakin-wch2016-tb4.pgn
+  white_country: 'NO'
+  black_country: RU
+  white: Carlsen, Magnus
+  black: Karjakin, Sergey
+  event: WCh Rapid TB 2016
+  game_year: 2016
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 42
+  series: legendary_games
+  tier: spare
+  source: local
+  source_id: century
+  pgn_file: pipeline/tests/golden/pgn/century.pgn
+  white_country: null
+  black_country: null
+  white: Donald Byrne
+  black: Robert James Fischer
+  event: Rosenwald Memorial
+  game_year: 1956
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 43
+  series: legendary_games
+  tier: spare
+  source: local
+  source_id: evergreen
   pgn_file: pipeline/tests/golden/pgn/evergreen.pgn
   white_country: null
   black_country: null
-  notes: Anderssen's Evergreen Game; classic game source supplied with the golden PGNs.
+  white: Adolf Anderssen
+  black: Jean Dufresne
+  event: Berlin casual
+  game_year: 1852
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 44
+  series: legendary_games
+  tier: spare
+  source: local
+  source_id: fischer-spassky-wch1972-g06
+  pgn_file: content/pgn/fischer-spassky-wch1972-g06.pgn
+  white_country: null
+  black_country: null
+  white: Fischer, Robert James
+  black: Spassky, Boris V
+  event: World Championship 28th
+  game_year: 1972
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 45
+  series: legendary_games
+  tier: spare
+  source: local
+  source_id: immortal
+  pgn_file: pipeline/tests/golden/pgn/immortal.pgn
+  white_country: null
+  black_country: null
+  white: Adolf Anderssen
+  black: Lionel Kieseritzky
+  event: London casual
+  game_year: 1851
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 46
+  series: legendary_games
+  tier: spare
+  source: local
+  source_id: karpov-kasparov-wch1985-g16
+  pgn_file: content/pgn/karpov-kasparov-wch1985-g16.pgn
+  white_country: null
+  black_country: null
+  white: Karpov, Anatoly
+  black: Kasparov, Gary
+  event: World Championship 32th-KK2
+  game_year: 1985
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 47
+  series: legendary_games
+  tier: spare
+  source: local
+  source_id: kasparov-topalov
+  pgn_file: pipeline/tests/golden/pgn/kasparov-topalov.pgn
+  white_country: null
+  black_country: BG
+  white: Garry Kasparov
+  black: Veselin Topalov
+  event: Hoogovens
+  game_year: 1999
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 48
+  series: legendary_games
+  tier: spare
+  source: local
+  source_id: lasker-thomas-1912
+  pgn_file: content/pgn/lasker-thomas-1912.pgn
+  white_country: null
+  black_country: null
+  white: Lasker, Edward
+  black: Thomas, George Alan
+  event: Casual game
+  game_year: 1912
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 49
+  series: legendary_games
+  tier: spare
+  source: local
+  source_id: opera
+  pgn_file: pipeline/tests/golden/pgn/opera.pgn
+  white_country: null
+  black_country: null
+  white: Paul Morphy
+  black: Duke Karl / Count Isouard
+  event: Paris Opera
+  game_year: 1858
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 50
+  series: legendary_games
+  tier: spare
+  source: local
+  source_id: polugaevsky-nezhmetdinov-1958
+  pgn_file: content/pgn/polugaevsky-nezhmetdinov-1958.pgn
+  white_country: null
+  black_country: null
+  white: Polugaevsky, Lev
+  black: Nezhmetdinov, Rashid
+  event: Sochi
+  game_year: 1958
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 51
+  series: legendary_games
+  tier: spare
+  source: local
+  source_id: reti-tartakower-1910
+  pgn_file: content/pgn/reti-tartakower-1910.pgn
+  white_country: null
+  black_country: null
+  white: Reti, Richard
+  black: Tartakower, Saviely
+  event: Vienna
+  game_year: 1910
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 52
+  series: legendary_games
+  tier: spare
+  source: local
+  source_id: rotlewi-rubinstein-1907
+  pgn_file: content/pgn/rotlewi-rubinstein-1907.pgn
+  white_country: null
+  black_country: null
+  white: Rotlewi, Georg A
+  black: Rubinstein, Akiba
+  event: Lodz1
+  game_year: 1907
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 53
+  series: legendary_games
+  tier: spare
+  source: local
+  source_id: saemisch-nimzowitsch-1923
+  pgn_file: content/pgn/saemisch-nimzowitsch-1923.pgn
+  white_country: null
+  black_country: null
+  white: Saemisch, Fritz
+  black: Nimzowitsch, Aaron
+  event: Copenhagen
+  game_year: 1923
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 54
+  series: legendary_games
+  tier: spare
+  source: local
+  source_id: short-timman-1991
+  pgn_file: content/pgn/short-timman-1991.pgn
+  white_country: GB
+  black_country: null
+  white: Short, Nigel D
+  black: Timman, Jan H
+  event: Tilburg
+  game_year: 1991
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 55
+  series: legendary_games
+  tier: spare
+  source: local
+  source_id: steinitz-bardeleben-1895
+  pgn_file: content/pgn/steinitz-bardeleben-1895.pgn
+  white_country: null
+  black_country: null
+  white: Steinitz, William
+  black: Von Bardeleben, Curt
+  event: Hastings
+  game_year: 1895
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 56
+  series: legendary_games
+  tier: spare
+  source: local
+  source_id: topalov-shirov-1998
+  pgn_file: content/pgn/topalov-shirov-1998.pgn
+  white_country: BG
+  black_country: ES
+  white: Topalov, Veselin
+  black: Shirov, Alexei
+  event: Linares
+  game_year: 1998
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 57
+  series: legendary_games
+  tier: spare
+  source: local
+  source_id: zukertort-blackburne-1883
+  pgn_file: content/pgn/zukertort-blackburne-1883.pgn
+  white_country: null
+  black_country: null
+  white: Zukertort, Johannes Hermann
+  black: Blackburne, Joseph Henry
+  event: London
+  game_year: 1883
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 58
+  series: opening_explained
+  tier: spare
+  source: local
+  source_id: adams-nakamura-london2012
+  pgn_file: content/pgn/adams-nakamura-london2012.pgn
+  white_country: GB
+  black_country: US
+  white: Adams,Mi
+  black: Nakamura,Hi
+  event: 1st FIDE GP London 2012
+  game_year: 2012
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 59
+  series: opening_explained
+  tier: spare
+  source: local
+  source_id: anand-svidler-wch2007
+  pgn_file: content/pgn/anand-svidler-wch2007.pgn
+  white_country: IN
+  black_country: RU
+  white: Anand,V
+  black: Svidler,P
+  event: WCh
+  game_year: 2007
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 60
+  series: opening_explained
+  tier: spare
+  source: local
+  source_id: anand-topalov-corus2008
+  pgn_file: content/pgn/anand-topalov-corus2008.pgn
+  white_country: IN
+  black_country: BG
+  white: Anand,V
+  black: Topalov,V
+  event: Corus A
+  game_year: 2008
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 61
+  series: opening_explained
+  tier: spare
+  source: local
+  source_id: beliavsky-anand-munich1991
+  pgn_file: content/pgn/beliavsky-anand-munich1991.pgn
+  white_country: null
+  black_country: IN
+  white: Beliavsky, Alexander G
+  black: Anand, Viswanathan
+  event: Munich
+  game_year: 1991
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 62
+  series: opening_explained
+  tier: spare
+  source: local
+  source_id: bronstein-botvinnik-wch1951
+  pgn_file: content/pgn/bronstein-botvinnik-wch1951.pgn
+  white_country: null
+  black_country: null
+  white: Bronstein, David I
+  black: Botvinnik, Mikhail
+  event: World Championship 19th
+  game_year: 1951
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 63
+  series: opening_explained
+  tier: spare
+  source: local
+  source_id: carlsen-radjabov-bilbao2008
+  pgn_file: content/pgn/carlsen-radjabov-bilbao2008.pgn
+  white_country: 'NO'
+  black_country: AZ
+  white: Carlsen,M
+  black: Radjabov,T
+  event: Grand Slam Final
+  game_year: 2008
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 64
+  series: opening_explained
+  tier: spare
+  source: local
+  source_id: carlsen-so-sinquefield2019
+  pgn_file: content/pgn/carlsen-so-sinquefield2019.pgn
+  white_country: 'NO'
+  black_country: US
+  white: Carlsen,M
+  black: So,W
+  event: 7th Sinquefield Cup 2019
+  game_year: 2019
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 65
+  series: opening_explained
+  tier: spare
+  source: local
+  source_id: ivanchuk-caruana-reggio2012
+  pgn_file: content/pgn/ivanchuk-caruana-reggio2012.pgn
+  white_country: UA
+  black_country: US
+  white: Ivanchuk,V
+  black: Caruana,F
+  event: 54th Reggio Emilia
+  game_year: 2012
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 66
+  series: opening_explained
+  tier: spare
+  source: local
+  source_id: karpov-kasparov-linares1993
+  pgn_file: content/pgn/karpov-kasparov-linares1993.pgn
+  white_country: null
+  black_country: null
+  white: Karpov, Anatoly
+  black: Kasparov, Gary
+  event: Linares
+  game_year: 1993
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 67
+  series: opening_explained
+  tier: spare
+  source: local
+  source_id: karpov-short-cand1992
+  pgn_file: content/pgn/karpov-short-cand1992.pgn
+  white_country: null
+  black_country: GB
+  white: Karpov, Anatoly
+  black: Short, Nigel D
+  event: Candidats sf1
+  game_year: 1992
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 68
+  series: opening_explained
+  tier: spare
+  source: local
+  source_id: kasparov-adams-linares1997
+  pgn_file: content/pgn/kasparov-adams-linares1997.pgn
+  white_country: null
+  black_country: GB
+  white: Kasparov, Gary
+  black: Adams, Michael
+  event: Linares 14th
+  game_year: 1997
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 69
+  series: opening_explained
+  tier: spare
+  source: local
+  source_id: kasparov-anand-riga1995
+  pgn_file: content/pgn/kasparov-anand-riga1995.pgn
+  white_country: null
+  black_country: IN
+  white: Kasparov, Gary
+  black: Anand, Viswanathan
+  event: Tal mem
+  game_year: 1995
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 70
+  series: opening_explained
+  tier: spare
+  source: local
+  source_id: kasparov-anand-wijk1999
+  pgn_file: content/pgn/kasparov-anand-wijk1999.pgn
+  white_country: null
+  black_country: IN
+  white: Kasparov, Gary
+  black: Anand, Viswanathan
+  event: Hoogovens 5'
+  game_year: 1999
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 71
+  series: opening_explained
+  tier: spare
+  source: local
+  source_id: kasparov-leko-tilburg1997
+  pgn_file: content/pgn/kasparov-leko-tilburg1997.pgn
+  white_country: null
+  black_country: HU
+  white: Kasparov, Gary
+  black: Leko, Peter
+  event: Tilburg Fontys
+  game_year: 1997
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 72
+  series: opening_explained
+  tier: spare
+  source: local
+  source_id: kramnik-kasparov-wch2000-g02
+  pgn_file: content/pgn/kramnik-kasparov-wch2000-g02.pgn
+  white_country: RU
+  black_country: null
+  white: Kramnik,V
+  black: Kasparov,G
+  event: Braingames WCC
+  game_year: 2000
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 73
+  series: opening_explained
+  tier: spare
+  source: local
+  source_id: kramnik-shirov-bilbao2010
+  pgn_file: content/pgn/kramnik-shirov-bilbao2010.pgn
+  white_country: RU
+  black_country: ES
+  white: Kramnik,V
+  black: Shirov,A
+  event: Grand Slam Final Masters
+  game_year: 2010
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 74
+  series: opening_explained
+  tier: spare
+  source: local
+  source_id: mvl-nepomniachtchi-cand2020
+  pgn_file: content/pgn/mvl-nepomniachtchi-cand2020.pgn
+  white_country: FR
+  black_country: RU
+  white: Vachier Lagrave,M
+  black: Nepomniachtchi,I
+  event: FIDE Candidates 2020
+  game_year: 2020
+  title_hint: ''
+  notes: ''
+  beats: []
+- game_no: 75
+  series: opening_explained
+  tier: spare
+  source: local
+  source_id: spassky-bronstein-1960
+  pgn_file: content/pgn/spassky-bronstein-1960.pgn
+  white_country: null
+  black_country: null
+  white: Spassky, Boris V
+  black: Bronstein, David I
+  event: URS-ch27
+  game_year: 1960
+  title_hint: ''
+  notes: ''
+  beats:
+  - opening_exit@4...Bd6
+  - blunder@15...Nf8
+  - resign@23.Qe4+ (i2)
+- game_no: 76
+  series: opening_explained
+  tier: spare
+  source: local
+  source_id: tal-bronstein-moscow1967
+  pgn_file: content/pgn/tal-bronstein-moscow1967.pgn
+  white_country: null
+  black_country: null
+  white: Tal, Mihail
+  black: Bronstein, David I
+  event: Moscow
+  game_year: 1967
+  title_hint: ''
+  notes: ''
+  beats: []
