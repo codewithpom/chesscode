@@ -9,9 +9,17 @@ describe("Pyaada", () => {
   it("renders every pose", () => {
     for (const [name, s] of Object.entries(POSES)) expect(html(s), name).toContain('id="head"');
   });
-  it('renders no prop group for prop "none"', () => {
+  it('renders no prop group for prop "none" or the crown', () => {
     expect(html({ ...POSES.idle, prop: "none" })).not.toContain('id="prop"');
-    expect(html()).toContain('id="prop"');
+    expect(html()).not.toContain('id="prop"');
+    expect(html(POSES.mic_drop)).toContain('id="prop"');
+  });
+  it("keeps the crown on his head except for the party hat swap (and clutched when jealous)", () => {
+    for (const name of ["idle", "checks_watch", "binoculars", "mic_drop", "bow", "faint", "shocked"] as const) {
+      expect(html(POSES[name]), name).toContain('id="crown"');
+    }
+    expect(html(POSES.party)).not.toContain('id="crown"');
+    expect(html(POSES.jealous)).toContain('translate(94,150)');
   });
   it("draws arms only when arms is not none", () => {
     expect(html()).not.toContain('id="arm-');

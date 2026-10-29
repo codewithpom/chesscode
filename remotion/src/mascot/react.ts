@@ -18,6 +18,7 @@ const FAINT_BACK_MS = 1500;
 const FAINT_X = POSES.faint.offsetX;
 const FAINT_Y = POSES.faint.offsetY;
 const FAINT_LEAN = POSES.faint.lean;
+const MIC_RELEASE = 15; // frames: the arm is up before he lets go
 const MIC_FALL = 14;
 
 export type Reaction = {
@@ -81,12 +82,17 @@ const motion = (pose: string, t: number, fps: number): Partial<PoseState> => {
       return { armL: 12 * (1 - closed), armR: -12 * (1 - closed) };
     }
     case "screaming":
-      return { offsetX: 3 * Math.sin(sec * 90), squash: POSES.screaming.squash * (1 + 0.04 * Math.sin(sec * 70)) };
+      // About 6 Hz shake and 4 Hz squash-stretch: anything faster aliases at 30 fps.
+      return { offsetX: 5 * Math.sin(sec * 38), squash: POSES.screaming.squash * (1 + 0.06 * Math.sin(sec * 25)) };
+    case "bow": {
+      const dip = Math.sin(Math.PI * ramp(t, 0, 18));
+      return { squash: 1 + 0.18 * dip, offsetY: 12 * dip };
+    }
     case "shocked": return { offsetY: -24 * Math.sin(Math.PI * ramp(t, 0, 12)) };
     case "sweating": return { sweat: 0.03 + 0.97 * ((t % 36) / 36) };
     case "mic_drop": {
-      const fall = ramp(t, 6, MIC_FALL);
-      const tb = t - 6 - MIC_FALL;
+      const fall = ramp(t, MIC_RELEASE, MIC_FALL);
+      const tb = t - MIC_RELEASE - MIC_FALL;
       const bounce = tb > 0 ? 26 * Math.abs(Math.sin((Math.PI * tb) / 9)) * Math.exp(-tb / 7) : 0;
       return { propLift: POSES.mic_drop.propLift * fall * fall + bounce };
     }

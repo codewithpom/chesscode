@@ -1,7 +1,7 @@
 // A pose is a target PoseState of plain numbers (docs/SPEC.md section 7). Field units follow the
 // approved sheet (design/mascot/build_sheets.py `Face`): browAngle/browY/browRY are sheet units
 // (-1..1), scaled to degrees / px when drawn; offsets and lifts are rig units (rig box is 240 x 260).
-export type MouthId = "smile" | "flat" | "o" | "wide" | "frown" | "smirk" | "open_talk";
+export type MouthId = "smile" | "flat" | "o" | "wide" | "frown" | "smirk" | "open_talk" | "wobble";
 export type ArmsId = "none" | "chin" | "face" | "clap" | "up" | "wrist" | "point" | "hold";
 export type PropId = "crown" | "party_hat" | "mic" | "binoculars" | "watch" | "none";
 

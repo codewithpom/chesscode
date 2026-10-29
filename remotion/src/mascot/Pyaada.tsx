@@ -7,7 +7,7 @@ import { Brows } from "./parts/Brows";
 import { Eyes } from "./parts/Eyes";
 import { n, P, STROKE } from "./parts/kit";
 import { Mouth } from "./parts/Mouth";
-import { Props } from "./parts/Props";
+import { Crown, Props } from "./parts/Props";
 
 /** Rig box (design/mascot/build_sheets.py local box): 240 x 260, ground at y = 249. */
 export const RIG = { w: 240, h: 260, groundX: 120, groundY: 249 } as const;
@@ -47,6 +47,7 @@ export const Pyaada: React.FC<{ state: PoseState; height: number }> = ({ state: 
           {s.sweat > 0 && <Sweat t={s.sweat} />}
         </g>
         <Arms s={s} />
+        <Crown s={s} />
         <Props s={s} />
       </g>
     </svg>

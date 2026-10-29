@@ -11,7 +11,8 @@ const SHAPES: Record<MouthId, React.ReactNode> = {
   frown: <path d={`M${cx - 10},${cy + 4} Q${cx},${cy - 5} ${cx + 10},${cy + 4}`} {...line} />,
   smirk: <path d={`M${cx - 9},${cy + 1} Q${cx + 2},${cy + 5} ${cx + 12},${cy - 4}`} {...line} />,
   o: <ellipse cx={cx} cy={cy + 3} rx={9} ry={12} fill={P.ink} />,
-  wide: <ellipse cx={cx} cy={cy + 6} rx={15} ry={19} fill={P.ink} />,
+  wide: <ellipse cx={cx} cy={cy - 1} rx={11} ry={14} fill={P.ink} />, // stays above the collar and clear of the eyes
+  wobble: <path d={`M${cx - 13},${cy + 2} q4,-5 8,0 t8,0 t8,0`} {...line} />,
   open_talk: <ellipse cx={cx} cy={cy + 3} rx={10} ry={7} fill={P.ink} />,
 };
 
