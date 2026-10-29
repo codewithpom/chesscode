@@ -74,9 +74,17 @@ export const keyMomentTiming = (durationMs: number, moves: number): { leadMs: nu
   return { leadMs, stepMs: Math.min(KM_MAX_STEP_MS, Math.floor((room - leadMs) / (moves - 1))) };
 };
 
-/** Where the long-form captions go at `ms`: the outro moves them to the left third, the right two thirds being the end screen's. undefined = the default right column. */
-export const captionsBoxAt = (ranges: Pick<SceneRange, "kind" | "startMs" | "endMs">[], ms: number): Box | undefined =>
-  ranges.some((r) => r.kind === "outro" && ms >= r.startMs && ms < r.endMs) ? studioLayout.boxes.outroCaptions : undefined;
+/**
+ * Where the long-form captions go at `ms`: the outro moves them to the left third (the right two thirds are the end
+ * screen's); the title card and player intro have no board, so they start at the content edge, x = 96.
+ * undefined = the default right column.
+ */
+export const captionsBoxAt = (ranges: Pick<SceneRange, "kind" | "startMs" | "endMs">[], ms: number): Box | undefined => {
+  const kind = ranges.find((r) => ms >= r.startMs && ms < r.endMs)?.kind;
+  if (kind === "outro") return studioLayout.boxes.outroCaptions;
+  if (kind === "title" || kind === "player_intro") return studioLayout.boxes.fullCaptions;
+  return undefined;
+};
 
 const SIGN_OFF_WAVE_AT_MS = 400; // after the cut to the outro
 const SIGN_OFF_POINT_AT_MS = 3600; // the wave bubble has run its course (1.8 s + 60 ms a character)

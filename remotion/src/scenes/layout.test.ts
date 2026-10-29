@@ -31,6 +31,7 @@ const shown: Record<string, Record<string, Box>> = {
   playback_label: { label: b.label, moveList: b.moveList, mascotBox: b.mascot, pyaada, bubble, captions: b.captions },
   cold_open: { hook: b.hook, mascotBox: b.mascot, pyaada, bubble, captions: b.captions },
   key_moment: { label: b.label, mascotBox: b.mascot, pyaada, bubble, captions: b.captions },
+  title_card: { fullCaptions: b.fullCaptions },
   outro: {
     outroMascot: b.outroMascot,
     outroPyaada: layerRects(b.outroMascot, studioLayout.outroMascotHeight).mascot,
@@ -43,6 +44,7 @@ const independent = (boxes: Record<string, Box>): Record<string, Box> => {
   return rest;
 };
 
+const NO_BOARD = ["outro", "title_card"]; // scenes with no board: only the left third / the captions line are drawn
 const sceneSet = (kind: string, labelUp: boolean): string => (kind === "playback" && labelUp ? "playback_label" : kind);
 
 const beatFrames = (s: VideoSpec): number[] => {
@@ -82,7 +84,7 @@ describe("Studio layout at every beat frame of the fixture", () => {
     for (const [kind, boxes] of Object.entries(shown)) {
       const names = Object.keys(independent(boxes));
       for (let i = 0; i < names.length; i++) {
-        if (kind !== "outro") for (const bb of Object.values(boardColumn)) expect(hit(boxes[names[i]], bb), `${kind}: ${names[i]}`).toBe(false);
+        if (!NO_BOARD.includes(kind)) for (const bb of Object.values(boardColumn)) expect(hit(boxes[names[i]], bb), `${kind}: ${names[i]}`).toBe(false);
         for (let j = i + 1; j < names.length; j++) expect(hit(boxes[names[i]], boxes[names[j]]), `${kind}: ${names[i]} vs ${names[j]}`).toBe(false);
       }
       // The drawn mascot and bubble stay inside their box and clear of everything else in the scene.

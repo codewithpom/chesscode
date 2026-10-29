@@ -146,3 +146,19 @@ describe("signOffBeats", () => {
     });
   }
 });
+
+describe("captionsBoxAt in scenes without a board", () => {
+  const ranges = [
+    { kind: "cold_open" as const, startMs: 0, endMs: 6000 },
+    { kind: "title" as const, startMs: 6000, endMs: 8800 },
+    { kind: "player_intro" as const, startMs: 8800, endMs: 14000 },
+    { kind: "playback" as const, startMs: 14000, endMs: 20000 },
+  ];
+  it("the title card and the player intro start at x = 96, the board scenes keep the right column", () => {
+    expect(captionsBoxAt(ranges, 1000)).toBeUndefined();
+    expect(captionsBoxAt(ranges, 7000)).toBe(studioLayout.boxes.fullCaptions);
+    expect(captionsBoxAt(ranges, 10000)).toBe(studioLayout.boxes.fullCaptions);
+    expect(captionsBoxAt(ranges, 15000)).toBeUndefined();
+    expect(studioLayout.boxes.fullCaptions.x).toBe(96);
+  });
+});

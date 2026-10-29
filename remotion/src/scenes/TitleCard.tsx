@@ -21,7 +21,7 @@ export const TitleCard: FC<{ spec: VideoSpec; range: SceneRange }> = ({ spec, ra
   return (
     <div style={{ position: "absolute", left: 96, top: 0, width: 1500, height: 1080, display: "flex", flexDirection: "column", justifyContent: "center", gap: tokens.space(4) }}>
       <Enter atMs={enterAt(range.startMs, 0)}>
-        <div style={{ fontFamily: fontFor(lang, "title"), fontWeight: 600, fontSize: tokens.size.title, lineHeight: lang === "hi" ? 1.35 : 1.15, color: tokens.color.text, wordBreak: "keep-all" }}>
+        <div style={{ fontFamily: fontFor(lang, "title"), fontWeight: 600, fontSize: tokens.size.title, lineHeight: lang === "hi" ? 1.35 : 1.15, color: tokens.color.text, wordBreak: "keep-all", textWrap: "balance" }}>
           {spec.youtube.title}
         </div>
       </Enter>

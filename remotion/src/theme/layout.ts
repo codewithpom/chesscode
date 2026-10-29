@@ -78,6 +78,8 @@ export const studioLayout = {
     outroMascot: { x: 96, y: 200, w: 540, h: 520 },
     /** Outro captions, in the left third under the mascot, up to three lines (the right two thirds stay empty). */
     outroCaptions: { x: 96, y: 744, w: 540, h: 240 },
+    /** Captions in scenes with no board (title card, player intro): from the content edge at x = 96, full width. */
+    fullCaptions: { x: 96, y: 822, w: 1728, h: 162 },
     /** Bottom aligned at the 96 px margin; two lines of 56 px captions fit. */
     captions: { x: COL_X, y: 822, w: COL_W, h: 162 },
   },
