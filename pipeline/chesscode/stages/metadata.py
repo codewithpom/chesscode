@@ -36,6 +36,7 @@ def pick_title(titles: list[str], scorer) -> str:
 
 def score_titles(valid: list[str]) -> str:
     """The cheap model picks the best of the titles that already pass the hard rules."""
+    if llm.provider()=="offline": return valid[0]  # no cheap model: the script lists its titles best first
     prompt="Pick the best YouTube title for a chess video: specific and curious, never false or clickbait. Return {\"best\": index}. Titles: "+json.dumps(valid,ensure_ascii=False)
     best=llm.complete_json("checks","You rate chess video titles.",prompt,{"type":"object","required":["best"],"properties":{"best":{"type":"integer"}}})["best"]
     if not 0<=best<len(valid): raise ValueError(f"title scorer returned index {best} for {len(valid)} titles")

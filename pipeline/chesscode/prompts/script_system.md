@@ -21,6 +21,7 @@ Segment structure (the timeline depends on it):
 Scene text (all required; limits are hard):
 - "player_facts": {"white", "black"}: one true, specific fact about each player for the intro card, at most 120 characters. Never joke about the person.
 - "cold_open_hook": the line shown over the opening teaser, at most 60 characters.
+- "titles": three title options, your best first; each at most 70 characters, no all-caps words, specific and curious, never false.
 - "thumbnail_text": at most 4 words, and not equal to any of your titles.
 - "key_moment_labels": {beat_id: label}, at most 40 characters, for every beat whose intensity is 2 or 3 (long-form only; leave it {} for a Short).
 - Key moments (long-form only): write exactly one segment of kind "key_moment" for every beat whose intensity is 2 or 3, and none for other beats. Its "ply" is that beat's ply number (not null) and it is placed right after the "ply" segment that reaches that move. Each one is spoken in 15 to 40 seconds: the request's "key_moment_words" gives the minimum and maximum word count. Two key moments never share a beat.
