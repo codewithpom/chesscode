@@ -1,7 +1,7 @@
 import { spring } from "remotion";
 import { describe, expect, it } from "vitest";
 import { uiSpring } from "../theme/motion";
-import { barShareAt, evalLabel, evalLabelFixed, whipSpring, winPct, type BarBeat, type BarPly } from "./winprob";
+import { barShareAt, evalLabel, evalLabelFixed, evalLabelFixedLeft, whipSpring, winPct, type BarBeat, type BarPly } from "./winprob";
 
 const cp = (v: number) => ({ cp: v, mate: null });
 const mate = (v: number) => ({ cp: null, mate: v });
@@ -65,6 +65,14 @@ describe("evalLabelFixed", () => {
     expect(evalLabelFixed(mate(-3))).toBe(FS + FS + "−M3");
     for (const e of [cp(0), cp(-30), cp(1234), cp(-1234), mate(1), mate(-12), mate(12)])
       expect(evalLabelFixed(e)).toHaveLength(5);
+  });
+});
+
+describe("evalLabelFixedLeft", () => {
+  it("starts on the first character (the vertical bar's label lines up with the bar) and is as wide as the right-aligned one", () => {
+    expect(evalLabelFixedLeft(cp(300))[0]).toBe("+");
+    expect(evalLabelFixedLeft(cp(300)).length).toBe(evalLabelFixed(cp(300)).length);
+    expect(evalLabelFixedLeft(cp(300)).trimEnd()).toBe("+3.0");
   });
 });
 

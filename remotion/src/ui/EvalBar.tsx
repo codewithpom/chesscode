@@ -4,7 +4,7 @@ import type { VideoSpec } from "../spec/schema";
 import { msToFrame } from "../spec/time";
 import { useFonts } from "../theme/fonts";
 import { tokens } from "../theme/tokens";
-import { barShareAt, evalLabelFixed } from "./winprob";
+import { barShareAt, evalLabelFixed, evalLabelFixedLeft } from "./winprob";
 
 type Props = {
   spec: VideoSpec;
@@ -66,7 +66,7 @@ export const EvalBar: FC<Props> = ({ spec, orientation, length, thickness, label
           lineHeight: 1,
         }}
       >
-        {evalLabelFixed(e)}
+        {vertical ? evalLabelFixedLeft(e) : evalLabelFixed(e)}
       </div>
     </div>
   );

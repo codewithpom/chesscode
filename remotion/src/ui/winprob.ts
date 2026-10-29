@@ -29,6 +29,9 @@ const FIGURE_SPACE = " "; // same advance as a digit in Plex Mono
 /** evalLabel padded to 5 characters with figure spaces, so a right-aligned label never jumps. */
 export const evalLabelFixed = (e: Eval): string => evalLabel(e).padStart(5, FIGURE_SPACE);
 
+/** The same padded on the right, for a left-aligned label (the vertical bar's), so its first character sits on the bar's edge. */
+export const evalLabelFixedLeft = (e: Eval): string => evalLabel(e).padEnd(5, FIGURE_SPACE);
+
 /** Same damping ratio as uiSpring at 3x stiffness: faster, still no overshoot. */
 export const whipSpring: SpringConfig = {
   ...uiSpring,

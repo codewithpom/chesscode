@@ -27,8 +27,8 @@ export const yearOf = (date: string): string => /\d{4}/.exec(date)?.[0] ?? "";
 const RESULT: Record<VideoSpec["game"]["result"], string> = { "1-0": "1–0", "0-1": "0–1", "1/2-1/2": "½–½" };
 export const resultText = (r: VideoSpec["game"]["result"]): string => RESULT[r];
 
-/** `12. Bxb5+` for White's move, `12... Qxf3` for Black's. */
-export const moveLabel = (p: Pick<Ply, "ply" | "san">): string => `${Math.ceil(p.ply / 2)}${p.ply % 2 === 1 ? "." : "..."} ${p.san}`;
+/** `12. Bxb5+` for White's move, `12...Qxf3` for Black's (no space after the dots, as in print). */
+export const moveLabel = (p: Pick<Ply, "ply" | "san">): string => `${Math.ceil(p.ply / 2)}${p.ply % 2 === 1 ? ". " : "..."}${p.san}`;
 
 const COLD_LEAD_MS = 800; // the position before the first ply holds this long
 const COLD_TAIL_MS = 700;

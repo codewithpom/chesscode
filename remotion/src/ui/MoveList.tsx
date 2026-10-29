@@ -14,7 +14,7 @@ const ROW = studioLayout.moveRowHeight;
 const NO_W = 72;
 const CELL_W = 180;
 // Class colour plus a text mark, so colour is never the only signal (brilliant and mistake are both amber).
-const CLASS_STYLE: Partial<Record<VideoSpec["plies"][number]["class"], { color: string; mark: string }>> = {
+export const CLASS_STYLE: Partial<Record<VideoSpec["plies"][number]["class"], { color: string; mark: string }>> = {
   best: { color: tokens.color.best, mark: "" },
   brilliant: { color: tokens.color.brilliant, mark: "!!" },
   mistake: { color: tokens.color.mistake, mark: "?" },

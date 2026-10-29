@@ -6,8 +6,22 @@ import { tokens } from "../theme/tokens";
 
 type Player = VideoSpec["game"]["white"];
 
+export type Fields = { title: boolean; rating: boolean; country: boolean };
+const ALL: Fields = { title: true, rating: true, country: true };
+
+/**
+ * The fields both players have. A card shows a field only when both do, so one card never has a rating or country
+ * the other lacks (historic players have neither; a game against a nobleman has no country for him).
+ */
+export const commonFields = (a: Player, b: Player): Fields => ({
+  title: a.title !== null && b.title !== null,
+  rating: a.rating !== null && b.rating !== null,
+  country: a.country !== null && b.country !== null,
+});
+
 /** "GM 2850", "2850", "GM" or "" (historic players have neither). */
-export const ratingLine = (p: Player): string => [p.title, p.rating].filter((v) => v !== null).join(" ");
+export const ratingLine = (p: Player, fields: Fields = ALL): string =>
+  [fields.title ? p.title : null, fields.rating ? p.rating : null].filter((v) => v !== null).join(" ");
 
 /** Flat square in the side's piece colour (no icon). */
 export const SideChip: FC<{ side: "white" | "black"; size: number; offset?: number }> = ({ side, size, offset = 0 }) => (
@@ -37,9 +51,11 @@ export const PlayerCard: FC<{
   clock?: ReactNode;
   /** Name and fact font size in px; defaults to tokens.size.body. The rating line is 28 px or 7/8 of it. */
   size?: number;
-}> = ({ player, side, lang, fact = false, clock, size = tokens.size.body }) => {
+  /** Which of title, rating and country to show (see commonFields); default all that the player has. */
+  fields?: Fields;
+}> = ({ player, side, lang, fact = false, clock, size = tokens.size.body, fields = ALL }) => {
   useFonts();
-  const meta = [ratingLine(player), player.country].filter(Boolean).join("  ");
+  const meta = [ratingLine(player, fields), fields.country ? player.country : null].filter(Boolean).join("  ");
   return (
     <div
       style={{

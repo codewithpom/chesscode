@@ -70,7 +70,7 @@ describe("small helpers", () => {
     expect(yearOf("?")).toBe("");
     expect(resultText("1/2-1/2")).toBe("½–½");
     expect(moveLabel({ ply: 19, san: "Bxb5+" })).toBe("10. Bxb5+");
-    expect(moveLabel({ ply: 20, san: "Qxb5" })).toBe("10... Qxb5");
+    expect(moveLabel({ ply: 20, san: "Qxb5" })).toBe("10...Qxb5");
   });
 });
 

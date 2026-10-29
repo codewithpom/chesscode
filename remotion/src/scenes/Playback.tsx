@@ -10,7 +10,7 @@ import { templateFx } from "../theme/templates";
 import { ChapterCard } from "../ui/ChapterCard";
 import { Clock } from "../ui/Clock";
 import { MoveList } from "../ui/MoveList";
-import { PlayerCard } from "../ui/PlayerCard";
+import { commonFields, PlayerCard } from "../ui/PlayerCard";
 import { clockFor, currentPlyAt } from "./helpers";
 import { MascotSlot } from "./MascotSlot";
 import { StudioBoard } from "./StudioBoard";
@@ -63,7 +63,7 @@ export const Playback: FC<{ spec: VideoSpec; range: SceneRange }> = ({ spec, ran
         <div style={{ position: "absolute", left: cards.x, top: cards.y, width: cards.w, display: "flex", flexDirection: "column", gap: cards.h - 2 * ROW }}>
           {sides.map((side) => (
             <div key={side} style={{ height: ROW }}>
-              <PlayerCard player={spec.game[side]} side={side} lang={spec.language} clock={clockSlot(side)} />
+              <PlayerCard player={spec.game[side]} side={side} lang={spec.language} clock={clockSlot(side)} fields={commonFields(spec.game.white, spec.game.black)} />
             </div>
           ))}
         </div>
