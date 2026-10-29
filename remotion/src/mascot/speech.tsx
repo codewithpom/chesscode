@@ -10,31 +10,40 @@ import { P } from "./parts/kit";
 export const CHARS_PER_SECOND = 12;
 export const BUBBLE_FONT = size.min + 2; // 30 px, never below 28
 export const BUBBLE_TAIL = 20;
-const EXIT_FRAMES = 6;
+export const BUBBLE_EXIT_FRAMES = 6;
+const LAST_WORD_HOLD_MS = 500;
 
-/** Frame at which each word has been fully typed (a word never shows partially, so Devanagari clusters never split). */
-const wordFrames = (line: string, from: number, fps: number): number[] => {
+/**
+ * Frame at which each word appears: when its first character is typed, so the first word shows on `from`. Types at
+ * 12 characters per second, faster when needed so the last word is up half a second before the exit starts at `to`.
+ */
+const wordFrames = (line: string, from: number, fps: number, to = Infinity): number[] => {
   let chars = 0;
-  return line.split(" ").map((w, i) => {
-    chars += [...w].length + (i > 0 ? 1 : 0);
-    return from + msToFrame((chars / CHARS_PER_SECOND) * 1000, fps);
+  const starts = line.split(" ").map((w) => {
+    const at = chars;
+    chars += [...w].length + 1;
+    return at;
   });
+  const budget = (to - BUBBLE_EXIT_FRAMES - msToFrame(LAST_WORD_HOLD_MS, fps) - from) / fps;
+  const cps = Math.max(CHARS_PER_SECOND, starts[starts.length - 1] / budget);
+  return starts.map((c) => from + msToFrame(budget > 0 ? (c / cps) * 1000 : 0, fps));
 };
 
-/** The part of `line` typed by `frame`, always whole words. */
-export const typedText = (line: string, frame: number, from: number, fps: number): string => {
-  const done = wordFrames(line, from, fps).filter((f) => frame >= f).length;
+/** The part of `line` typed by `frame`, always whole words. Pass `to` (bubble end frame) to type fast enough to finish. */
+export const typedText = (line: string, frame: number, from: number, fps: number, to?: number): string => {
+  const done = wordFrames(line, from, fps, to).filter((f) => frame >= f).length;
   return line.split(" ").slice(0, done).join(" ");
 };
 
 /** Frame at which the last word has appeared (the mouth stops flapping). */
-export const typingEnd = (line: string, from: number, fps: number): number => wordFrames(line, from, fps).slice(-1)[0] ?? from;
+export const typingEnd = (line: string, from: number, fps: number, to?: number): number =>
+  wordFrames(line, from, fps, to).slice(-1)[0] ?? from;
 
 export type Blip = { frame: number; sample: 1 | 2 | 3 | 4 | 5 | 6 };
 
 /** One voice blip per word, on the frame the word appears; the sample is seeded. */
-export const blipFrames = (line: string, from: number, fps: number, seed: string): Blip[] =>
-  wordFrames(line, from, fps).map((frame, i) => ({ frame, sample: (1 + Math.floor(random(`${seed}-blip-${i}`) * 6)) as Blip["sample"] }));
+export const blipFrames = (line: string, from: number, fps: number, seed: string, to?: number): Blip[] =>
+  wordFrames(line, from, fps, to).map((frame, i) => ({ frame, sample: (1 + Math.floor(random(`${seed}-blip-${i}`) * 6)) as Blip["sample"] }));
 
 /** Speech bubble drawn inside `box` (tail included), pointing right at the mascot. Visible from `from` to `to` (frames). */
 export const SpeechBubble: React.FC<{ line: string; from: number; to: number; box: Box; language: "en" | "hi" }> = ({
@@ -46,7 +55,7 @@ export const SpeechBubble: React.FC<{ line: string; from: number; to: number; bo
   if (frame < from || frame >= to) return null;
   const enterF = msToFrame(motion.uiEnterMs, fps);
   const inP = interpolate(frame, [from, from + enterF], [0, 1], { easing: motion.enter, extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-  const outP = interpolate(frame, [to - EXIT_FRAMES, to], [0, 1], { easing: motion.exit, extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  const outP = interpolate(frame, [to - BUBBLE_EXIT_FRAMES, to], [0, 1], { easing: motion.exit, extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const t = inP * (1 - outP);
   const text = {
     fontFamily: fontFor(language, "ui"), fontSize: BUBBLE_FONT, fontWeight: 500, lineHeight: 1.3, color: P.ink,
@@ -65,7 +74,7 @@ export const SpeechBubble: React.FC<{ line: string; from: number; to: number; bo
           }}
         >
           <div style={{ ...text, visibility: "hidden" }}>{line}</div>
-          <div style={text}>{typedText(line, frame, from, fps)}</div>
+          <div style={text}>{typedText(line, frame, from, fps, to)}</div>
         </div>
         <svg width={BUBBLE_TAIL} height={40} style={{ flex: "none", marginLeft: -4 }}>
           <path d={`M0,2 L${BUBBLE_TAIL - 2},20 L0,38`} fill={P.body} stroke={P.ink} strokeWidth={4} strokeLinejoin="round" />

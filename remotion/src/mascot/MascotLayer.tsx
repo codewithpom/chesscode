@@ -54,7 +54,7 @@ export const MascotLayer: React.FC<{ spec: VideoSpec; box: Box; height: number }
   const state = poseAt(frame, reactions, fps, spec.video_id);
   const { mascot, bubble } = layerRects(box, height);
   const active = reactions.find((r) => frame >= r.bubbleFrom && frame < r.bubbleTo);
-  const talking = active !== undefined && frame < typingEnd(active.beat.mascot.line, active.bubbleFrom, fps);
+  const talking = active !== undefined && frame < typingEnd(active.beat.mascot.line, active.bubbleFrom, fps, active.bubbleTo);
   // Mouth flaps every 3 frames while the bubble types.
   const flap = talking && Math.floor((frame - active.bubbleFrom) / 3) % 2 === 0;
   const party = reactions.find((r) => r.beat.mascot.pose === "party" && frame >= r.reactFrame && frame < r.bubbleTo);
@@ -68,7 +68,7 @@ export const MascotLayer: React.FC<{ spec: VideoSpec; box: Box; height: number }
         <SpeechBubble line={active.beat.mascot.line} from={active.bubbleFrom} to={active.bubbleTo} box={bubble} language={spec.language} />
       )}
       {reactions.flatMap((r) =>
-        blipFrames(r.beat.mascot.line, r.bubbleFrom, fps, `${spec.video_id}-${r.beat.beat_id}`)
+        blipFrames(r.beat.mascot.line, r.bubbleFrom, fps, `${spec.video_id}-${r.beat.beat_id}`, r.bubbleTo)
           .filter((b) => b.frame < Math.min(r.bubbleTo, durationInFrames))
           .map((b) => (
             <Sequence key={`${r.beat.beat_id}-${b.frame}`} from={b.frame} durationInFrames={msToFrame(BLIP_FRAMES_MS, fps) + 1} layout="none">
