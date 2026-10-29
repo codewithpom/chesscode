@@ -83,6 +83,13 @@ def check_audio_levels(spec_dir: Path, **_):
     return "all segments -14 +-1 LUFS, TP <= -1 dBTP"
 
 
+def check_final_mix(spec_dir: Path, mp4: Path, **_):
+    """The rendered MP4's mixed audio, not the segment files: Remotion's stereo upmix and music change the level."""
+    m = measure(mp4)
+    if abs(m["input_i"] + 14) > 1 or m["input_tp"] > -1: raise ValueError(f"{m['input_i']:.1f} LUFS, {m['input_tp']:.1f} dBTP")
+    return f"{m['input_i']:.1f} LUFS, {m['input_tp']:.1f} dBTP"
+
+
 def planned_gaps(spec: dict) -> list[tuple[float, float]]:
     """Silence the timeline plans on purpose: before the first segment, between segments (incl. 900 ms reaction gaps), and the outro."""
     segs = sorted(spec["narration"], key=lambda s: s["start_ms"])
@@ -133,7 +140,7 @@ def check_file_format(spec_dir: Path, mp4: Path, **_):
 
 
 CHECKS = [("spec_valid", check_spec_valid), ("moves_real", check_moves_real), ("mascot_lines", check_mascot_lines),
-          ("audio_levels", check_audio_levels), ("dead_air", check_dead_air), ("black_frames", check_black_frames),
+          ("audio_levels", check_audio_levels), ("final_mix", check_final_mix), ("dead_air", check_dead_air), ("black_frames", check_black_frames),
           ("file_format", check_file_format)]
 
 

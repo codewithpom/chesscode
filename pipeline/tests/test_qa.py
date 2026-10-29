@@ -17,9 +17,9 @@ def ffmpeg(*args):
     subprocess.run([FF, "-y", "-loglevel", "error", *args], check=True)
 
 
-def make_mp4(path, dur=6, silent=None, black=None, fps=30, size="320x180"):
+def make_mp4(path, dur=6, silent=None, black=None, fps=30, size="320x180", amp=0.3):
     """Tiny h264/aac clip: a tone with an optional silent span and an optional black span (seconds)."""
-    tone = "0.3*sin(2*PI*440*t)"
+    tone = f"{amp}*sin(2*PI*440*t)"
     if silent: tone = f"if(between(t,{silent[0]},{silent[1]}),0,{tone})"
     video = f"testsrc2=s={size}:r={fps}:d={dur}"
     if black: video += f",drawbox=x=0:y=0:w=iw:h=ih:color=black:t=fill:enable='between(t,{black[0]},{black[1]})'"
@@ -89,6 +89,15 @@ def test_audio_levels(tmp_path):
     make_spec(tmp_path, [seg(0, 0, 4000, "quiet.wav")])
     with pytest.raises(ValueError, match="seg-0"):
         qa.check_audio_levels(spec_dir=tmp_path)
+
+
+def test_final_mix_level(tmp_path):
+    make_spec(tmp_path, [seg(0, 0, 6000)])
+    make_mp4(tmp_path / "ok.mp4")
+    qa.check_final_mix(spec_dir=tmp_path, mp4=tmp_path / "ok.mp4")
+    make_mp4(tmp_path / "quiet.mp4", amp=0.1)
+    with pytest.raises(ValueError, match="LUFS"):
+        qa.check_final_mix(spec_dir=tmp_path, mp4=tmp_path / "quiet.mp4")
 
 
 def test_mascot_lines_cap_and_repeats(tmp_path):
