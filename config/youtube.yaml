@@ -1,0 +1,9 @@
+category_id: 20  # Gaming; 27 is Education (spec 10)
+contains_synthetic_media: false
+daily_cap: 60  # uploads per Pacific day, below the 100/day videos.insert bucket and the 10,000-unit pool
+# Public playlists, one per series. null = not created yet: `chesscode upload --create-playlists` fills these in, commit the ids.
+playlists:
+  legendary_games: null
+  indian_chess_heroes: null
+  opening_explained: null
+  blunder_hall_of_fame: null

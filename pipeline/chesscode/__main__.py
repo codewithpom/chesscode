@@ -29,8 +29,9 @@ def build_parser() -> argparse.ArgumentParser:
     batch.add_argument("--upload", action="store_true")
 
     upload = sub.add_parser("upload")
-    upload.add_argument("--video", required=True)
+    upload.add_argument("--video")
     upload.add_argument("--repair", action="store_true")
+    upload.add_argument("--create-playlists", action="store_true")
 
     auth = sub.add_parser("auth")
     auth.add_argument("action", choices=["check", "login"])
@@ -46,7 +47,10 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
-    args = build_parser().parse_args(argv)
+    parser = build_parser()
+    args = parser.parse_args(argv)
+    if args.command == "upload" and not (args.video or args.create_playlists):
+        parser.error("upload needs --video or --create-playlists")
     module = importlib.import_module(COMMANDS[args.command])
     return module.main(args)
 
