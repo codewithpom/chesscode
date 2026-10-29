@@ -27,3 +27,5 @@ Scene text (all required; limits are hard):
 - Key moments (long-form only): write exactly one segment of kind "key_moment" for every beat whose intensity is 2 or 3, and none for other beats. Its "ply" is that beat's ply number (not null) and it is placed right after the "ply" segment that reaches that move. Each one is spoken in 15 to 40 seconds: the request's "key_moment_words" gives the minimum and maximum word count. Two key moments never share a beat.
 - Shorts: the request names one beat in "short_beat" (type, ply, move, mascot pose). The whole Short is about that moment.
 - Any move you write must be in standard SAN and must be a game or engine move.
+- Length: the request's "total_words" gives the minimum and maximum spoken words across all segments.
+- Facts: state only what the request's facts show or what is widely documented about this game and these players. If you are not sure a detail is true (a venue, an opera's name, an age, a quote), leave it out. Never invent quotes.
