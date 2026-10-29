@@ -2,12 +2,13 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import { fxWindows } from "../fx/windows";
-import { layerRects } from "../mascot/layerLayout";
+import { estimateLines, layerRects, textHeight } from "../mascot/layerLayout";
 import { RIG } from "../mascot/Pyaada";
 import { faintEnd, phaseAt, poseAt, reactionsFor } from "../mascot/react";
 import { VideoSpec } from "../spec/schema";
 import { msToFrame } from "../spec/time";
 import { shortsLayout, studioLayout, youtubeShortsUi, type Box } from "../theme/layout";
+import { HOOK_BOX, HOOK_SIZE, hookEndMs } from "../compositions/ShortsVideo";
 import { sceneRanges } from "./timeline";
 
 const read = (name: string) =>
@@ -192,5 +193,37 @@ describe("Shorts mascot box", () => {
       expect(r.y + r.h).toBeLessThanOrEqual(youtubeShortsUi.bottomZoneY);
     }
     expect(hit(mascot, sb.board) || hit(sBubble, sb.board)).toBe(false);
+  });
+});
+
+describe("Shorts type is phone-sized", () => {
+  const sb = shortsLayout.boxes;
+  const { bubble: sBubble } = layerRects(sb.mascot, shortsLayout.mascotHeight, shortsLayout.maxBubbleH);
+
+  it("bubble 44 px, eval label 36 px, hook 72 px or more", () => {
+    expect(shortsLayout.bubbleFont).toBeGreaterThanOrEqual(44);
+    expect(shortsLayout.evalLabelSize).toBeGreaterThanOrEqual(36);
+    expect(HOOK_SIZE).toBeGreaterThanOrEqual(72);
+    expect(sb.evalLabel.h).toBeGreaterThanOrEqual(shortsLayout.evalLabelSize);
+  });
+
+  it("the longest English line and a 10-word Hindi line fit the 44 px bubble inside the box", () => {
+    expect(sBubble.y).toBeGreaterThanOrEqual(sb.mascot.y);
+    expect(sBubble.y + sBubble.h).toBeLessThanOrEqual(sb.mascot.y + sb.mascot.h);
+    for (const line of ["Two pieces. That's all he needed.", "यह चाल देखकर प्यादा भी सोच में पड़ गया, भाई"]) {
+      expect(textHeight(estimateLines(line, sBubble.w, shortsLayout.bubbleFont), shortsLayout.bubbleFont), line).toBeLessThanOrEqual(sBubble.h);
+    }
+  });
+
+  it("the hook plate (three lines at 72 px) stays above the board and clear of the YouTube zones", () => {
+    expect(HOOK_BOX.y + HOOK_BOX.h).toBeLessThanOrEqual(sb.board.y);
+    expect(HOOK_BOX.h).toBeGreaterThanOrEqual(3 * HOOK_SIZE * 1.05);
+    expect(sb.captions.x + sb.captions.w).toBeLessThanOrEqual(youtubeShortsUi.rightZoneX);
+  });
+
+  it("the hook is up for a second, or until the first caption word when that is later", () => {
+    expect(hookEndMs(shorts)).toBe(1000);
+    const late = { ...shorts, narration: [{ ...shorts.narration[0], words: [{ ...shorts.narration[0].words[0], start_ms: 1600, end_ms: 1900 }, ...shorts.narration[0].words.slice(1)] }, ...shorts.narration.slice(1)] };
+    expect(hookEndMs(late)).toBe(1600);
   });
 });

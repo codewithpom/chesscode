@@ -14,11 +14,14 @@ export const shortsLayout = {
   height: 1920,
   /** Pyaada's drawn height in `boxes.mascot` (the bubble sits to his left inside the box). */
   mascotHeight: 260,
-  /** Eval label is 28 px (the minimum size) so it fits its 28 px box. */
-  evalLabelSize: 28,
+  /** Eval label is 36 px: on a phone (about 1/3 scale) 28 px was unreadable. */
+  evalLabelSize: 36,
+  /** Bubble text in the Shorts: 44 px (28 px is about 10 px on a phone); the bubble may be taller to hold it. */
+  bubbleFont: 44,
+  maxBubbleH: 300,
   boxes: {
     captions: { x: 48, y: 72, w: BOARD, h: 114 }, // one line at 88 px, y 72-186
-    evalLabel: { x: 828, y: 194, w: 84, h: 28 }, // 5 characters, right-aligned to the bar
+    evalLabel: { x: 804, y: 190, w: 108, h: 36 }, // 5 characters at 36 px, right-aligned to the bar
     evalBar: { x: 48, y: 230, w: BOARD, h: 16 },
     board,
     // Ranks right of the board, files under it (muted text drawn by Board).
@@ -26,7 +29,7 @@ export const shortsLayout = {
     fileLabels: { x: board.x, y: board.y + BOARD, w: BOARD, h: Math.ceil(SQUARE * (COORD_GAP + COORD_SIZE)) + 4 },
     mascot: { x: 48, y: 1126, w: BOARD, h: 454 }, // y 1126-1580 (file labels sit at its top edge)
   },
-} as const satisfies { width: number; height: number; mascotHeight: number; evalLabelSize: number; boxes: Record<string, Box> };
+} as const satisfies { width: number; height: number; mascotHeight: number; evalLabelSize: number; bubbleFont: number; maxBubbleH: number; boxes: Record<string, Box> };
 
 /** YouTube Shorts UI covers the right 120 px and the bottom 340 px: nothing important there. */
 export const youtubeShortsUi = {

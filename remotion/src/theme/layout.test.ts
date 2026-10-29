@@ -19,7 +19,7 @@ describe("shortsLayout", () => {
     const b = shortsLayout.boxes;
     expect(b.board).toEqual({ x: 48, y: 262, w: 864, h: 864 });
     expect(b.captions.y).toBe(72);
-    expect([b.evalLabel.y, b.evalLabel.y + b.evalLabel.h]).toEqual([194, 222]);
+    expect([b.evalLabel.y, b.evalLabel.y + b.evalLabel.h]).toEqual([190, 226]); // 36 px label (design review: 28 px was unreadable on a phone)
     expect([b.evalBar.y, b.evalBar.y + b.evalBar.h]).toEqual([230, 246]);
     expect([b.mascot.y, b.mascot.y + b.mascot.h]).toEqual([1126, 1580]);
   });

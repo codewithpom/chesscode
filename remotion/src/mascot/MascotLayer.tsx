@@ -49,12 +49,19 @@ const Confetti: React.FC<{ phase: Phase; box: Box; frame: number }> = ({ phase, 
 };
 
 /** Pyaada, bottom-right in `box`, with the bubble for the active reaction and blip audio. Nothing is drawn outside `box`. */
-export const MascotLayer: React.FC<{ spec: VideoSpec; box: Box; height: number }> = ({ spec, box, height }) => {
+export const MascotLayer: React.FC<{
+  spec: VideoSpec;
+  box: Box;
+  height: number;
+  /** Bubble text size and tallest bubble; the Shorts use 44 px so it reads on a phone (default: BUBBLE_FONT, 200). */
+  bubbleFont?: number;
+  maxBubbleH?: number;
+}> = ({ spec, box, height, bubbleFont, maxBubbleH }) => {
   const frame = useCurrentFrame();
   const { fps, durationInFrames, width, height: frameH } = useVideoConfig();
   const reactions = useMemo(() => reactionsFor(spec.beats, fps, durationInFrames), [spec.beats, fps, durationInFrames]);
   const state = poseAt(frame, reactions, fps, spec.video_id);
-  const { mascot, bubble } = layerRects(box, height);
+  const { mascot, bubble } = layerRects(box, height, maxBubbleH);
   const active = reactions.find((r) => frame >= r.bubbleFrom && frame < r.bubbleTo);
   const talking = active !== undefined && frame < typingEnd(active.beat.mascot.line, active.bubbleFrom, fps, active.bubbleTo);
   // Mouth flaps every 3 frames while the bubble types.
@@ -72,7 +79,7 @@ export const MascotLayer: React.FC<{ spec: VideoSpec; box: Box; height: number }
         <Pyaada state={flap ? { ...state, mouth: "open_talk" } : state} height={height} />
       </div>
       {active && (
-        <SpeechBubble line={active.beat.mascot.line} from={active.bubbleFrom} to={active.bubbleTo} box={bubble} language={spec.language} tail={!away} />
+        <SpeechBubble line={active.beat.mascot.line} from={active.bubbleFrom} to={active.bubbleTo} box={bubble} language={spec.language} tail={!away} fontSize={bubbleFont} />
       )}
       {reactions.flatMap((r) =>
         blipFrames(r.beat.mascot.line, r.bubbleFrom, fps, `${spec.video_id}-${r.beat.beat_id}`, r.bubbleTo)

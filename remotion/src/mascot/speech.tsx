@@ -46,8 +46,8 @@ export const blipFrames = (line: string, from: number, fps: number, seed: string
   wordFrames(line, from, fps, to).map((frame, i) => ({ frame, sample: (1 + Math.floor(random(`${seed}-blip-${i}`) * 6)) as Blip["sample"] }));
 
 /** Speech bubble drawn inside `box` (tail included), pointing right at the mascot. Visible from `from` to `to` (frames). */
-export const SpeechBubble: React.FC<{ line: string; from: number; to: number; box: Box; language: "en" | "hi"; tail?: boolean }> = ({
-  line, from, to, box, language, tail = true,
+export const SpeechBubble: React.FC<{ line: string; from: number; to: number; box: Box; language: "en" | "hi"; tail?: boolean; fontSize?: number }> = ({
+  line, from, to, box, language, tail = true, fontSize = BUBBLE_FONT,
 }) => {
   useFonts();
   const frame = useCurrentFrame();
@@ -58,7 +58,7 @@ export const SpeechBubble: React.FC<{ line: string; from: number; to: number; bo
   const outP = interpolate(frame, [to - BUBBLE_EXIT_FRAMES, to], [0, 1], { easing: motion.exit, extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const t = inP * (1 - outP);
   const text = {
-    fontFamily: fontFor(language, "ui"), fontSize: BUBBLE_FONT, fontWeight: 500, lineHeight: 1.3, color: P.ink,
+    fontFamily: fontFor(language, "ui"), fontSize, fontWeight: 500, lineHeight: 1.3, color: P.ink,
     gridArea: "1 / 1", overflowWrap: "normal", wordBreak: "normal", hyphens: "manual",
   } as const;
   // Shrinks to the line (the hidden full text fixes the size so it does not grow while typing), right-aligned to the

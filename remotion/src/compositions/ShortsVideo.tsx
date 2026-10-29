@@ -21,7 +21,13 @@ import { tokens } from "../theme/tokens";
 import { Captions } from "../ui/Captions";
 import { EvalBar } from "../ui/EvalBar";
 
-const HOOK_MS = 1000;
+const HOOK_MIN_MS = 1000;
+/** The hook text is 72 px or more (Shorts type is "bigger", docs/SPEC.md section 6) and may use three lines. */
+export const HOOK_SIZE = 72;
+export const HOOK_BOX = { y: 24, h: 232 } as const;
+
+/** The hook stays up for a second, or until the first caption word when that comes later. */
+export const hookEndMs = (spec: VideoSpec): number => Math.max(HOOK_MIN_MS, spec.narration[0]?.words[0]?.start_ms ?? 0);
 const { captions, evalBar, board, mascot, fileLabels } = shortsLayout.boxes;
 // Out-of-theory plate: under the board's file labels, above the mascot box's usable area.
 const labelBox = { x: board.x, y: fileLabels.y + fileLabels.h + 8, w: board.w, h: 56 } as const;
@@ -61,31 +67,35 @@ export const ShortsVisuals: FC<VideoSpec> = (spec) => {
   useFonts();
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const hook = frameToMs(frame, fps) < HOOK_MS;
+  const hook = frameToMs(frame, fps) < hookEndMs(spec);
   const hi = spec.language === "hi";
   return (
     <AbsoluteFill style={{ backgroundColor: tokens.color.bg }}>
       <ShortsBoard spec={spec} />
+      {/* A hairline track behind the bar, so a full White bar (M1) is not mistaken for a divider line. */}
+      <div style={{ position: "absolute", left: evalBar.x, top: evalBar.y - 4, width: evalBar.w, height: evalBar.h + 8, backgroundColor: tokens.color.hairline }} />
       <div style={{ position: "absolute", left: evalBar.x, top: evalBar.y }}>
         <EvalBar spec={evalSpec(spec, "shorts")} orientation="horizontal" length={evalBar.w} thickness={evalBar.h} labelSize={shortsLayout.evalLabelSize} />
       </div>
       {hook ? (
-        // The hook owns the captions box for the first second, from frame 0; captions take over after it.
+        // The hook owns the top of the frame, over the captions box and the eval label and bar, until the first
+        // caption word (at least a second); captions take over after it.
         <div
           style={{
             position: "absolute",
             left: captions.x,
-            top: captions.y,
+            top: HOOK_BOX.y,
             width: captions.w,
-            height: captions.h,
+            height: HOOK_BOX.h,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             textAlign: "center",
+            backgroundColor: tokens.color.bg,
             fontFamily: fontFor(spec.language, "title"),
             fontWeight: 600,
-            fontSize: hi ? 44 : 52,
-            lineHeight: hi ? 1.25 : 1.08,
+            fontSize: HOOK_SIZE,
+            lineHeight: hi ? 1.25 : 1.05,
             color: tokens.color.text,
             wordBreak: "keep-all",
           }}
@@ -96,7 +106,7 @@ export const ShortsVisuals: FC<VideoSpec> = (spec) => {
         <Captions spec={spec} mode="shorts" />
       )}
       <OutOfTheoryLabel beats={spec.beats} template="shorts" lang={spec.language} box={labelBox} />
-      <MascotSlot spec={spec} box={mascot} height={shortsLayout.mascotHeight} />
+      <MascotSlot spec={spec} box={mascot} height={shortsLayout.mascotHeight} bubbleFont={shortsLayout.bubbleFont} maxBubbleH={shortsLayout.maxBubbleH} />
     </AbsoluteFill>
   );
 };
