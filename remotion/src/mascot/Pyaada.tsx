@@ -24,12 +24,13 @@ const Sweat: React.FC<{ t: number }> = ({ t }) => {
   );
 };
 
+// Scale factors are printed at full precision: rounding them separately would break scaleX * scaleY = 1.
 /** The rig, drawn from a PoseState. Layers: base, body, head (+ eyes, brows, mouth), arms, prop. */
 export const Pyaada: React.FC<{ state: PoseState; height: number }> = ({ state: s, height }) => {
   const { x, y } = scaleOf(s.squash);
   const body =
     `translate(${n(s.offsetX)} ${n(s.offsetY)}) rotate(${n(s.lean)} ${RIG.groundX} ${RIG.groundY}) ` +
-    `translate(${RIG.groundX} ${RIG.groundY}) scale(${n(x)} ${n(y)}) translate(${-RIG.groundX} ${-RIG.groundY})`;
+    `translate(${RIG.groundX} ${RIG.groundY}) scale(${x} ${y}) translate(${-RIG.groundX} ${-RIG.groundY})`;
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${RIG.w} ${RIG.h}`}
