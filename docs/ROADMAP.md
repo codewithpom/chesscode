@@ -69,7 +69,7 @@ Oct 28: repo secrets set with `gh secret set` (`YOUTUBE_CLIENT_ID`, `YOUTUBE_CLI
 - [ ] End screens: skip, or add by hand to the first video of each series.
 - [ ] Exact return date (confirms the 13-week window).
 - [x] Reviewed line bank (Oct 29, all kept).
-- [ ] Final `games.yaml`.
+- [x] Final `games.yaml` (Oct 29, all kept).
 
 ## Assumptions made where the spec is silent (raise to change)
 
@@ -95,6 +95,8 @@ Oct 28: repo secrets set with `gh secret set` (`YOUTUBE_CLIENT_ID`, `YOUTUBE_CLI
 
 - Oct 28: mascot concept **Pyaada**.
 - Oct 29: line banks approved as written (all 672 EN + HI lines kept; review page https://claude.ai/artifact/KDwDKjyPTCnpvxqKMEDMgf). Lines live on `ws/m3-content` until M3 merges.
+- Oct 29: `games.yaml` approved as drafted (76 games: 13 floor, 13 target, 50 spare; review page https://claude.ai/artifact/QMAW8RMHaxKaz7YBofBkTr).
+- Oct 29: Pyaada reaction reel approved (https://claude.ai/artifact/FgFqgF8GFyvLYNvvgjowrU). **Rig frozen**: pose changes now need a new reel review.
 - Oct 28: board pieces = rhosgfx (CC0) with black pieces recoloured to dark ink for contrast.
 - Oct 28: Shorts layout deviates from spec section 6: board **864 px** (not 960) so captions, eval bar and board fit the upper 60 % and the mascot fits below.
 - Oct 28: four series board themes get four distinct hue families (bone/slate, walnut, sage, a fourth muted hue) at the same square contrast.
