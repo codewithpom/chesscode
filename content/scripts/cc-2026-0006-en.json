@@ -1,0 +1,141 @@
+{
+  "segments": [
+    {
+      "kind": "cold_open",
+      "ply": null,
+      "text": "Ding runs out of time. Gukesh wins, but the clock is only half the story."
+    },
+    {
+      "kind": "title",
+      "ply": null,
+      "text": "Gukesh against Ding. Singapore, 2024."
+    },
+    {
+      "kind": "player_intro",
+      "ply": null,
+      "text": "Gukesh has White against world champion Ding Liren. A win would level their world championship match."
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "Black's clock reads zero. In game three of the 2024 World Championship, Ding Liren's flag has fallen, and Gukesh has his first win of the match. But the clock only ended a game that was already lost: the engine had White ahead by more than four pawns. This is the story of a bishop that went to c2 and never came home, and of a champion who had used more than an hour of his clock by move thirteen. Before this game, Ding Liren, the reigning world champion from China, led the match by a point: he had won game one, and game two was a draw. Gukesh, the eighteen-year-old challenger from Chennai, had White. The ratings were 2783 for Gukesh and 2728 for Ding, and the time control was two hours for the first forty moves, then thirty more minutes with a thirty-second increment. A win would level the match at one and a half points each, and Gukesh had the first move to try for it. Keep an eye on the clocks as we go, because in this game they tell almost as much of the story as the pieces do, and the engine score will show us exactly when the board turned."
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "The opening: a quiet Queen's Gambit with a sting."
+    },
+    {
+      "kind": "ply",
+      "ply": 1,
+      "text": "Gukesh plays d4, Nf3 and c4, the classical Queen's Gambit setup. Ding answers with Nf6, d5 and e6, a Queen's Gambit Declined. Everything is theory so far, and the engine sees it as equal, about a quarter of a pawn for White."
+    },
+    {
+      "kind": "ply",
+      "ply": 7,
+      "text": "Now Gukesh chooses the exchange: cxd5, and Ding recaptures with exd5. The database calls the position a Queen's Pawn Game, Symmetrical Variation, which sounds dull, and that is the point. The pawn structure is symmetrical, so the winner will be decided by piece play and by who understands the plans better. Nc3 and c6 follow, and the engine shows exact equality, zero."
+    },
+    {
+      "kind": "ply",
+      "ply": 11,
+      "text": "White plays Qc2 and Black replies g6, setting up a bishop outside the pawn chain. h3 stops Bg4, so Ding develops with Bf5 and the bishop looks straight at the white queen. The engine sees equality, and it prefers Bf4 and Be7 for the two sides, but nothing here is a problem."
+    },
+    {
+      "kind": "ply",
+      "ply": 15,
+      "text": "Qb3 attacks the pawn on b7 and moves the queen away from the bishop. Black defends with Qb6. Now comes the sharp idea: g4. The pawn attacks the bishop on f5. After a queen trade, the bishop on f5 would be the piece that has to run. Ding thinks for almost fifteen minutes, and plays Qxb3."
+    },
+    {
+      "kind": "ply",
+      "ply": 19,
+      "text": "White recaptures with axb3, which opens the a-file for the rook. The bishop runs with Bc2, attacking the pawn on b3 from deep inside White's position. It looks active. Gukesh just develops with Bf4, and Ding plays h5, hitting the pawn on g4. The engine says that all of this is still equal."
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "The middlegame: a tense balance, and a clock that matters."
+    },
+    {
+      "kind": "ply",
+      "ply": 23,
+      "text": "Rg1 supports the pawn on g4, hxg4 trades, and hxg4 recaptures, opening the h-file. Now Ding stops to think again before Nbd7, and this time he spends about thirty-three minutes. After the move his clock reads fifty-four minutes, while Gukesh has almost two hours. That is a gap of more than an hour, before move fourteen."
+    },
+    {
+      "kind": "ply",
+      "ply": 27,
+      "text": "Nd2 takes the squares b1, b3 and e4 away from the bishop on c2. The bishop now has very few places to go. Black plays Rg8, and g5 attacks the knight on f6, so Nh5 moves it. Bh2 steps back, and Rh8 lines up behind the knight. f3 is a useful pawn move that controls e4. Ng7 retreats, and Bg3 develops the bishop again. At this point the engine actually has Black slightly better, by about half a pawn. The game is balanced but very tense."
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "The turning point: the bishop is cut off."
+    },
+    {
+      "kind": "ply",
+      "ply": 36,
+      "text": "And then Rh5. The engine calls this a mistake and prefers Be7. A rook lift like this looks active, but it leaves the rest of Black's position short of support, and the score swings from half a pawn for Black to six tenths of a pawn for White, a change of a full pawn in one move. Be7, the engine's choice, would have developed the last bishop and kept the pieces connected. After Rh5 the knight on g7 and the bishop on f8 are left to look after themselves. White immediately strikes with e4, and Ding takes with dxe4, fxe4. Now the bishop on c2 is cut off from the rest of Black's army."
+    },
+    {
+      "kind": "ply",
+      "ply": 40,
+      "text": "Ne6 comes, and Rc1 attacks the trapped bishop directly. Black takes the pawn on d4 with Nxd4, but Bf2 attacks the knight, and Black plays Bg7. Ne2 attacks the knight again. Ding grabs a second pawn with Nxb3, which forks the rook and the knight. But White simply takes the bishop with Rxc2. After Nxd2 and Kxd2, Black has two pawns for a bishop, and the engine gives White a clear advantage, more than one pawn. Notice the rule this teaches: a bishop that runs far from home needs a retreat square. Nd2 took away b1 and b3, f3 and e4 took away the other exits, and Rc1 attacked it directly."
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "The conversion, and the final minutes."
+    },
+    {
+      "kind": "ply",
+      "ply": 50,
+      "text": "White's technique now is simple. The pawn on g5 cramps Black's kingside, and the white king walks to e2, safe behind the pawns, while the rooks keep the open files. Nd4, Ke2 and Bg2 improve the pieces one by one, while Black's rook visits h2, and Ding has to find a new answer on a shrinking clock. The engine score grows slowly from one pawn to two. Meanwhile the clocks tell their own story: by move thirty, Ding has about six minutes, and Gukesh has twenty-one."
+    },
+    {
+      "kind": "ply",
+      "ply": 65,
+      "text": "Nf3, Nxf3 and Kxf3 trade knights. Black plays Bd4, Rh1 comes, and then Rxg5 grabs a pawn, but the engine says that Rxh1 was the stronger capture. With nine seconds on the clock, Ding has no time to calculate. Bh3 and f5 follow, Bf4 comes, and the engine says that White is ahead by about four pawns."
+    },
+    {
+      "kind": "key_moment",
+      "ply": 74,
+      "text": "Rh5, and the flag falls. Black's clock reads zero, while Gukesh still has nine and a half minutes. The game is recorded as a win on time, though the position was lost anyway. The engine had White ahead by more than four pawns. Game three is Gukesh's first win, and the match is level at one and a half points each."
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "What made this win? Three things. First, the opening: Gukesh chose a symmetrical exchange structure and a pawn push, g4, that forced Ding to find hard decisions on moves nine and thirteen. Those two thoughts cost him about forty-eight minutes of his clock. Second, the bishop on c2: it went where nothing could support it, and when e4 and Rc1 came, it was lost for two pawns. Third, the engine says it was never a one-sided game until Rh5. Gukesh stayed patient through a tense middlegame, and waited for the mistake. The lesson is practical: a clock is a piece, and spending it early is the same as sacrificing material. If a position is equal and symmetrical, do not look for perfection on move nine. Pick a sensible plan, keep your time, and save your deep thinking for the moment the position truly changes."
+    },
+    {
+      "kind": "verdict",
+      "ply": null,
+      "text": "Gukesh combined patient play with pressure on the clock. Ding lost a bishop, but the position remained competitive until Rh5. Activity and time both mattered."
+    },
+    {
+      "kind": "outro",
+      "ply": null,
+      "text": "That was game three of the 2024 World Championship. If you enjoyed it, subscribe for more Indian Chess Heroes explained move by move, and tell me in the comments which game you want next. Thanks for watching."
+    }
+  ],
+  "mascot_lines": {
+    "b-01": "Exchange variation. Pawns trade, I stay put.",
+    "b-02": "A queen trade, and the clock groans.",
+    "b-03": "Thinking longer than the whole opening.",
+    "b-04": "Rook lift to h5? Too aggressive, surely.",
+    "b-05": "Flag falls. Bow to the clock."
+  },
+  "titles": [
+    "Gukesh Beats Ding in Game 3: The Bishop Trapped on c2",
+    "Gukesh's First Win Over Ding: World Championship 2024, Game 3",
+    "How Gukesh Out-Prepared Ding Liren in Game 3 of the Match"
+  ],
+  "hook": "Gukesh's first win of the 2024 World Championship: a bishop trapped on c2 and a clock that ran out.",
+  "player_facts": {
+    "white": "The eighteen-year-old challenger from Chennai, rated 2783.",
+    "black": "The reigning world champion from China, rated 2728, who led the match going in."
+  },
+  "cold_open_hook": "A bishop trapped on c2, then the flag fell.",
+  "thumbnail_text": "First blood",
+  "key_moment_labels": {
+    "b-05": "The flag falls"
+  }
+}

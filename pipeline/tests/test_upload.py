@@ -304,6 +304,7 @@ def test_create_playlists_fills_only_null_ids(tmp_path):
     path = tmp_path / "youtube.yaml"
     path.write_text("daily_cap: 60\nplaylists:\n  legendary_games: PLOLD\n  opening_explained: null\n", encoding="utf-8")
     client = Mock()
+    client.playlists.return_value.list.return_value.execute.return_value = {"items": []}
     client.playlists.return_value.insert.return_value.execute.return_value = {"id": "PLNEW"}
     upload.create_playlists(client, path)
     body = client.playlists.return_value.insert.call_args.kwargs["body"]
@@ -311,3 +312,28 @@ def test_create_playlists_fills_only_null_ids(tmp_path):
     assert client.playlists.return_value.insert.call_count == 1
     text = path.read_text(encoding="utf-8")
     assert "legendary_games: PLOLD" in text and "opening_explained: PLNEW" in text
+
+
+def test_create_playlists_reuses_existing_playlist_on_later_page(tmp_path):
+    path = tmp_path / "youtube.yaml"
+    path.write_text("playlists:\n  opening_explained: null\n", encoding="utf-8")
+    client = Mock()
+    client.playlists.return_value.list.return_value.execute.side_effect = [
+        {"items": [], "nextPageToken": "next"},
+        {"items": [{"id": "PLEXISTING", "snippet": {"title": "Opening Explained"}}]},
+    ]
+    assert upload.create_playlists(client, path) == {"opening_explained": "PLEXISTING"}
+    client.playlists.return_value.insert.assert_not_called()
+    assert "opening_explained: PLEXISTING" in path.read_text(encoding="utf-8")
+
+
+def test_create_playlists_refuses_ambiguous_existing_names(tmp_path):
+    path = tmp_path / "youtube.yaml"
+    path.write_text("playlists:\n  opening_explained: null\n", encoding="utf-8")
+    client = Mock()
+    client.playlists.return_value.list.return_value.execute.return_value = {
+        "items": [{"id": pid, "snippet": {"title": "Opening Explained"}} for pid in ("PL1", "PL2")]
+    }
+    with pytest.raises(upload.UploadRefused, match="multiple playlists"):
+        upload.create_playlists(client, path)
+    client.playlists.return_value.insert.assert_not_called()

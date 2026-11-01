@@ -22,7 +22,7 @@ def steps_text(job):
 
 def test_batch_yml_matrix_and_limits():
     wf = load("batch.yml")
-    assert list(wf["triggers"]) == ["workflow_dispatch"]
+    assert set(wf["triggers"]) == {"workflow_dispatch", "workflow_call"}
     assert set(wf["triggers"]["workflow_dispatch"]["inputs"]) == {"batch_id", "video_ids", "upload"}
     assert wf["permissions"] == {"contents": "read"}
     job = wf["jobs"]["video"]
@@ -31,6 +31,18 @@ def test_batch_yml_matrix_and_limits():
     assert "fromJson(inputs.video_ids)" in job["strategy"]["matrix"]["video_id"]
     assert job["concurrency"]["group"] == "video-${{ matrix.video_id }}"
     assert job["concurrency"].get("cancel-in-progress") is False
+
+
+def test_upload_jobs_wait_for_shared_playlist_config():
+    wf = load("batch.yml")
+    prepare = wf["jobs"]["prepare-upload"]
+    assert prepare["if"] == "inputs.upload"
+    assert prepare["concurrency"]["group"] == "youtube-playlists"
+    assert "auth check" in steps_text(prepare) and "upload --create-playlists" in steps_text(prepare)
+    video = wf["jobs"]["video"]
+    assert video["needs"] == "prepare-upload" and "'success'" in video["if"]
+    config = next(s for s in video["steps"] if s.get("uses", "").startswith("actions/download-artifact"))
+    assert config["with"] == {"name": "upload-config", "path": "config"}
 
 
 def test_batch_yml_steps():

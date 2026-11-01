@@ -1,0 +1,159 @@
+{
+  "segments": [
+    {
+      "kind": "cold_open",
+      "ply": null,
+      "text": "Black promotion की धमकी देता है। Spassky हमला करते हैं। क्या active pieces rook की भरपाई करेंगे?"
+    },
+    {
+      "kind": "title",
+      "ply": null,
+      "text": "Spassky, Bronstein और King's Gambit।"
+    },
+    {
+      "kind": "player_intro",
+      "ply": null,
+      "text": "White से भविष्य के world champion Spassky हैं। सामने Bronstein हैं, जिनका 1951 championship match बराबर रहा था।"
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "Black का pawn promotion करने वाला है। White उसे रोकने के बजाय अपना knight आगे भेज देता है। फिर नया queen आता भी है, लेकिन attack खत्म नहीं होता। इस position को समझने के लिए सिर्फ material गिनना काफी नहीं। देखना पड़ेगा कि किसके pieces साथ काम कर रहे हैं, और किसका king अगला check झेल सकता है। White से खेल रहे Spassky बाद में world champion बने। सामने Bronstein हैं, जिन्होंने 1951 में world championship match बराबर किया था। दोनों की पहचान imaginative chess से जुड़ी है। मगर आज नामों से ज़्यादा position पढ़ेंगे। खासकर यह कि opening में दिया हुआ pawn आखिर किस तरह pieces के लिए रास्ता बनाता है।"
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "पहला हिस्सा: pawn देने के बदले चाहिए क्या? तीन चीज़ें याद रखें। Center में जगह, छोटे pieces का development, और king की safety। अगर White इनमें पीछे रह गया, तो gambit का मतलब सिर्फ एक pawn कम होना रह जाएगा। इसी कसौटी पर opening की चालें देखते हैं।"
+    },
+    {
+      "kind": "ply",
+      "ply": 1,
+      "text": "खेल शुरू होता है e4 से, Black जवाब देता है e5। दोनों center में हिस्सा लेते हैं। अब Spassky f4 खेलते हैं। यह King's Gambit की पहचान है। White e5 वाले pawn को चुनौती देता है, लेकिन अपना king भी थोड़ा खुला छोड़ता है। इसीलिए इसे केवल attacking opening कहना अधूरा है। Attack मिलने से पहले अपनी कमजोरियों का हिसाब रखना पड़ता है।"
+    },
+    {
+      "kind": "ply",
+      "ply": 4,
+      "text": "Bronstein exf4 से gambit स्वीकार करते हैं। White Nf3 खेलता है, knight develop होता है और h4 पर नज़र रखता है। Black का pawn f4 पर आया, तो White की f-file से अपना pawn हट चुका है। अभी file पूरी खुली नहीं, क्योंकि उस पर Black का pawn मौजूद है। आगे वह हटेगा, तभी rook को सीधा रास्ता मिलेगा।"
+    },
+    {
+      "kind": "ply",
+      "ply": 6,
+      "text": "Black d5 से तुरंत center को चुनौती देता है। यह बहुत काम की defensive आदत है। Gambit के सामने सिर्फ अतिरिक्त pawn बचाने में मत उलझिए। सामने वाले का center तोड़ना भी development जितना जरूरी हो सकता है। White exd5 लेता है, और Black Bd6 से bishop निकालता है। Bishop की diagonal h2 तक देखती है, इसलिए दोनों तरफ king की सुरक्षा कहानी में बनी रहेगी।"
+    },
+    {
+      "kind": "ply",
+      "ply": 9,
+      "text": "Nc3 के बाद Ne7 आता है। Spassky d4 से दूसरा central pawn आगे लाते हैं। Black O-O करता है, White Bd3 से bishop निकालता है। अब White का bishop की diagonal h7 की दिशा देख रहा है। ध्यान दें, यह अभी हमला जीतने की घोषणा नहीं है। पहले pieces अच्छी जगह पहुँचे हैं; असली सवाल होगा कि center और diagonal कब खुलते हैं।"
+    },
+    {
+      "kind": "ply",
+      "ply": 14,
+      "text": "Nd7 के बाद White भी O-O कर लेता है। Gambit खेलने का मतलब अपना king center में भूल जाना नहीं। दोनों king अब सुरक्षित किनारे पहुँचे हैं। Black h6 खेलता है। हमारी analysis इसे हल्की चूक मानती है; knight का development आगे बढ़ाना ज्यादा सटीक था। फिर भी White के लिए कोई सीधा forced win नहीं है। अब भी position खेलनी पड़ेगी।"
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "दूसरा हिस्सा: pawn की चाल से piece को tempo मिलना। अब कुछ exchanges होंगे। Material बदलता रहेगा, मगर हर exchange के बाद दो सवाल पूछें। कौन सी line खुली? कौन सा piece नई जगह पहुँचा? यही सवाल बाद में promotion और sacrifice वाले हिस्से को समझने में मदद करेंगे।"
+    },
+    {
+      "kind": "ply",
+      "ply": 17,
+      "text": "White Ne4 से knight बीच में लाता है। Black Nxd5 करके central pawn लेता है। Spassky c4 से उस knight को चुनौती देते हैं। Pawn सिर्फ आगे नहीं बढ़ा; उसने एक active piece को फैसला लेने पर मजबूर किया। Black Ne3 से White के bishop पर आता है। White Bxe3 लेता है, और fxe3 से Black का pawn वापस पकड़ता है।"
+    },
+    {
+      "kind": "ply",
+      "ply": 23,
+      "text": "अब c5 से bishop पर हमला होता है। यही pawn पहले knight को हटाने आया था, और अब bishop को पीछे भेजता है। Black Be7 करता है। White Bc2 से अपनी diagonal बचाए रखता है। साथ ही f-file पर नज़र डालिए। Black का pawn f4 से e3 पर चला गया है, इसलिए White के rook के सामने रास्ता खुल चुका है। Gambit की कीमत अब concrete रूप ले रही है।"
+    },
+    {
+      "kind": "ply",
+      "ply": 26,
+      "text": "Black Re8 खेलता है। White Qd3 से queen और bishop को उसी attacking diagonal पर जोड़ देता है। दोनों h7 की तरफ देख रहे हैं। Bronstein e2 से passed pawn आगे धकेलते हैं। यह pawn सचमुच खतरनाक है: वह White के rook को पकड़कर promote कर सकता है। इसलिए White का हमला और Black की counterplay, दोनों को साथ पढ़ना होगा।"
+    },
+    {
+      "kind": "ply",
+      "ply": 29,
+      "text": "Spassky Nd6 खेलते हैं। देखने में बहुत active move है, लेकिन analysis एक जरूरी चेतावनी देती है। यहां White सीधे Qxe2 से खतरनाक pawn हटा सकता था। Nd6 के बाद Black के पास exf1=R+ वाला ज्यादा मजबूत रास्ता था। इसलिए इस बाज़ी को ऐसा मत समझिए कि White की हर attacking चाल सही थी। शानदार खेल में भी मौके छूट सकते हैं।"
+    },
+    {
+      "kind": "ply",
+      "ply": 30,
+      "text": "खेल में Black Nf8 चुनता है। हमारी analysis इसे blunder मानती है। पिछली चाल पर मिली counterplay का बेहतर रास्ता छूट गया। अब White Nxf7 से pawn लेता है। Knight d6 से f7 पहुँचा और d8 के queen पर भी हमला करता है। यह जगह समझिए: knight केवल king के करीब नहीं आया, उसने Black को अपनी बड़ी piece की चिंता भी दे दी।"
+    },
+    {
+      "kind": "ply",
+      "ply": 32,
+      "text": "Bronstein exf1=Q+ करता है। Pawn White का rook पकड़कर queen बनता है और check देता है। मगर यह दो queens के साथ लंबा हमला चलने की शुरुआत नहीं। White का दूसरा rook, a1 से Rxf1 करके नया queen तुरंत उठा लेता है। Board पर फिर Black का पुराना queen ही बचता है। Promotion की चमक से ज्यादा जरूरी उसकी अगली चाल देखना है।"
+    },
+    {
+      "kind": "ply",
+      "ply": 34,
+      "text": "Black Bf5 से queen पर हमला करता है। Spassky Qxf5 से bishop ले लेते हैं। Black Qd7 से अपना queen हटाता है। White ने rook खोया है, इसलिए सिर्फ extra bishop देखकर खुश नहीं हो सकते। बदले में open file, सक्रिय knights और king के पास पहुंचने का रास्ता मिला है। यह compensation तभी काम करेगा जब pieces बिना रुके दबाव बना सकें।"
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "तीसरा हिस्सा: हमला एक piece का काम नहीं। अब f-file पर rook है, queen आगे है और दोनों knights खेल में हैं। लेकिन bishop भी कहानी में लौटेगा। अक्सर tactical finish इसलिए बनता है कि दूर रखा piece अचानक सही diagonal पर आ जाता है। पहले उसकी राह बनती है, फिर check दिखाई देता है।"
+    },
+    {
+      "kind": "ply",
+      "ply": 37,
+      "text": "Spassky Qf4 खेलते हैं। Black Bf6 से bishop निकालता है। अब N3e5 में notation का छोटा सा हिस्सा बहुत काम का है: यह f3 वाला knight है जो e5 आता है, f7 वाला नहीं। दोनों knights अलग जिम्मेदारी निभा रहे हैं। एक king के पास दबाव बनाए हुए है, दूसरा center से attack में जुड़ता है।"
+    },
+    {
+      "kind": "ply",
+      "ply": 40,
+      "text": "Black Qe7 करता है। White Bb3 से bishop को नई diagonal पर लाता है। b3 से उसकी line c4, d5, e6 और f7 होकर g8 जाती है। फिलहाल f7 पर White का अपना knight रास्ता रोक रहा है। लेकिन जब वही knight हटेगा, bishop की line king तक खुल सकती है। इसी वजह से piece की मौजूदा चाल के साथ उसकी अगली चाल भी देखनी चाहिए।"
+    },
+    {
+      "kind": "ply",
+      "ply": 42,
+      "text": "Black Bxe5 से e5 वाला knight लेता है। अब Nxe5+ में दूसरा knight f7 से e5 आता है और bishop को पकड़ता है। Check की असली वजह diagonal खुलना है। f7 खाली हुआ, तो b3 का bishop Black के king तक सीधा देखता है। यह discovered check है। Knight ने material वापस लिया, bishop ने king को हिलने पर मजबूर किया।"
+    },
+    {
+      "kind": "ply",
+      "ply": 44,
+      "text": "Bronstein Kh7 खेलते हैं। Spassky Qe4+ से queen को उसी diagonal पर लाते हैं जो h7 तक जाती है। इस बार check queen दे रहा है। King के पास जगह कम है और White के rook, bishop तथा knight भी मदद में हैं। यहीं Black resign करता है। Board पर checkmate लगा हुआ नहीं है; resignation आई है, इसलिए आगे की line को played moves मत समझिए।"
+    },
+    {
+      "kind": "key_moment",
+      "ply": 45,
+      "text": "अंतिम position में Black g6 से check रोक सकता था। Engine की line में Rf7+ आता है, फिर Qxf7 और Bxf7 से Black का queen चला जाता है। यही coordination है: rook f-file से घुसता है, bishop diagonal से वापस लेता है। यह खेल में हुआ नहीं; resignation के बाद जीत समझाने वाली variation है।"
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "इस बाज़ी से King's Gambit का उपयोगी सबक यह है कि pawn के बदले मिली activity को काम में लाना पड़ता है। Spassky ने center बढ़ाया, f-file खुलने दी और bishop के लिए नई diagonal खोजी। लेकिन Nd6 पर analysis White की चूक भी दिखाती है। इसलिए नतीजा देखकर हर sacrifice को सही मत मानिए। Position में उपलब्ध बचाव और विरोधी के अगले check को हमेशा जांचिए।"
+    },
+    {
+      "kind": "verdict",
+      "ply": null,
+      "text": "Gambit में activity मिलती है, जीत की गारंटी नहीं। Nd6 पर बेहतर बचाव था। खुली file और साथ काम करते pieces महत्वपूर्ण हैं, मगर calculation जरूरी है।"
+    },
+    {
+      "kind": "outro",
+      "ply": null,
+      "text": "अब शुरुआती f4 को याद करें। उस pawn ने खुद जीत नहीं दिलाई। उसके हटने से बनी file, development और pieces का साथ आखिर में काम आया। अगली बार gambit खेलें, तो सिर्फ एक pawn देने की हिम्मत नहीं, उसके बदले मिलने वाली activity भी देखें। ऐसी और बाज़ियां समझने के लिए ChessCode subscribe करें।"
+    }
+  ],
+  "mascot_lines": {
+    "b-01": "pawn गया, मेरी नौकरी बाकी है।",
+    "b-02": "promotion वाली गाड़ी निकल गई।",
+    "b-03": "मेरी promotion से पहले पर्दा गिर गया।"
+  },
+  "titles": [
+    "King's Gambit में promotion के बाद भी हमला क्यों बचा?",
+    "Spassky–Bronstein: pawn दिया, खुली file ने बाज़ी बदली",
+    "King's Gambit समझें: Spassky का खुली lines वाला attack"
+  ],
+  "hook": "promotion से पहले अगला capture भी देखिए।",
+  "player_facts": {
+    "white": "Boris Spassky 1969 में world champion बने।",
+    "black": "David Bronstein का 1951 world championship match बराबर रहा।"
+  },
+  "cold_open_hook": "promotion हुआ, हमला फिर भी बचा",
+  "thumbnail_text": "promotion काफी नहीं",
+  "key_moment_labels": {
+    "b-03": "खुली file, खुली diagonal"
+  }
+}

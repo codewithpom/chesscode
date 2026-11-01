@@ -3,6 +3,17 @@ name: batch
 # One job per video: build the spec, render, QA, optionally upload as a scheduled private video (docs/SPEC.md section 9).
 # Dispatch only; nothing runs on a schedule. Scripts and analysis are committed, so no job calls an LLM or Stockfish.
 on:
+  workflow_call:
+    inputs:
+      batch_id:
+        required: true
+        type: string
+      video_ids:
+        required: true
+        type: string
+      upload:
+        required: true
+        type: boolean
   workflow_dispatch:
     inputs:
       batch_id:
@@ -23,7 +34,35 @@ permissions:
   contents: read
 
 jobs:
+  prepare-upload:
+    if: inputs.upload
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    concurrency:
+      group: youtube-playlists
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e pipeline
+      - name: Verify channel and resolve playlists
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: |
+          python -m chesscode auth check
+          python -m chesscode upload --create-playlists
+      - uses: actions/upload-artifact@v4
+        with:
+          name: upload-config
+          path: config/youtube.yaml
+          retention-days: 30
   video:
+    needs: prepare-upload
+    if: always() && (needs.prepare-upload.result == 'success' || needs.prepare-upload.result == 'skipped')
     runs-on: ubuntu-24.04
     timeout-minutes: 300
     concurrency:
@@ -36,6 +75,11 @@ jobs:
         video_id: ${{ fromJson(inputs.video_ids) }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        if: inputs.upload
+        with:
+          name: upload-config
+          path: config
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -66,7 +110,7 @@ jobs:
       - name: Linux libraries for Chrome (Ubuntu 24.04)
         run: >
           sudo apt-get update && sudo apt-get install -y libnss3 libdbus-1-3 libatk1.0-0 libgbm-dev libasound2t64
-          libxrandr2 libxkbcommon-dev libxfixes3 libxcomposite1 libxdamage1 libatk-bridge2.0-0 libpango-1.0-0 libcairo2 libcups2
+          libxrandr2 libxkbcommon-dev libxfixes3 libxcomposite1 libxdamage1 libatk-bridge2.0-0 libpango-1.0-0 libcairo2 libcups2t64
       - name: Ensure Chrome Headless Shell
         working-directory: remotion
         run: npx remotion browser ensure

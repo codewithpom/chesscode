@@ -175,14 +175,27 @@ def upload_from_spec(client, spec_dir: Path, ledger_path: Path, now: datetime, r
 
 
 def create_playlists(client, config_path: Path = REPO_ROOT / "config" / "youtube.yaml") -> dict[str, str]:
-    """Create each missing series playlist (public, titled from the series name) and write its id into the config."""
+    """Reuse or create series playlists and save each resolved id before continuing."""
     import yaml
     text = config_path.read_text(encoding="utf-8")
+    existing = {}
+    page_token = None
+    while True:
+        page = client.playlists().list(part="snippet", mine=True, maxResults=50, pageToken=page_token).execute()
+        for item in page.get("items", []):
+            title = item["snippet"]["title"]
+            existing.setdefault(title, []).append(item["id"])
+        page_token = page.get("nextPageToken")
+        if not page_token:
+            break
     made = {}
     for key, current in (yaml.safe_load(text).get("playlists") or {}).items():
         if current: continue
         if key not in _SERIES: raise UploadRefused(f"unknown series {key!r} in {config_path}")
-        made[key] = client.playlists().insert(part="snippet,status", body={
+        matches = existing.get(_SERIES[key], [])
+        if len(matches) > 1:
+            raise UploadRefused(f"multiple playlists named {_SERIES[key]!r}; set its id in {config_path}")
+        made[key] = matches[0] if matches else client.playlists().insert(part="snippet,status", body={
             "snippet": {"title": _SERIES[key]}, "status": {"privacyStatus": "public"}}).execute()["id"]
         text = re.sub(rf"^(\s*{key}:)\s*null\b.*$", lambda m: f"{m[1]} {made[key]}", text, flags=re.M)
         config_path.write_text(text, encoding="utf-8")  # per playlist, so a later failure keeps the ids already made

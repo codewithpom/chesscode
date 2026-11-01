@@ -1,0 +1,141 @@
+{
+  "segments": [
+    {
+      "kind": "cold_open",
+      "ply": null,
+      "text": "Ding की clock रुकी। Gukesh जीते। मगर कहानी सिर्फ समय की नहीं, एक फंसे bishop की भी है।"
+    },
+    {
+      "kind": "title",
+      "ply": null,
+      "text": "Gukesh बनाम Ding। सिंगापुर, 2024।"
+    },
+    {
+      "kind": "player_intro",
+      "ply": null,
+      "text": "White से Gukesh हैं, सामने world champion Ding Liren। जीत से match का score बराबर हो जाएगा।"
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "Black की clock पर शून्य है। 2024 World Championship की तीसरी game में Ding Liren का flag गिर गया है, और Gukesh को match की पहली जीत मिल गई है। पर clock ने सिर्फ़ वह game ख़त्म की जो board पर पहले ही हार चुकी थी: engine के हिसाब से White चार pawns से ज़्यादा आगे था। यह कहानी है c2 पर गए एक bishop की जो कभी लौटकर नहीं आया, और एक champion की जिसने move तेरह तक अपनी clock का एक घंटे से ज़्यादा हिस्सा ख़र्च कर दिया था। इस game से पहले मौजूदा world champion, China के Ding Liren, match में एक अंक से आगे थे: पहली game उन्होंने जीती थी, और दूसरी draw रही थी। अठारह साल के challenger, चेन्नई के Gukesh, White से खेल रहे थे। rating थी Gukesh की 2783 और Ding की 2728, और time control था पहले चालीस moves के लिए दो घंटे, फिर आधा घंटा और हर move पर तीस सेकंड। जीत से match डेढ़-डेढ़ अंक पर बराबर हो जाता, और पहली चाल Gukesh के पास थी। clocks पर नज़र रखिए, क्योंकि इस game में वे pieces जितनी ही कहानी बताती हैं, और engine का score दिखाएगा कि board कब पलटा।"
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "शुरुआत: शांत Queen's Gambit, पर एक डंक के साथ।"
+    },
+    {
+      "kind": "ply",
+      "ply": 1,
+      "text": "Gukesh खेलते हैं d4, Nf3 और c4, यानी क्लासिकल Queen's Gambit का setup। Ding जवाब देते हैं Nf6, d5 और e6 से, यानी Queen's Gambit Declined। अब तक सब theory है, और engine इसे बराबर मानता है, White के लिए एक pawn का सिर्फ़ चौथाई हिस्सा।"
+    },
+    {
+      "kind": "ply",
+      "ply": 7,
+      "text": "अब Gukesh exchange चुनते हैं: cxd5, और Ding exd5 से वापस लेते हैं। database इस position को Queen's Pawn Game, Symmetrical Variation कहता है, जो सुनने में फीका लगता है, और यही असल बात है। pawn structure symmetrical है, तो फ़ैसला pieces की चाल और plans की समझ से होगा। Nc3 और c6 के बाद engine बिल्कुल बराबरी दिखाता है, शून्य।"
+    },
+    {
+      "kind": "ply",
+      "ply": 11,
+      "text": "White Qc2 खेलता है और Black g6 से जवाब देता है, bishop को pawn chain के बाहर रखने की तैयारी में। h3 Bg4 को रोकता है, तो Ding Bf5 से develop करते हैं और bishop सीधे white queen को देखता है। engine की नज़र में सब बराबर है। उसे दोनों तरफ़ के लिए Bf4 और Be7 पसंद हैं, पर यहाँ कोई समस्या नहीं।"
+    },
+    {
+      "kind": "ply",
+      "ply": 15,
+      "text": "Qb3 b7 के pawn पर हमला करता है और queen को bishop से दूर ले जाता है। Black Qb6 से बचाता है। अब तीखा विचार: g4। यह pawn f5 के bishop पर हमला करता है। queens के सौदे के बाद f5 का bishop वही piece होगा जिसे भागना पड़ेगा। Ding लगभग पंद्रह मिनट सोचते हैं, और Qxb3 खेलते हैं।"
+    },
+    {
+      "kind": "ply",
+      "ply": 19,
+      "text": "White axb3 से वापस लेता है, जिससे rook के लिए a-file खुल जाती है। bishop Bc2 पर भागता है और White की position के भीतर से b3 के pawn पर हमला करता है। यह active दिखता है। Gukesh बस Bf4 से develop करते हैं, और Ding h5 खेलकर g4 के pawn पर वार करते हैं। engine के हिसाब से यह सब अब भी बराबर है।"
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "Middlegame: तनाव भरा संतुलन, और clock जो मायने रखती है।"
+    },
+    {
+      "kind": "ply",
+      "ply": 23,
+      "text": "Rg1 g4 के pawn को सहारा देता है, hxg4 से pawns बदलते हैं, और hxg4 से वापस लेकर h-file खुल जाती है। अब Ding Nbd7 से पहले फिर रुककर सोचते हैं, और इस बार क़रीब तैंतीस मिनट लगाते हैं। इस move के बाद उनकी clock पर चौवन मिनट बचे हैं, जबकि Gukesh के पास लगभग दो घंटे। यह एक घंटे से ज़्यादा का फ़र्क़ है, और अभी चौदहवाँ move भी नहीं आया।"
+    },
+    {
+      "kind": "ply",
+      "ply": 27,
+      "text": "Nd2 c2 के bishop से b1 और b3 squares छीन लेता है। bishop के पास अब जाने के लिए बहुत कम जगह है। Black Rg8 खेलता है, g5 f6 के knight पर हमला करता है, तो Nh5 उसे हटाता है। Bh2 पीछे आता है और Rh8 knight के पीछे आकर खड़ा हो जाता है। f3 एक काम का pawn move है जो e4 को नियंत्रित करता है। Ng7 पीछे हटता है, और Bg3 bishop को फिर develop करता है। इस मोड़ पर engine के हिसाब से Black थोड़ा बेहतर है, लगभग आधा pawn। game संतुलित है, पर बहुत तनावपूर्ण।"
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "मोड़: bishop कट गया।"
+    },
+    {
+      "kind": "ply",
+      "ply": 36,
+      "text": "और फिर Rh5। engine इसे mistake कहता है और Be7 पसंद करता है। इस तरह की rook lift active लगती है, पर यह बाक़ी position को सहारे के बिना छोड़ देती है, और score Black के लिए आधे pawn से White के लिए छह-दसवें pawn पर पलट जाता है, यानी एक ही move में पूरा एक pawn। Be7, जो engine की पसंद है, आख़िरी bishop को develop करता और pieces को जुड़ा रखता। Rh5 के बाद g7 का knight और f8 का bishop अपने हाल पर रह जाते हैं। White तुरंत e4 से वार करता है, Ding dxe4 से लेते हैं, fxe4 होता है, और c2 का bishop Black की बाक़ी सेना से कट जाता है।"
+    },
+    {
+      "kind": "ply",
+      "ply": 40,
+      "text": "Ne6 आता है, और Rc1 फँसे हुए bishop पर सीधा हमला करता है। Black Nxd4 से d4 का pawn ले लेता है, पर Bf2 उस knight पर हमला करता है, और Black Bg7 खेलता है। Ne2 knight पर फिर हमला करता है। Ding Nxb3 से दूसरा pawn खाते हैं, जो rook और knight दोनों पर fork है। पर White बस Rxc2 से bishop ले लेता है। Nxd2 और Kxd2 के बाद Black के पास bishop के बदले दो pawns हैं, और engine White को साफ़ फ़ायदा देता है, एक pawn से ज़्यादा। यहाँ से नियम निकलता है: जो bishop घर से दूर भाग जाए, उसे लौटने का एक रास्ता चाहिए। Nd2 ने b1 और b3 छीने, f3 और e4 ने बाक़ी रास्ते बंद किए, और Rc1 ने सीधा हमला किया।"
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "Conversion, और आख़िरी मिनट।"
+    },
+    {
+      "kind": "ply",
+      "ply": 50,
+      "text": "अब White की technique सीधी है। g5 का pawn Black के kingside को जकड़े है, और white king e2 पर pawns के पीछे सुरक्षित चलता है, जबकि rooks खुली files सँभालते हैं। Nd4, Ke2 और Bg2 pieces को एक-एक करके सुधारते हैं, जबकि Black का rook h2 पर चक्कर लगाता है, और Ding को घटती clock पर हर बार नया जवाब ढूँढना है। engine का score धीरे-धीरे एक pawn से बढ़कर दो तक जाता है। उधर clocks अपनी कहानी कह रही हैं: तीसवें move तक Ding के पास क़रीब छह मिनट हैं, और Gukesh के पास इक्कीस।"
+    },
+    {
+      "kind": "ply",
+      "ply": 65,
+      "text": "Nf3, Nxf3 और Kxf3 से knights बदलते हैं। Black Bd4 खेलता है, Rh1 आता है, और फिर Rxg5 एक pawn उठाता है, पर engine कहता है कि Rxh1 ज़्यादा मज़बूत capture था। clock पर नौ सेकंड बचे हैं, तो Ding के पास calculate करने का समय नहीं। Bh3 और f5 के बाद Bf4 आता है, और engine के हिसाब से White क़रीब चार pawns आगे है।"
+    },
+    {
+      "kind": "key_moment",
+      "ply": 74,
+      "text": "Rh5, और flag गिर जाता है। Black की clock शून्य पर है, जबकि Gukesh के पास अब भी साढ़े नौ मिनट हैं। game समय पर जीत के रूप में दर्ज होती है, हालाँकि position वैसे भी हारी हुई थी। engine White को चार pawns से ज़्यादा आगे दिखाता है। तीसरी game Gukesh की पहली जीत है, और match डेढ़-डेढ़ अंक पर बराबर।"
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "इस जीत के पीछे क्या था? तीन चीज़ें। पहली, opening: Gukesh ने symmetrical exchange structure और g4 का pawn push चुना, जिसने Ding को नौवें और तेरहवें move पर मुश्किल फ़ैसले करने पर मजबूर किया। उन दो सोचों में उनकी clock के लगभग अड़तालीस मिनट गए। दूसरी, c2 का bishop: वह ऐसी जगह गया जहाँ कोई उसे सहारा नहीं दे सकता था, और जब e4 और Rc1 आए, तो वह दो pawns के बदले खो गया। तीसरी, engine के हिसाब से Rh5 से पहले game कभी एकतरफ़ा नहीं थी। Gukesh तनाव भरे middlegame में धैर्य से टिके रहे और ग़लती का इंतज़ार किया। सबक़ व्यावहारिक है: clock भी एक piece है, और उसे जल्दी ख़र्च करना material कुर्बान करने जैसा है। अगर position बराबर और symmetrical है, तो नौवें move पर perfection मत ढूँढिए। एक समझदार plan चुनिए, समय बचाइए, और गहरी सोच तब कीजिए जब position सच में बदले।"
+    },
+    {
+      "kind": "verdict",
+      "ply": null,
+      "text": "Gukesh ने धैर्य और active pieces से दबाव बनाया। Ding का bishop गया, फिर भी Rh5 तक मुकाबला था। Board और clock, दोनों को साथ संभालना पड़ता है।"
+    },
+    {
+      "kind": "outro",
+      "ply": null,
+      "text": "यह थी 2024 World Championship की तीसरी game। अगर आपको पसंद आई, तो subscribe कीजिए, ऐसी ही Indian Chess Heroes की games हर move समझाकर आती रहेंगी, और comments में बताइए कि अगली game कौन सी चाहिए। देखने के लिए शुक्रिया।"
+    }
+  ],
+  "mascot_lines": {
+    "b-01": "Exchange variation। Pawns बदले, मैं अपनी जगह।",
+    "b-02": "Queens का सौदा, और clock कराह उठी।",
+    "b-03": "opening से भी लंबी सोच। Clock रो रही है।",
+    "b-04": "h5 पर rook lift? मेरे लिए too aggressive।",
+    "b-05": "Flag गिरा। सब clock को सलाम करें।"
+  },
+  "titles": [
+    "Gukesh ने Game 3 में Ding को हराया: c2 पर फँसा bishop",
+    "Ding पर Gukesh की पहली जीत: World Championship 2024, Game 3",
+    "Gukesh ने Game 3 में Ding Liren को कैसे मात दी"
+  ],
+  "hook": "2024 World Championship में Gukesh की पहली जीत: c2 पर फँसा bishop और ख़त्म होती clock।",
+  "player_facts": {
+    "white": "चेन्नई के अठारह साल के challenger, rating 2783।",
+    "black": "China के मौजूदा world champion, rating 2728, जो match में आगे थे।"
+  },
+  "cold_open_hook": "c2 पर bishop फँसा, फिर flag गिर गया।",
+  "thumbnail_text": "पहला वार",
+  "key_moment_labels": {
+    "b-05": "Flag गिर गया"
+  }
+}

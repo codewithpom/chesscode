@@ -1,0 +1,143 @@
+{
+  "segments": [
+    {
+      "kind": "cold_open",
+      "ply": null,
+      "text": "Morphy queen देते हैं। Black उसे लेता है, और अगली चाल पर checkmate है।"
+    },
+    {
+      "kind": "title",
+      "ply": null,
+      "text": "Morphy की Opera Game।"
+    },
+    {
+      "kind": "player_intro",
+      "ply": null,
+      "text": "White से Paul Morphy हैं। Black से Duke of Brunswick और Count Isouard साथ खेल रहे हैं।"
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "Paul Morphy की queen b3 पर बिल्कुल ठीक जगह खड़ी है। फिर भी सोलहवें move पर वे उसे b8 पर भेज देते हैं, जहाँ Black के पास उसे लेने के सिवा कोई चारा नहीं। Black लेता है, और अगले ही move में game ख़त्म। सत्रह moves, दो विरोधी, और एक queen sacrifice। यह है Opera Game, और अंत तक आप देखेंगे कि उस sacrifice से पहले का हर move क्यों मायने रखता था। Paul Morphy की उम्र इक्कीस साल थी, वे New Orleans के थे, और Europe के दौरे पर थे जहाँ उन्होंने ज़्यादातर बड़े खिलाड़ियों को हराया। Paris में opera के एक box में उन्होंने White लिया। उनके सामने Black अकेला खिलाड़ी नहीं था, बल्कि दो थे: Duke of Brunswick और Count Isouard, जो opera चलते रहने के दौरान हर move पर आपस में सलाह करते थे। माहौल मशहूर है, पर game इसके chess की वजह से याद रखी जाती है।"
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "पहले opening: एक मज़बूत defence, जिसमें Black के पास जगह कम रहती है।"
+    },
+    {
+      "kind": "ply",
+      "ply": 1,
+      "text": "Morphy खेलते हैं e4, और Black जवाब देता है e5। Nf3 उस pawn पर हमला करता है, और Black d6 से उसे बचाता है। इसे Philidor Defence कहते हैं। यह मज़बूत है, क्योंकि e5 का pawn सुरक्षित रहता है, पर Black जगह छोड़ देता है, और f8 का bishop और g8 का knight कम अच्छे squares पाते हैं। याद रखिए, पूरी game इसी पर टिकी है कि कौन अपने pieces पहले निकालता है।"
+    },
+    {
+      "kind": "ply",
+      "ply": 5,
+      "text": "अब Morphy d4 खेलकर center को चुनौती देते हैं। Black जवाब में Bg4 खेलता है, जो f3 के knight को d1 की queen के सामने pin कर देता है। यह स्वाभाविक move है, और इस opening में जाना-पहचाना भी। Morphy को pin की फ़िक्र नहीं। वे dxe5 से e5 पर ले लेते हैं और center खोल देते हैं, क्योंकि ज़्यादा pieces उनके पास तैयार हैं।"
+    },
+    {
+      "kind": "ply",
+      "ply": 8,
+      "text": "Black Bxf3 से knight लेता है, और White Qxf3 से वापस लेता है। फिर dxe5 से pawn भी लौट आता है। Black ने अपना bishop एक knight से बदला, और kingside पर कुछ नहीं हिलाया। उधर White की queen f3 पर active है और f-file पर f7 को घूर रही है। engine White को क़रीब डेढ़ pawn का फ़ायदा देता है, जो बढ़ेगा।"
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "अब middlegame: development बनाम material।"
+    },
+    {
+      "kind": "ply",
+      "ply": 11,
+      "text": "Bc4 एक piece develop करता है और सीधे f7 को निशाना बनाता है, जो Black के camp का सबसे कमज़ोर point है, क्योंकि उसे सिर्फ़ king बचा रहा है। bishop और f3 की queen मिलकर f7 पर लेकर checkmate की धमकी देते हैं। Black Nf6 खेलता है, जो f7 बचाता है। engine को Qf6 पसंद था, जो उसी pawn को बचाता है पर बाक़ी सेना के रास्ते में नहीं आता।"
+    },
+    {
+      "kind": "ply",
+      "ply": 13,
+      "text": "अब Morphy खेलते हैं Qb3, और यह बहुत सुंदर move है। queen f3 छोड़ती है, पर c4 के bishop को सहारा देती रहती है, इसलिए f7 पर दबाव बना रहता है, और साथ ही b7 के pawn पर भी हमला करती है। Black एक move से दोनों नहीं सँभाल सकता। वह Qe7 चुनता है, पर queen अब f8 के bishop के रास्ते में है, तो kingside और फँस गया।"
+    },
+    {
+      "kind": "ply",
+      "ply": 15,
+      "text": "b7 का pawn अब लटका है, और engine की पहली पसंद थी उसे Qxb7 से ले लेना। Morphy मना करके Nc3 खेलते हैं, एक और piece खेल में लाते हुए। वे pawn नहीं, पहल जीतना चाहते हैं। Nc3 b5 पर knight की छलाँग की तैयारी भी है, जो c7 पर हमला करेगी, तो Black c6 से जवाब देता है, जो b5 और d5 को ढकता है और c7 बचाता है।"
+    },
+    {
+      "kind": "ply",
+      "ply": 17,
+      "text": "अब Bg5। यह bishop f6 के knight को e7 की queen के सामने pin कर देता है, तो वह knight हिल नहीं सकता वरना queen जाएगी। Black की position बँधी है। वह छूटने के लिए b5 खेलता है, c4 के bishop पर pawn से हमला करते हुए। engine को Kd8 पसंद था, king को छिपाते हुए, पर b5 एक समझ में आने वाली कोशिश है, और यही वह move है जिससे Black game हारता है। इसके बाद evaluation क़रीब दो pawns से बढ़कर साढ़े तीन हो जाता है।"
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "वह sacrifice जो position खोल देता है।"
+    },
+    {
+      "kind": "ply",
+      "ply": 19,
+      "text": "Morphy knight sacrifice से जवाब देते हैं, Nxb5। अगर Black cxb5 से लेता है, तो Bxb5+ check देता है, और White के पास knight के बदले दो pawns हैं। उस position को देखिए: Black का king e8 पर अटका है, d-file आधी खुली है, और White के तीन pieces खेल में हैं जबकि Black का सिर्फ़ एक knight develop हुआ है। engine के हिसाब से Black की सबसे अच्छी कोशिश Qb4+ थी, queens के सौदे की पेशकश। इसके बजाय Black knight ले लेता है, और evaluation पाँच pawns के पार चला जाता है।"
+    },
+    {
+      "kind": "ply",
+      "ply": 21,
+      "text": "check का जवाब देना ही पड़ता है। Black Nbd7 से रोकता है, diagonal ढकने का इकलौता समझदार तरीक़ा, और वह knight अब b5 के bishop से king के सामने pin हो गया। वह हिल नहीं सकता वरना king पर bishop की चाल खुल जाएगी। इस pin को याद रखिए, क्योंकि बाक़ी पूरी game इसी पर टिकी है।"
+    },
+    {
+      "kind": "ply",
+      "ply": 23,
+      "text": "अब O-O-O। Morphy queenside में castle करते हैं, और एक ही move में king सुरक्षित हो जाता है और rook d1 पर आकर d7 के pin हुए knight पर हमला करता है। एक move, दो काम। Black Rd8 से बचाता है, पर Morphy रुकते नहीं। वे Rxd7 खेलते हैं, rook देकर knight लेते हुए, और Black दूसरे rook से Rxd7 करता है।"
+    },
+    {
+      "kind": "ply",
+      "ply": 27,
+      "text": "Rd1 दूसरे rook को d-file पर लाता है और d7 के rook पर हमला करता है, जो खुद b5 के bishop से pin है। Black बस Qe6 से एक और रक्षक जोड़ सकता है। engine को Qd6 पसंद था, और g6 एक और कोशिश थी, पर अब Black को कुछ नहीं बचा सकता। उसकी सेना देखिए: f8 का bishop और h8 का rook पूरी game में हिले ही नहीं।"
+    },
+    {
+      "kind": "ply",
+      "ply": 29,
+      "text": "Bxd7+ check देकर rook ले लेता है, और knight Nxd7 से वापस लेता है। Material क़रीब बराबर है, पर position नहीं। Black का king खुला है और उसके pieces ग़लत squares पर हैं। engine यहाँ White की जीत दिखाता है। White के सारे pieces एक साथ काम कर रहे हैं, और अब Morphy के पास आख़िरी वार तैयार है।"
+    },
+    {
+      "kind": "ply",
+      "ply": 31,
+      "text": "Qb8+। queen b3 से b8 तक पूरा सफ़र करती है, उसी file से जो Black के अपने b-pawn ने खोली थी। यह एक sacrifice है, क्योंकि knight उसे ले सकता है। और यही इसका मक़सद है: Nxb8 Black का इकलौता legal जवाब है, क्योंकि e6 की queen और king b8 तक नहीं पहुँच सकते। d7 के knight को capture के लिए अपनी जगह छोड़नी पड़ती है, और d-file पूरी तरह खुल जाती है।"
+    },
+    {
+      "kind": "key_moment",
+      "ply": 33,
+      "text": "Rd8 checkmate है। rook check देता है, और g5 का bishop उसकी रक्षा करता है, इसलिए king उसे ले नहीं सकता। भागने के squares देखिए। f8 का bishop और f7 का pawn Black के अपने हैं, रास्ता रोके हुए। g5 का bishop e7 को cover करता है, और rook d7 को। e6 की queen और h8 का rook बस देखते रह जाते हैं। Morphy ने सिर्फ़ rook और bishop से mate किया।"
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "Opera Game इस बात का नमूना है कि विकास की बढ़त का इस्तेमाल कैसे किया जाता है। engine को पहली असली छलाँग b5 पर दिखती है: उससे पहले White क़रीब दो pawns आगे है, और Nxb5 और cxb5 के बाद वह पाँच के पार चला जाता है। Black ने kingside को कभी develop ही नहीं किया, इसलिए उसका हर move किसी धमकी का जवाब था, कोई धमकी बनाने वाला नहीं। Morphy ने उलटा किया। लगभग हर move पर एक piece निकाला, d-file खोलने के लिए material दिया, b5 के pin से Black को जकड़े रखा, और फिर forcing रास्ता ढूँढा। सबक़ आज भी सच हैं: tempo के साथ develop कीजिए, king की तरफ़ files और diagonals खोलिए, और जब तक विरोधी के pieces सो रहे हों, pawn के पीछे मत भागिए।"
+    },
+    {
+      "kind": "verdict",
+      "ply": null,
+      "text": "जीत का आधार development था। खुली d-file और active pieces ने queen sacrifice संभव किया। पहले pieces जोड़िए, फिर forcing moves खोजिए।"
+    },
+    {
+      "kind": "outro",
+      "ply": null,
+      "text": "यह थी Opera Game। अगर आपको पसंद आई, तो subscribe कीजिए, ऐसी ही legendary games हर move समझाकर आती रहेंगी, और comments में बताइए कि अगली बार कौन सी game करें। देखने के लिए शुक्रिया।"
+    }
+  ],
+  "mascot_lines": {
+    "b-01": "Bishop ने knight खाया। मेरा रास्ता थोड़ा साफ़।",
+    "b-02": "Queen की क़ुर्बानी, और मैं अब भी pawn!"
+  },
+  "titles": [
+    "Morphy की Opera Game: queen sacrifice जो ज़बरदस्ती जीत देता है",
+    "Morphy ने Paris Opera में अपनी queen क्यों दी (1858)",
+    "Morphy बनाम दो रईस: परफ़ेक्ट development के 17 moves"
+  ],
+  "hook": "Morphy सोलहवें move पर अपनी queen दे देते हैं, और अगले ही move में game ख़त्म हो जाती है।",
+  "player_facts": {
+    "white": "Morphy, 21 साल के, Europe के दौरे पर थे और कई बड़े खिलाड़ियों को हरा चुके थे।",
+    "black": "Duke of Brunswick और Count Isouard ने हर move पर सलाह करके एक पक्ष की तरह खेला।"
+  },
+  "cold_open_hook": "Mate के लिए उसने अपनी queen दे दी।",
+  "thumbnail_text": "Queen देकर mate",
+  "key_moment_labels": {
+    "b-02": "Queen sacrifice, फिर mate"
+  }
+}

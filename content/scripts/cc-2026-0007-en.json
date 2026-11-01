@@ -1,0 +1,134 @@
+{
+  "segments": [
+    {
+      "kind": "cold_open",
+      "ply": null,
+      "text": "Black threatens promotion. Spassky attacks instead. Can active pieces outweigh a missing rook?"
+    },
+    {
+      "kind": "title",
+      "ply": null,
+      "text": "Spassky, Bronstein, and the King's Gambit."
+    },
+    {
+      "kind": "player_intro",
+      "ply": null,
+      "text": "Spassky has White against Bronstein. Both would play for the world championship; only Spassky would win it."
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "Move fourteen. A black pawn on e2 threatens to capture White's rook and promote. White can remove that pawn. Boris Spassky does the opposite: he moves a knight to d6 and attacks. Nine moves later Black resigns, while still having more material than White. This is the King's Gambit, an opening that gives up a pawn on move two, and this game shows why people still play it. This game was played in the twenty-seventh Soviet Championship, in Leningrad in 1960. White is Boris Spassky, twenty-three years old, who became world champion in 1969. Black is David Bronstein, who drew the 1951 World Championship match against Botvinnik, and who was famous for his creative ideas. Spassky chooses the King's Gambit, one of the oldest attacking openings in chess. Black does not defend passively. He hits back in the centre at once."
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "First, the idea of the King's Gambit."
+    },
+    {
+      "kind": "ply",
+      "ply": 1,
+      "text": "White starts with e4 and Black answers e5. Then comes f4, the gambit. White offers the f-pawn on purpose. The idea is to deflect Black's e-pawn, so that White can build a strong pawn centre with d4 and open the f-file for the rook. The price is a weakened king: the diagonal from e1 to h4 is open. Black takes with exf4, the Accepted line, and the engine now shows Black slightly better, because Black has an extra pawn. That is the bargain of the King's Gambit: White pays a pawn and expects to be repaid with time, space and attacking chances. Black must decide whether to keep the pawn and defend, or to give it back and fight for the centre."
+    },
+    {
+      "kind": "ply",
+      "ply": 5,
+      "text": "Nf3 is the key developing move. It covers h4, so Black cannot check with the queen, and it prepares d4. Now Black has a choice. He can defend the extra pawn, or he can strike at the centre. Bronstein plays d5, offering a pawn to open lines. White takes with exd5, and material is level again: White has won the pawn on d5, while Black still keeps the pawn on f4."
+    },
+    {
+      "kind": "ply",
+      "ply": 8,
+      "text": "Black develops with Bd6, which is the move that leaves the opening book in our data. The engine calls it excellent, though it prefers Nf6. Nc3 develops a piece, Ne7 brings the knight, and d4 takes the centre. Black castles with O-O, and the engine score hovers close to zero, with a slight edge for Black. Both sides have healthy ideas."
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "Then, the middlegame: open lines."
+    },
+    {
+      "kind": "ply",
+      "ply": 13,
+      "text": "Bd3 aims the bishop at Black's king. Notice the diagonal from d3 to h7. In open positions like these, a bishop and a queen aimed at h7 is one of the oldest attacking patterns, and it will decide this game. Nd7 develops Black's knight, and O-O castles White's king. Both kings are now in the corner, and both sides are ready. In the King's Gambit this is the usual moment when the real plans begin: White wants open lines toward the black king, and Black wants to use the extra pawn and the half-open lines to counterattack."
+    },
+    {
+      "kind": "ply",
+      "ply": 16,
+      "text": "Black plays h6, a small inaccuracy, because Nf6 was better. For the first time the engine moves in White's favour, by about a third of a pawn. Spassky plays Ne4, putting the knight on a strong square, attacking the bishop on d6. Black retakes the pawn with Nxd5, and c4 attacks the knight."
+    },
+    {
+      "kind": "ply",
+      "ply": 20,
+      "text": "The knight jumps to e3, attacking the queen and the rook. This is a trick from Black, but White simply takes it: Bxe3, and fxe3 recaptures. Now c5 attacks the bishop on d6, which retreats to e7. Look at the black pawn on e3. It is advanced and dangerous, but also exposed, and White's pieces are well placed to attack it."
+    },
+    {
+      "kind": "ply",
+      "ply": 25,
+      "text": "Bc2 puts the bishop on the diagonal that leads to h7, hiding behind the knight on e4. Black plays Re8, which the engine calls an inaccuracy; Nf6 was better. Qd3 puts the queen in front of the bishop on the same diagonal. White now has a battery: queen and bishop pointing at h7, with a knight blocking the way. The engine says White is better by about a pawn. The idea of a battery is simple: two long-range pieces on the same line, with the front piece ready to jump to the target, and the back piece supporting it. Nobody has to move yet. The threat is enough to tie Black down."
+    },
+    {
+      "kind": "ply",
+      "ply": 28,
+      "text": "Now Black plays e2. The pawn attacks both the queen on d3 and the rook on f1, a pawn fork. The engine prefers Nf8 here, a quiet defence of h7. If Spassky simply takes the pawn with Qxe2, the attack ends. But Spassky has another idea: Nd6. The knight moves away from e4 and uncovers the battery. Now Qh7 check is threatened, and the knight itself attacks the rook on e8."
+    },
+    {
+      "kind": "ply",
+      "ply": 30,
+      "text": "The engine says Nd6 is risky, and Qxe2 was the safe move. But it poses real problems. Black should reply with Bxd6, or with exf1=R+, promoting to a rook. Instead, Black plays Nf8, defending h7, and this is the blunder. The same knight move was fine one move earlier, but now the knight has left d7, and f7 is weak."
+    },
+    {
+      "kind": "ply",
+      "ply": 31,
+      "text": "Nxf7! The knight takes the pawn, attacking the queen on d8 and the pawn on h6. The engine calls this brilliant. Black promotes with exf1=Q check, and Rxf1 recaptures. White has given up a rook, and Black is ahead in material by four points. But the knight on f7 still attacks the queen, and every white piece points at the king."
+    },
+    {
+      "kind": "ply",
+      "ply": 34,
+      "text": "Black tries Bf5 to block the diagonal, but Qxf5 takes it, and the engine's choice was Qd5. The queen escapes with Qd7, and White plays Qf4, still attacking. Bf6, N3e5 and Qe7 follow. Black has more material, but Black's pieces are scattered, the king is naked, and the knight on f8 is stuck. Bb3 adds yet another attacker, and Bxe5 and Nxe5 check bring the last knight into the attack."
+    },
+    {
+      "kind": "ply",
+      "ply": 44,
+      "text": "Kh7 steps forward, and the engine suggests Ne6 as a better try, but Black is already lost. Look at the position. White has a queen, a rook, a bishop and a knight, all of them aimed at the king. Black has a queen and two rooks, but they are far from the action, and the knight on f8 is stuck in the corner."
+    },
+    {
+      "kind": "key_moment",
+      "ply": 45,
+      "text": "Qe4 check, and Black resigns. The queen strikes along the diagonal to h7. Black has three legal replies: g6, Kh8 or Ng6, and every one of them loses. Kh8 and Ng6 run into checkmate, and g6 allows Rf7 check and a decisive attack. White has given up a rook and more, but each piece has joined the attack, and the king has nowhere to hide."
+    },
+    {
+      "kind": "chapter",
+      "ply": null,
+      "text": "What does this game teach about the King's Gambit? First, the gambit gives White open lines, a strong centre and quick development, and White's pieces swarm toward the king. Second, Black's best answer is to hit back in the centre, as Bronstein did with d5, but accuracy is vital. The engine finds three small errors, h6, Re8 and then the blunder Nf8. Third, a queen and bishop battery on the diagonal to h7 is a pattern worth knowing, but the engine also flags Nd6 as a mistake: an attack still needs accurate calculation. If you play the King's Gambit, remember the rules: develop quickly, castle early, aim pieces at the king, and never be afraid of giving up a pawn or a rook if it opens a line. And if you meet it with Black, take Bronstein's lesson: a quick counter in the centre is good, but one careless retreat, like Nf8 at the wrong moment, can undo everything."
+    },
+    {
+      "kind": "verdict",
+      "ply": null,
+      "text": "The King's Gambit buys activity, not a guaranteed attack. Black had a stronger defense against Nd6. Open lines reward coordination, but every sacrifice still needs calculation."
+    },
+    {
+      "kind": "outro",
+      "ply": null,
+      "text": "That was the King's Gambit, taught through Spassky against Bronstein. If you enjoyed it, subscribe for more Opening Explained, and tell me in the comments which opening to explain next. Thanks for watching."
+    }
+  ],
+  "mascot_lines": {
+    "b-01": "Bishop to d6. Pawns, keep an eye.",
+    "b-02": "Knight retreats. Nxf7 says: not so fast.",
+    "b-03": "Qe4+ and the h7 diagonal collects."
+  },
+  "titles": [
+    "The King's Gambit Still Bites: Spassky vs Bronstein",
+    "King's Gambit Explained: Spassky's Attack Against Bronstein",
+    "Spassky vs Bronstein 1960: A King's Gambit Masterclass"
+  ],
+  "hook": "Spassky plays the King's Gambit against Bronstein, ignores a pawn fork, and wins by attack.",
+  "player_facts": {
+    "white": "Twenty-three years old here; he became world champion in 1969.",
+    "black": "Famous for creative ideas; he drew the 1951 world title match with Botvinnik."
+  },
+  "cold_open_hook": "A pawn forks his queen and rook. He attacks anyway.",
+  "thumbnail_text": "Gambit still bites",
+  "key_moment_labels": {
+    "b-03": "Qe4+ ends the game"
+  }
+}
