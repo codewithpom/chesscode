@@ -71,7 +71,7 @@ jobs:
           retention-days: 30
   video:
     needs: prepare-upload
-    if: always() && (needs.prepare-upload.result == 'success' || needs.prepare-upload.result == 'skipped')
+    if: ${{ !cancelled() && (needs.prepare-upload.result == 'success' || needs.prepare-upload.result == 'skipped') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 300
     concurrency:
@@ -79,7 +79,7 @@ jobs:
       cancel-in-progress: false
     strategy:
       fail-fast: false
-      max-parallel: 2
+      max-parallel: 5
       matrix:
         video_id: ${{ fromJson(inputs.video_ids) }}
     steps:
@@ -107,11 +107,14 @@ jobs:
           path: remotion/node_modules
           key: remotion-${{ runner.os }}-${{ hashFiles('remotion/package-lock.json') }}
       - name: Cache TTS audio
-        uses: actions/cache@v4
+        id: tts-cache
+        uses: actions/cache/restore@v4
         with:
           path: data/tts_cache
-          key: tts-${{ hashFiles('content/scripts/**', 'config/models.yaml') }}
-          restore-keys: tts-
+          key: tts-${{ matrix.video_id }}-${{ hashFiles('content/scripts/**', 'config/models.yaml') }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            tts-${{ matrix.video_id }}-${{ hashFiles('content/scripts/**', 'config/models.yaml') }}-
+            tts-${{ matrix.video_id }}-
       - name: Install Remotion dependencies
         working-directory: remotion
         run: npm ci
@@ -140,6 +143,12 @@ jobs:
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
         run: python -m chesscode batch --video "$VIDEO_ID" --batch-id "$BATCH_ID" $([ "$UPLOAD" = "true" ] && echo --upload)
+      - name: Preserve completed voice segments even after a later failure
+        if: always() && hashFiles('data/tts_cache/**') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: data/tts_cache
+          key: ${{ steps.tts-cache.outputs.cache-primary-key }}
       # Small files only (public repo): never the MP4.
       - name: Upload result artifact
         if: always()
@@ -149,8 +158,76 @@ jobs:
           path: |
             build/specs/${{ matrix.video_id }}/result.json
             build/specs/${{ matrix.video_id }}/qa.json
+            build/specs/${{ matrix.video_id }}/video_spec.json
             build/specs/${{ matrix.video_id }}/thumb.png
             build/specs/${{ matrix.video_id }}/thumb_320.png
             build/specs/${{ matrix.video_id }}/contact.jpg
           if-no-files-found: ignore
+          retention-days: 30
+
+  verify-upload:
+    needs: video
+    if: ${{ !cancelled() && inputs.upload }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e pipeline
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: result-*
+          path: collected
+      - name: Collect upload ledger
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: python -m chesscode ledger collect --artifacts collected --run-url "$RUN_URL" >> "$GITHUB_STEP_SUMMARY"
+      - name: Verify actual YouTube ids, privacy and publication times
+        env:
+          VIDEO_IDS: ${{ inputs.video_ids }}
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from datetime import datetime
+          from pathlib import Path
+          from chesscode.auth import youtube_client
+          from chesscode.ledger import read_ledger
+          rows = read_ledger(Path('data/upload_log.csv'))
+          results = [json.loads(p.read_text(encoding='utf-8')) for p in Path('collected').glob('*/result.json')]
+          assert not any(r.get('needs_repair') for r in results), 'Thumbnail or playlist follow-up requires repair'
+          expected = json.loads(os.environ['VIDEO_IDS'])
+          assert set(expected) <= set(rows), 'Missing video results; uploads are incomplete'
+          assert all(rows[v]['status'] == 'scheduled' and rows[v]['qa_passed'] == 'true' for v in expected), 'One or more videos failed QA or upload'
+          ids = [rows[v]['youtube_id'] for v in expected]
+          assert all(ids) and len(set(ids)) == len(ids), 'Missing or duplicated YouTube ids'
+          response = youtube_client().videos().list(part='snippet,status', id=','.join(ids)).execute()
+          live = {v['id']: v for v in response.get('items', [])}
+          verified = []
+          for video in expected:
+              row = rows[video]
+              assert row['youtube_id'] in live, f'{video}: not found on YouTube'
+              item = live[row['youtube_id']]
+              status = item['status']
+              assert status.get('privacyStatus') == 'private', f'{video}: not private'
+              assert status.get('uploadStatus') in ('uploaded', 'processed'), f'{video}: upload rejected or failed'
+              assert datetime.fromisoformat(status.get('publishAt', '').replace('Z', '+00:00')) == datetime.fromisoformat(row['publish_at'].replace('Z', '+00:00')), f'{video}: publication time mismatch'
+              assert f'ccid: {video}' in item['snippet']['description'].splitlines(), f'{video}: ccid mismatch'
+              verified.append({'video_id': video, 'youtube_id': item['id'], 'privacy': status['privacyStatus'], 'publish_at': status['publishAt'], 'title': item['snippet']['title']})
+          Path('build').mkdir(exist_ok=True)
+          Path('build/upload-verification.json').write_text(json.dumps(verified, ensure_ascii=False, indent=2), encoding='utf-8')
+          print(f'Verified {len(verified)} scheduled private uploads against YouTube')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: upload-ledger
+          path: |
+            data/upload_log.csv
+            docs/review/
+            build/upload-verification.json
           retention-days: 30

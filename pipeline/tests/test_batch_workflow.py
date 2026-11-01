@@ -27,7 +27,7 @@ def test_batch_yml_matrix_and_limits():
     assert wf["permissions"] == {"contents": "read"}
     job = wf["jobs"]["video"]
     assert job["timeout-minutes"] == 300
-    assert job["strategy"]["fail-fast"] is False and job["strategy"]["max-parallel"] == 2
+    assert job["strategy"]["fail-fast"] is False and job["strategy"]["max-parallel"] == 5
     assert "fromJson(inputs.video_ids)" in job["strategy"]["matrix"]["video_id"]
     assert job["concurrency"]["group"] == "video-${{ matrix.video_id }}"
     assert job["concurrency"].get("cancel-in-progress") is False
@@ -41,6 +41,7 @@ def test_upload_jobs_wait_for_shared_playlist_config():
     assert "auth check" in steps_text(prepare) and "upload --create-playlists" in steps_text(prepare)
     video = wf["jobs"]["video"]
     assert video["needs"] == "prepare-upload" and "'success'" in video["if"]
+    assert "!cancelled()" in video["if"] and "always()" not in video["if"]
     config = next(s for s in video["steps"] if s.get("uses", "").startswith("actions/download-artifact"))
     assert config["with"] == {"name": "upload-config", "path": "config"}
 
@@ -51,6 +52,24 @@ def test_fish_secret_reaches_preflight_and_render_without_old_credit_gate():
     render = next(s for s in jobs["video"]["steps"] if "chesscode batch" in s.get("run", ""))
     assert "FISH_API_KEY" in prepare["env"] and "FISH_API_KEY" in render["env"]
     assert "check_allowance" not in steps_text(jobs["prepare-upload"])
+
+
+def test_voice_cache_is_per_video_and_saved_after_later_stage_failure():
+    steps = load("batch.yml")["jobs"]["video"]["steps"]
+    restore = next(s for s in steps if s.get("id") == "tts-cache")
+    save = next(s for s in steps if s.get("uses") == "actions/cache/save@v4")
+    assert restore["uses"] == "actions/cache/restore@v4"
+    assert "matrix.video_id" in restore["with"]["key"] and "github.run_id" in restore["with"]["key"]
+    assert "always()" in save["if"] and "cache-primary-key" in save["with"]["key"]
+
+
+def test_upload_verification_uses_service_state_and_preserves_ledger():
+    job = load("batch.yml")["jobs"]["verify-upload"]
+    assert job["needs"] == "video" and "!cancelled()" in job["if"]
+    text = steps_text(job)
+    assert "ledger collect" in text and "youtube_client().videos().list" in text
+    assert "privacyStatus" in text and "publishAt" in text and "needs_repair" in text
+    assert any(s.get("with", {}).get("name") == "upload-ledger" for s in job["steps"])
 
 
 def test_batch_yml_steps():

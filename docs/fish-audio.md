@@ -8,7 +8,8 @@ The owner selected Fish Audio S2.1 Pro Free on November 1, 2026. The provider us
 - The ElevenLabs-compatible timestamp endpoint returns audio and character alignment together. Existing character-to-word conversion preserves the caption pipeline. Fish documents these character times as interpolated from segment timestamps; switch to native word timestamps if visible drift appears.
 - Default `normal` latency prioritizes quality. Language is left unset for mixed Hindi/English narration, as recommended by Fish. Existing segment boundaries keep requests short, and fixed reference voices keep the narration consistent.
 - HTTP 429 and transient server errors retry with bounded exponential backoff. Authentication and billing errors stop immediately. Incomplete audio or alignment is never saved as a successful response.
-- Free generation is subject to fair-use and concurrency limits; it is not a promise of unlimited throughput or a latency guarantee. The workflow runs two videos at once.
+- Free generation is subject to fair-use and concurrency limits; it is not a promise of unlimited throughput or a latency guarantee. The workflow runs up to five videos at once, matching the documented Starter concurrency limit.
+- Voice caches are separate per video and saved even when a later stage fails, so retries can reuse completed segments. Video jobs honor cancellation.
 
 Smoke tests: English and Hindi both returned HTTP 200 with audio and alignment. Automated tests cover free-model selection, Hindi word timings, retries, invalid alignment, secret-safe failures and workflow credentials.
 

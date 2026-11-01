@@ -3,6 +3,11 @@ from chesscode.stages.metadata import build_description, pick_title
 def test_description_ends_with_ccid():
     assert build_description("Hook",[{"title":"Opening","start_ms":0}],{"white":{"name":"A"},"black":{"name":"B"},"event":"Event","date":"2020","result":"1-0","opening":"Open","source":"lichess"},"Legendary",[],"cc-2026-0001-en").endswith("ccid: cc-2026-0001-en")
 
+
+def test_description_accepts_player_names_from_production_manifest():
+    text = build_description("Hook", [], {"white": "Gukesh, D", "black": "Ding, Liren"}, "Heroes", [], "id")
+    assert "Gukesh, D vs Ding, Liren" in text
+
 def test_description_chapters_start_0000():
     result=build_description("Hook",[{"title":"Opening","start_ms":0}],{},"S",[],"id")
     assert "00:00 Opening" in result
@@ -37,6 +42,7 @@ def metadata_ctx(tmp_path, video_id="cc-2026-0001-en", games=None):
     spec = tmp_path / "spec"
     spec.mkdir()
     (spec / "game.json").write_text(json.dumps({"series": "legendary_games", "tier": "floor", "source": "local", "white": {"name": "A"}, "black": {"name": "B"}}))
+    (spec / "game.pgn").write_text('[White "A"]\n[Black "B"]\n[Event "Actual event"]\n[Date "2020.01.02"]\n[Result "1-0"]\n\n1. e4 e5 1-0\n')
     (spec / "script.json").write_text(json.dumps({"titles": ["First idea", "Second idea", "Third idea"], "hook": "Hook."}))
     (spec / "timeline.json").write_text(json.dumps({"chapters": [{"title": "Opening", "start_ms": 0}]}))
     return Context(video_id, spec, repo, {}, "en", "studio")
@@ -73,3 +79,15 @@ def test_offline_provider_takes_the_scripts_first_title(tmp_path, monkeypatch):
     monkeypatch.setattr(metadata.llm, "provider", lambda: "offline")
     metadata.run(ctx)
     assert json.loads((ctx.spec_dir / "metadata.json").read_text(encoding="utf-8"))["title"] == "First idea"
+
+
+def test_metadata_description_uses_pgn_names_date_and_result(tmp_path, monkeypatch):
+    ctx = metadata_ctx(tmp_path)
+    monkeypatch.setattr(metadata.llm, "provider", lambda: "offline")
+    game = json.loads((ctx.spec_dir / "game.json").read_text())
+    game.update(white="Stale name", black="Another stale name")
+    (ctx.spec_dir / "game.json").write_text(json.dumps(game))
+    metadata.run(ctx)
+    text = json.loads((ctx.spec_dir / "metadata.json").read_text())["description"]
+    assert "A vs B" in text and "Actual event" in text and "2020-01-02" in text and "Result: 1-0" in text
+    assert "Stale name" not in text
