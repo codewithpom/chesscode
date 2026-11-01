@@ -42,3 +42,6 @@ jobs:
       - run: npx vitest run
       - name: Spec schema matches the Zod source
         run: npm run check-schema
+      # Design detector (regex rules on .ts/.tsx, no auth). Fetched from the npm registry like npm ci; pinned.
+      - name: Design detector
+        run: npx --yes impeccable@4.8.0 detect src

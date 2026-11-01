@@ -1,7 +1,7 @@
 import { spring } from "remotion";
 import { describe, expect, it } from "vitest";
 import { uiSpring } from "../theme/motion";
-import { barShareAt, evalLabel, evalLabelFixed, whipSpring, winPct, type BarBeat, type BarPly } from "./winprob";
+import { barShareAt, evalLabel, evalLabelFixed, evalLabelFixedLeft, whipSpring, winPct, type BarBeat, type BarPly } from "./winprob";
 
 const cp = (v: number) => ({ cp: v, mate: null });
 const mate = (v: number) => ({ cp: null, mate: v });
@@ -68,6 +68,14 @@ describe("evalLabelFixed", () => {
   });
 });
 
+describe("evalLabelFixedLeft", () => {
+  it("starts on the first character (the vertical bar's label lines up with the bar) and is as wide as the right-aligned one", () => {
+    expect(evalLabelFixedLeft(cp(300))[0]).toBe("+");
+    expect(evalLabelFixedLeft(cp(300)).length).toBe(evalLabelFixed(cp(300)).length);
+    expect(evalLabelFixedLeft(cp(300)).trimEnd()).toBe("+3.0");
+  });
+});
+
 describe("barShareAt", () => {
   const plies: BarPly[] = [
     { ply: 1, show_at_ms: 1000, eval: cp(0), class: "good" },
@@ -96,6 +104,15 @@ describe("barShareAt", () => {
     const normal = barShareAt(95, FPS, plies, []);
     const whip = barShareAt(95, FPS, plies, beats);
     expect(whip).toBeLessThan(normal); // closer to the new low value
+  });
+
+  it("whips on any beat whose fx lists eval_whip (a comeback), not only on blunders", () => {
+    const comeback: BarBeat = { type: "comeback", ply: 2, fx: ["eval_whip"] };
+    const quiet: BarBeat = { type: "comeback", ply: 2, fx: [] };
+    expect(barShareAt(95, FPS, plies, [comeback])).toBe(barShareAt(95, FPS, plies, [{ type: "blunder", ply: 2 }]));
+    expect(barShareAt(95, FPS, plies, [comeback])).toBeLessThan(barShareAt(95, FPS, plies, []));
+    expect(barShareAt(95, FPS, plies, [quiet])).toBe(barShareAt(95, FPS, plies, []));
+    expect(barShareAt(95, FPS, plies, [{ type: "comeback", ply: 3, fx: ["eval_whip"] }])).toBe(barShareAt(95, FPS, plies, []));
   });
 
   it("whip spring has no overshoot", () => {

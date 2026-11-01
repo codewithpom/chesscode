@@ -19,6 +19,8 @@ import { blipFrames, SpeechBubble, typingEnd } from "./speech";
 
 const BLIPS = [blip1, blip2, blip3, blip4, blip5, blip6];
 const BLIP_FRAMES_MS = 90;
+/** Voice blips sit well under the narration (design review: they played at full file level, louder than the beat sfx). */
+export const BLIP_GAIN = 0.35;
 const CONFETTI = 28;
 const CONFETTI_COLORS = [P.accent, P.body, P.shade];
 
@@ -47,13 +49,21 @@ const Confetti: React.FC<{ phase: Phase; box: Box; frame: number }> = ({ phase, 
 };
 
 /** Pyaada, bottom-right in `box`, with the bubble for the active reaction and blip audio. Nothing is drawn outside `box`. */
-export const MascotLayer: React.FC<{ spec: VideoSpec; box: Box; height: number }> = ({ spec, box, height }) => {
+export const MascotLayer: React.FC<{
+  spec: VideoSpec;
+  box: Box;
+  height: number;
+  /** Bubble text size and tallest bubble; the Shorts use 44 px so it reads on a phone (default: BUBBLE_FONT, 200). */
+  bubbleFont?: number;
+  maxBubbleH?: number;
+}> = ({ spec, box, height, bubbleFont, maxBubbleH }) => {
   const frame = useCurrentFrame();
   const { fps, durationInFrames, width, height: frameH } = useVideoConfig();
   const reactions = useMemo(() => reactionsFor(spec.beats, fps, durationInFrames), [spec.beats, fps, durationInFrames]);
   const state = poseAt(frame, reactions, fps, spec.video_id);
-  const { mascot, bubble } = layerRects(box, height);
-  const active = reactions.find((r) => frame >= r.bubbleFrom && frame < r.bubbleTo);
+  const { mascot, bubble } = layerRects(box, height, maxBubbleH);
+  // A beat with an empty line reacts without a bubble (the ColdOpen replays a beat that talks later in Playback).
+  const active = reactions.find((r) => frame >= r.bubbleFrom && frame < r.bubbleTo && r.beat.mascot.line !== "");
   const talking = active !== undefined && frame < typingEnd(active.beat.mascot.line, active.bubbleFrom, fps, active.bubbleTo);
   // Mouth flaps every 3 frames while the bubble types.
   const flap = talking && Math.floor((frame - active.bubbleFrom) / 3) % 2 === 0;
@@ -70,14 +80,14 @@ export const MascotLayer: React.FC<{ spec: VideoSpec; box: Box; height: number }
         <Pyaada state={flap ? { ...state, mouth: "open_talk" } : state} height={height} />
       </div>
       {active && (
-        <SpeechBubble line={active.beat.mascot.line} from={active.bubbleFrom} to={active.bubbleTo} box={bubble} language={spec.language} tail={!away} />
+        <SpeechBubble line={active.beat.mascot.line} from={active.bubbleFrom} to={active.bubbleTo} box={bubble} language={spec.language} tail={!away} fontSize={bubbleFont} />
       )}
-      {reactions.flatMap((r) =>
+      {reactions.filter((r) => r.beat.mascot.line !== "").flatMap((r) =>
         blipFrames(r.beat.mascot.line, r.bubbleFrom, fps, `${spec.video_id}-${r.beat.beat_id}`, r.bubbleTo)
           .filter((b) => b.frame < Math.min(r.bubbleTo, durationInFrames))
           .map((b) => (
             <Sequence key={`${r.beat.beat_id}-${b.frame}`} from={b.frame} durationInFrames={msToFrame(BLIP_FRAMES_MS, fps) + 1} layout="none">
-              <Audio src={BLIPS[b.sample - 1]} />
+              <Audio src={BLIPS[b.sample - 1]} volume={BLIP_GAIN} />
             </Sequence>
           )),
       )}

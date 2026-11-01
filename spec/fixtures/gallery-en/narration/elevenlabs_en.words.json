@@ -1,0 +1,752 @@
+[
+  {
+    "w": "Paris,",
+    "start_ms": 0,
+    "end_ms": 488
+  },
+  {
+    "w": "1858.",
+    "start_ms": 522,
+    "end_ms": 1625
+  },
+  {
+    "w": "The",
+    "start_ms": 1800,
+    "end_ms": 1916
+  },
+  {
+    "w": "opera",
+    "start_ms": 1974,
+    "end_ms": 2229
+  },
+  {
+    "w": "has",
+    "start_ms": 2276,
+    "end_ms": 2368
+  },
+  {
+    "w": "started,",
+    "start_ms": 2415,
+    "end_ms": 3007
+  },
+  {
+    "w": "and",
+    "start_ms": 3077,
+    "end_ms": 3228
+  },
+  {
+    "w": "Paul",
+    "start_ms": 3297,
+    "end_ms": 3495
+  },
+  {
+    "w": "Morphy",
+    "start_ms": 3564,
+    "end_ms": 3889
+  },
+  {
+    "w": "is",
+    "start_ms": 3971,
+    "end_ms": 4075
+  },
+  {
+    "w": "not",
+    "start_ms": 4145,
+    "end_ms": 4261
+  },
+  {
+    "w": "watching",
+    "start_ms": 4319,
+    "end_ms": 4632
+  },
+  {
+    "w": "it.",
+    "start_ms": 4690,
+    "end_ms": 4957
+  },
+  {
+    "w": "He",
+    "start_ms": 5399,
+    "end_ms": 5503
+  },
+  {
+    "w": "is",
+    "start_ms": 5561,
+    "end_ms": 5642
+  },
+  {
+    "w": "playing",
+    "start_ms": 5689,
+    "end_ms": 5991
+  },
+  {
+    "w": "chess",
+    "start_ms": 6060,
+    "end_ms": 6374
+  },
+  {
+    "w": "in",
+    "start_ms": 6409,
+    "end_ms": 6478
+  },
+  {
+    "w": "a",
+    "start_ms": 6525,
+    "end_ms": 6548
+  },
+  {
+    "w": "private",
+    "start_ms": 6606,
+    "end_ms": 6966
+  },
+  {
+    "w": "box,",
+    "start_ms": 7001,
+    "end_ms": 7500
+  },
+  {
+    "w": "against",
+    "start_ms": 7628,
+    "end_ms": 7964
+  },
+  {
+    "w": "two",
+    "start_ms": 7999,
+    "end_ms": 8150
+  },
+  {
+    "w": "noblemen",
+    "start_ms": 8243,
+    "end_ms": 8661
+  },
+  {
+    "w": "who",
+    "start_ms": 8684,
+    "end_ms": 8777
+  },
+  {
+    "w": "are",
+    "start_ms": 8835,
+    "end_ms": 8928
+  },
+  {
+    "w": "consulting",
+    "start_ms": 8963,
+    "end_ms": 9485
+  },
+  {
+    "w": "on",
+    "start_ms": 9543,
+    "end_ms": 9625
+  },
+  {
+    "w": "every",
+    "start_ms": 9706,
+    "end_ms": 9973
+  },
+  {
+    "w": "move.",
+    "start_ms": 10031,
+    "end_ms": 10588
+  },
+  {
+    "w": "Black",
+    "start_ms": 11192,
+    "end_ms": 11482
+  },
+  {
+    "w": "answers",
+    "start_ms": 11540,
+    "end_ms": 11889
+  },
+  {
+    "w": "e4",
+    "start_ms": 11970,
+    "end_ms": 12399
+  },
+  {
+    "w": "with",
+    "start_ms": 12457,
+    "end_ms": 12597
+  },
+  {
+    "w": "d6,",
+    "start_ms": 12643,
+    "end_ms": 13293
+  },
+  {
+    "w": "and",
+    "start_ms": 13421,
+    "end_ms": 13584
+  },
+  {
+    "w": "three",
+    "start_ms": 13642,
+    "end_ms": 13886
+  },
+  {
+    "w": "moves",
+    "start_ms": 13944,
+    "end_ms": 14199
+  },
+  {
+    "w": "later",
+    "start_ms": 14257,
+    "end_ms": 14594
+  },
+  {
+    "w": "gives",
+    "start_ms": 14710,
+    "end_ms": 14942
+  },
+  {
+    "w": "up",
+    "start_ms": 14988,
+    "end_ms": 15093
+  },
+  {
+    "w": "the",
+    "start_ms": 15151,
+    "end_ms": 15220
+  },
+  {
+    "w": "bishop",
+    "start_ms": 15267,
+    "end_ms": 15546
+  },
+  {
+    "w": "for",
+    "start_ms": 15592,
+    "end_ms": 15685
+  },
+  {
+    "w": "a",
+    "start_ms": 15731,
+    "end_ms": 15754
+  },
+  {
+    "w": "knight.",
+    "start_ms": 15813,
+    "end_ms": 16277
+  },
+  {
+    "w": "That",
+    "start_ms": 16881,
+    "end_ms": 17090
+  },
+  {
+    "w": "small",
+    "start_ms": 17148,
+    "end_ms": 17438
+  },
+  {
+    "w": "trade",
+    "start_ms": 17496,
+    "end_ms": 17821
+  },
+  {
+    "w": "matters.",
+    "start_ms": 17868,
+    "end_ms": 18436
+  },
+  {
+    "w": "Morphy",
+    "start_ms": 18611,
+    "end_ms": 18959
+  },
+  {
+    "w": "recaptures",
+    "start_ms": 19040,
+    "end_ms": 19597
+  },
+  {
+    "w": "with",
+    "start_ms": 19632,
+    "end_ms": 19760
+  },
+  {
+    "w": "the",
+    "start_ms": 19795,
+    "end_ms": 19864
+  },
+  {
+    "w": "queen,",
+    "start_ms": 19911,
+    "end_ms": 20410
+  },
+  {
+    "w": "and",
+    "start_ms": 20654,
+    "end_ms": 20805
+  },
+  {
+    "w": "suddenly",
+    "start_ms": 20863,
+    "end_ms": 21234
+  },
+  {
+    "w": "his",
+    "start_ms": 21304,
+    "end_ms": 21420
+  },
+  {
+    "w": "pieces",
+    "start_ms": 21467,
+    "end_ms": 21792
+  },
+  {
+    "w": "come",
+    "start_ms": 21850,
+    "end_ms": 22001
+  },
+  {
+    "w": "out",
+    "start_ms": 22024,
+    "end_ms": 22128
+  },
+  {
+    "w": "with",
+    "start_ms": 22163,
+    "end_ms": 22291
+  },
+  {
+    "w": "tempo.",
+    "start_ms": 22326,
+    "end_ms": 22941
+  },
+  {
+    "w": "Bishop",
+    "start_ms": 23324,
+    "end_ms": 23649
+  },
+  {
+    "w": "to",
+    "start_ms": 23707,
+    "end_ms": 23765
+  },
+  {
+    "w": "c4.",
+    "start_ms": 23823,
+    "end_ms": 24543
+  },
+  {
+    "w": "Queen",
+    "start_ms": 24752,
+    "end_ms": 25054
+  },
+  {
+    "w": "to",
+    "start_ms": 25112,
+    "end_ms": 25170
+  },
+  {
+    "w": "b3,",
+    "start_ms": 25228,
+    "end_ms": 25878
+  },
+  {
+    "w": "hitting",
+    "start_ms": 26029,
+    "end_ms": 26308
+  },
+  {
+    "w": "f7",
+    "start_ms": 26378,
+    "end_ms": 26796
+  },
+  {
+    "w": "and",
+    "start_ms": 26888,
+    "end_ms": 26970
+  },
+  {
+    "w": "b7",
+    "start_ms": 27028,
+    "end_ms": 27411
+  },
+  {
+    "w": "at",
+    "start_ms": 27469,
+    "end_ms": 27527
+  },
+  {
+    "w": "the",
+    "start_ms": 27562,
+    "end_ms": 27632
+  },
+  {
+    "w": "same",
+    "start_ms": 27666,
+    "end_ms": 27887
+  },
+  {
+    "w": "time.",
+    "start_ms": 27933,
+    "end_ms": 28433
+  },
+  {
+    "w": "Black",
+    "start_ms": 28943,
+    "end_ms": 29234
+  },
+  {
+    "w": "is",
+    "start_ms": 29280,
+    "end_ms": 29361
+  },
+  {
+    "w": "defending,",
+    "start_ms": 29408,
+    "end_ms": 30058
+  },
+  {
+    "w": "never",
+    "start_ms": 30186,
+    "end_ms": 30406
+  },
+  {
+    "w": "attacking.",
+    "start_ms": 30464,
+    "end_ms": 31080
+  },
+  {
+    "w": "Then",
+    "start_ms": 31463,
+    "end_ms": 31672
+  },
+  {
+    "w": "the",
+    "start_ms": 31719,
+    "end_ms": 31788
+  },
+  {
+    "w": "knight",
+    "start_ms": 31835,
+    "end_ms": 32044
+  },
+  {
+    "w": "takes",
+    "start_ms": 32079,
+    "end_ms": 32311
+  },
+  {
+    "w": "on",
+    "start_ms": 32357,
+    "end_ms": 32450
+  },
+  {
+    "w": "b5.",
+    "start_ms": 32520,
+    "end_ms": 33193
+  },
+  {
+    "w": "A",
+    "start_ms": 33367,
+    "end_ms": 33437
+  },
+  {
+    "w": "full",
+    "start_ms": 33518,
+    "end_ms": 33716
+  },
+  {
+    "w": "piece,",
+    "start_ms": 33774,
+    "end_ms": 34250
+  },
+  {
+    "w": "offered",
+    "start_ms": 34366,
+    "end_ms": 34668
+  },
+  {
+    "w": "just",
+    "start_ms": 34714,
+    "end_ms": 34923
+  },
+  {
+    "w": "to",
+    "start_ms": 34958,
+    "end_ms": 35004
+  },
+  {
+    "w": "open",
+    "start_ms": 35097,
+    "end_ms": 35306
+  },
+  {
+    "w": "lines",
+    "start_ms": 35376,
+    "end_ms": 35689
+  },
+  {
+    "w": "toward",
+    "start_ms": 35736,
+    "end_ms": 35980
+  },
+  {
+    "w": "the",
+    "start_ms": 36014,
+    "end_ms": 36084
+  },
+  {
+    "w": "black",
+    "start_ms": 36119,
+    "end_ms": 36328
+  },
+  {
+    "w": "king.",
+    "start_ms": 36374,
+    "end_ms": 36804
+  },
+  {
+    "w": "Morphy",
+    "start_ms": 37408,
+    "end_ms": 37791
+  },
+  {
+    "w": "castles",
+    "start_ms": 37849,
+    "end_ms": 38243
+  },
+  {
+    "w": "queenside,",
+    "start_ms": 38302,
+    "end_ms": 39010
+  },
+  {
+    "w": "the",
+    "start_ms": 39103,
+    "end_ms": 39195
+  },
+  {
+    "w": "rook",
+    "start_ms": 39254,
+    "end_ms": 39428
+  },
+  {
+    "w": "lands",
+    "start_ms": 39497,
+    "end_ms": 39741
+  },
+  {
+    "w": "on",
+    "start_ms": 39776,
+    "end_ms": 39846
+  },
+  {
+    "w": "the",
+    "start_ms": 39869,
+    "end_ms": 39939
+  },
+  {
+    "w": "open",
+    "start_ms": 39997,
+    "end_ms": 40240
+  },
+  {
+    "w": "d-file,",
+    "start_ms": 40310,
+    "end_ms": 40972
+  },
+  {
+    "w": "and",
+    "start_ms": 41088,
+    "end_ms": 41204
+  },
+  {
+    "w": "the",
+    "start_ms": 41250,
+    "end_ms": 41320
+  },
+  {
+    "w": "pressure",
+    "start_ms": 41355,
+    "end_ms": 41657
+  },
+  {
+    "w": "becomes",
+    "start_ms": 41680,
+    "end_ms": 41982
+  },
+  {
+    "w": "unbearable.",
+    "start_ms": 42040,
+    "end_ms": 42783
+  },
+  {
+    "w": "Rook",
+    "start_ms": 43387,
+    "end_ms": 43619
+  },
+  {
+    "w": "takes",
+    "start_ms": 43677,
+    "end_ms": 43909
+  },
+  {
+    "w": "d7.",
+    "start_ms": 43967,
+    "end_ms": 44722
+  },
+  {
+    "w": "Rook",
+    "start_ms": 45163,
+    "end_ms": 45384
+  },
+  {
+    "w": "to",
+    "start_ms": 45453,
+    "end_ms": 45511
+  },
+  {
+    "w": "d1.",
+    "start_ms": 45569,
+    "end_ms": 46185
+  },
+  {
+    "w": "On",
+    "start_ms": 46359,
+    "end_ms": 46545
+  },
+  {
+    "w": "move",
+    "start_ms": 46614,
+    "end_ms": 46846
+  },
+  {
+    "w": "sixteen,",
+    "start_ms": 46881,
+    "end_ms": 47392
+  },
+  {
+    "w": "the",
+    "start_ms": 47415,
+    "end_ms": 47485
+  },
+  {
+    "w": "queen",
+    "start_ms": 47531,
+    "end_ms": 47740
+  },
+  {
+    "w": "goes",
+    "start_ms": 47787,
+    "end_ms": 47961
+  },
+  {
+    "w": "to",
+    "start_ms": 48007,
+    "end_ms": 48065
+  },
+  {
+    "w": "b8,",
+    "start_ms": 48135,
+    "end_ms": 48623
+  },
+  {
+    "w": "check.",
+    "start_ms": 48750,
+    "end_ms": 49261
+  },
+  {
+    "w": "Black",
+    "start_ms": 49644,
+    "end_ms": 49946
+  },
+  {
+    "w": "has",
+    "start_ms": 49993,
+    "end_ms": 50109
+  },
+  {
+    "w": "to",
+    "start_ms": 50167,
+    "end_ms": 50225
+  },
+  {
+    "w": "take",
+    "start_ms": 50283,
+    "end_ms": 50515
+  },
+  {
+    "w": "it.",
+    "start_ms": 50562,
+    "end_ms": 50817
+  },
+  {
+    "w": "Rook",
+    "start_ms": 50991,
+    "end_ms": 51212
+  },
+  {
+    "w": "to",
+    "start_ms": 51281,
+    "end_ms": 51340
+  },
+  {
+    "w": "d8.",
+    "start_ms": 51398,
+    "end_ms": 51955
+  },
+  {
+    "w": "Checkmate,",
+    "start_ms": 52338,
+    "end_ms": 53011
+  },
+  {
+    "w": "with",
+    "start_ms": 53069,
+    "end_ms": 53232
+  },
+  {
+    "w": "only",
+    "start_ms": 53267,
+    "end_ms": 53429
+  },
+  {
+    "w": "a",
+    "start_ms": 53476,
+    "end_ms": 53511
+  },
+  {
+    "w": "bishop",
+    "start_ms": 53569,
+    "end_ms": 53859
+  },
+  {
+    "w": "and",
+    "start_ms": 53905,
+    "end_ms": 53987
+  },
+  {
+    "w": "a",
+    "start_ms": 54033,
+    "end_ms": 54056
+  },
+  {
+    "w": "rook",
+    "start_ms": 54126,
+    "end_ms": 54335
+  },
+  {
+    "w": "left",
+    "start_ms": 54405,
+    "end_ms": 54614
+  },
+  {
+    "w": "on",
+    "start_ms": 54660,
+    "end_ms": 54730
+  },
+  {
+    "w": "the",
+    "start_ms": 54764,
+    "end_ms": 54834
+  },
+  {
+    "w": "board.",
+    "start_ms": 54881,
+    "end_ms": 55542
+  }
+]

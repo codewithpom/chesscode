@@ -1,14 +1,27 @@
-// Placeholder long-form composition: proves the contract end to end (props -> metadata
-// -> audio) and gives M1 a render to time. M5 replaces the body with the Studio scenes.
-import { AbsoluteFill, CalculateMetadataFunction } from "remotion";
-import { Board } from "../board/Board";
+// 16:9 long-form composition: the Studio scene sequence (docs/SPEC.md section 5) cut by scenes/timeline.ts.
+// Scenes are hard cuts. Each runs in a Sequence whose frame is shifted back to the video's own, so the shared
+// pieces (Board, EvalBar, Captions, MoveList, fx) can all read one absolute frame.
+import type { FC } from "react";
+import { useMemo } from "react";
+import { AbsoluteFill, CalculateMetadataFunction, Sequence, useCurrentFrame, useVideoConfig } from "remotion";
+import { MusicBed } from "../audio/MusicBed";
+import { NarrationTrack } from "../audio/NarrationTrack";
+import { Sfx } from "../audio/Sfx";
+import { ColdOpen } from "../scenes/ColdOpen";
+import { captionsBoxAt } from "../scenes/helpers";
+import { KeyMoment } from "../scenes/KeyMoment";
+import { Outro } from "../scenes/Outro";
+import { StudioMascot } from "../scenes/StudioMascot";
+import { PlayerIntro } from "../scenes/PlayerIntro";
+import { Playback } from "../scenes/Playback";
+import { TitleCard } from "../scenes/TitleCard";
+import { sceneRanges, type SceneRange } from "../scenes/timeline";
+import { Verdict } from "../scenes/Verdict";
+import { SUPPORTED_MAJOR, VideoSpec } from "../spec/schema";
+import { frameToMs, msToFrame } from "../spec/time";
 import { useFonts } from "../theme/fonts";
 import { tokens } from "../theme/tokens";
 import { Captions } from "../ui/Captions";
-import { EvalBar } from "../ui/EvalBar";
-import { NarrationTrack } from "../audio/NarrationTrack";
-import { SUPPORTED_MAJOR, VideoSpec } from "../spec/schema";
-import { msToFrame } from "../spec/time";
 
 export const calculateStudioMetadata: CalculateMetadataFunction<VideoSpec> = ({ props }) => {
   const major = Number(props.spec_version.split(".")[0]);
@@ -19,20 +32,53 @@ export const calculateStudioMetadata: CalculateMetadataFunction<VideoSpec> = ({ 
   return { durationInFrames: msToFrame(props.duration_ms, fps), width, height, fps };
 };
 
-export const StudioVideo: React.FC<VideoSpec> = (spec) => {
+const SceneFor: FC<{ spec: VideoSpec; range: SceneRange }> = ({ spec, range }) => {
+  switch (range.kind) {
+    case "cold_open": return <ColdOpen spec={spec} range={range} />;
+    case "title": return <TitleCard spec={spec} range={range} />;
+    case "player_intro": return <PlayerIntro spec={spec} range={range} />;
+    case "playback": return <Playback spec={spec} range={range} />;
+    case "key_moment": return <KeyMoment spec={spec} range={range} />;
+    case "verdict": return <Verdict spec={spec} range={range} />;
+    case "outro": return <Outro />;
+  }
+};
+
+/** Captions in the right column, except in the outro, where that area is reserved for the end screen. */
+const StudioCaptions: FC<{ spec: VideoSpec; ranges: SceneRange[] }> = ({ spec, ranges }) => {
+  const { fps } = useVideoConfig();
+  const ms = frameToMs(useCurrentFrame(), fps);
+  return <Captions spec={spec} mode="long" box={captionsBoxAt(ranges, ms)} />;
+};
+
+/** Everything visible in a Studio video (scenes and captions), no audio: the gallery draws stills from it. */
+export const StudioVisuals: FC<VideoSpec> = (spec) => {
   useFonts();
-  // Placeholder layout (spec section 6 numbers) so render timing reflects the real drawing load;
-  // M5 replaces this body with the Studio scenes.
+  const { fps } = useVideoConfig();
+  const ranges = useMemo(() => sceneRanges(spec), [spec]);
   return (
     <AbsoluteFill style={{ backgroundColor: tokens.color.bg }}>
-      <div style={{ position: "absolute", left: 96 + 24 + 16, top: 140 }}>
-        <Board spec={spec} size={800} />
-      </div>
-      <div style={{ position: "absolute", left: 96, top: 140 }}>
-        <EvalBar spec={spec} orientation="vertical" length={800} thickness={24} />
-      </div>
-      <Captions spec={spec} mode="long" />
-      <NarrationTrack segments={spec.narration} />
+      {ranges.map((r) => {
+        const from = msToFrame(r.startMs, fps);
+        return (
+          <Sequence key={`${r.kind}-${r.startMs}`} from={from} durationInFrames={Math.max(1, msToFrame(r.endMs, fps) - from)} layout="none">
+            <Sequence from={-from} layout="none">
+              <SceneFor spec={spec} range={r} />
+            </Sequence>
+          </Sequence>
+        );
+      })}
+      <StudioMascot spec={spec} ranges={ranges} />
+      <StudioCaptions spec={spec} ranges={ranges} />
     </AbsoluteFill>
   );
 };
+
+export const StudioVideo: FC<VideoSpec> = (spec) => (
+  <>
+    <StudioVisuals {...spec} />
+    <NarrationTrack segments={spec.narration} />
+    <MusicBed music={spec.music} narration={spec.narration} />
+    <Sfx beats={spec.beats} />
+  </>
+);

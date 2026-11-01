@@ -1,30 +1,34 @@
 import type { FC } from "react";
 import { useCurrentFrame, useVideoConfig } from "remotion";
 import type { VideoSpec } from "../spec/schema";
+import { msToFrame } from "../spec/time";
 import { boardThemes } from "../theme/boardThemes";
 import { useFonts } from "../theme/fonts";
 import { tokens } from "../theme/tokens";
 import { Arrows } from "./Arrows";
-import { boardStateAt, orient } from "./boardState";
+import { boardStateAt, orient, settledState, type BoardState } from "./boardState";
 import { Highlights } from "./Highlights";
 import { Piece } from "./Piece";
 import { buildPositions } from "./positions";
 import { Square } from "./Square";
+
+export type BoardThemeName = keyof typeof boardThemes;
 
 // Coordinates sit outside the board, 28 px at the 800 px Studio board (a square is 100 px: 0.28 units).
 // The SVG overflows its box on the bottom and right to hold them.
 const COORD_SIZE = 0.28;
 const COORD_GAP = 0.1;
 
-/** SVG board driven only by the spec and the current frame. */
-export const Board: FC<{ spec: VideoSpec; size: number }> = ({ spec, size }) => {
+/** Draws one BoardState (squares, labels, pieces, arrows); shared by Board and LineBoard. */
+export const BoardView: FC<{
+  state: BoardState;
+  size: number;
+  orientation: "white" | "black";
+  theme: BoardThemeName;
+  hideArrows?: boolean;
+}> = ({ state, size, orientation, theme, hideArrows }) => {
   useFonts();
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const { orientation, theme } = spec.board;
   const palette = boardThemes[theme];
-  const state = boardStateAt(frame, fps, spec.plies, buildPositions(spec.game.pgn));
-
   return (
     <svg width={size} height={size} viewBox="0 0 8 8" overflow="visible" style={{ display: "block", overflow: "visible" }}>
       {Array.from({ length: 64 }, (_, i) => {
@@ -52,7 +56,29 @@ export const Board: FC<{ spec: VideoSpec; size: number }> = ({ spec, size }) => 
         const o = orient(p.x, p.y, orientation);
         return <Piece key={p.id} type={p.type} color={p.color} x={o.x} y={o.y} opacity={p.opacity} scale={p.scale} />;
       })}
-      <Arrows arrows={state.arrows} orientation={orientation} />
+      {!hideArrows && <Arrows arrows={state.arrows} orientation={orientation} />}
     </svg>
+  );
+};
+
+/**
+ * SVG board driven only by the spec and the current frame. `atMs` draws the game at that ms
+ * instead of the current frame (cold-open remapping, freeze frames); `ply` shows that finished position, picked by
+ * ply number (it wins over `atMs`); `hideArrows` drops the move arrows.
+ */
+export const Board: FC<{ spec: VideoSpec; size: number; atMs?: number; hideArrows?: boolean; ply?: number }> = ({
+  spec,
+  size,
+  atMs,
+  hideArrows,
+  ply,
+}) => {
+  const currentFrame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const frame = atMs === undefined ? currentFrame : msToFrame(atMs, fps);
+  const positions = buildPositions(spec.game.pgn);
+  const state = ply === undefined ? boardStateAt(frame, fps, spec.plies, positions) : settledState(ply, spec.plies, positions);
+  return (
+    <BoardView state={state} size={size} orientation={spec.board.orientation} theme={spec.board.theme} hideArrows={hideArrows} />
   );
 };
