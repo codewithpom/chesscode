@@ -209,4 +209,3 @@ def test_elevenlabs_allowance_auth_error_never_exposes_key(monkeypatch):
         with pytest.raises(RuntimeError, match="HTTP 401") as error:
             tts.elevenlabs.check_allowance(1000)
     assert "sentinel-secret" not in str(error.value)
-
