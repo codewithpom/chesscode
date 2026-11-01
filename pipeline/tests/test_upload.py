@@ -145,3 +145,169 @@ def test_gives_up_after_5_tries(tmp_path):
         with pytest.raises(Exception):
             upload.upload_video(client, tmp_path / "x.mp4", "game-1", "title", "desc", [], NOW + timedelta(hours=3), "en", NOW)
     assert request.execute.call_count == 5
+
+
+# --- upload_from_spec (M6) ---
+import json
+import shutil
+
+from chesscode import ledger
+
+FIXTURE_SPEC = Path(__file__).resolve().parents[2] / "spec" / "fixtures" / "cc-2026-0001-en" / "video_spec.json"
+PUBLISH = datetime(2026, 11, 17, 18, 30, tzinfo=timezone.utc)
+FAKE_CFG = {"category_id": 20, "contains_synthetic_media": False, "daily_cap": 60, "playlists": {"legendary_games": "PL1"}}
+
+
+@pytest.fixture
+def spec_dir(tmp_path):
+    d = tmp_path / "spec"
+    d.mkdir()
+    shutil.copy(FIXTURE_SPEC, d / "video_spec.json")
+    (d / "out.mp4").write_bytes(b"mp4")
+    (d / "thumb.png").write_bytes(b"png")
+    (d / "qa.json").write_text(json.dumps({"passed": True}), encoding="utf-8")
+    return d
+
+
+def ledger_row(video_id, status="scheduled", **kw):
+    return {"video_id": video_id, "status": status, "youtube_id": "yt-" + video_id, "publish_at": "2026-11-17T18:30:00Z", "title": "t",
+            "qa_passed": "true", "render_seconds": "1", "batch_id": "b", "updated_at": "2026-10-29T00:00:00Z", **kw}
+
+
+def go(client, spec_dir, tmp_path, now=NOW, existing=None, cfg=FAKE_CFG, **kw):
+    with patch.object(upload, "find_existing", **({"side_effect": existing} if isinstance(existing, list) else {"return_value": existing})) as find, \
+         patch.object(upload, "MediaFileUpload"), patch.object(upload.time, "sleep"), patch.object(upload, "load", return_value=cfg):
+        result = upload.upload_from_spec(client, spec_dir, tmp_path / "ledger.csv", now, **kw)
+    return result, find
+
+
+def test_from_spec_happy_path(spec_dir, tmp_path):
+    client = Mock()
+    client.videos.return_value.insert.return_value.execute.return_value = {"id": "yt1"}
+    result, _ = go(client, spec_dir, tmp_path)
+    assert result == {"video_id": "cc-2026-0001-en", "status": "scheduled", "youtube_id": "yt1", "publish_at": "2026-11-17T18:30:00Z"}
+    client.thumbnails.return_value.set.assert_called_once()
+    assert client.playlistItems.return_value.insert.call_args.kwargs["body"]["snippet"]["playlistId"] == "PL1"
+    assert "#Shorts" not in client.videos.return_value.insert.call_args.kwargs["body"]["snippet"]["description"]
+
+
+def test_from_spec_refuses_failed_qa(spec_dir, tmp_path):
+    (spec_dir / "qa.json").write_text(json.dumps({"passed": False}), encoding="utf-8")
+    client = Mock()
+    result, _ = go(client, spec_dir, tmp_path)
+    assert result["status"] == "failed_qa"
+    client.videos.return_value.insert.assert_not_called()
+
+
+def test_from_spec_missing_qa_json_stops(spec_dir, tmp_path):
+    (spec_dir / "qa.json").unlink()
+    with pytest.raises(upload.UploadRefused, match="qa.json"):
+        go(Mock(), spec_dir, tmp_path)
+
+
+def test_from_spec_ledger_hit_skips_without_touching_youtube(spec_dir, tmp_path):
+    ledger.append(tmp_path / "ledger.csv", ledger_row("cc-2026-0001-en", youtube_id="ytOLD"))
+    client = Mock()
+    result, find = go(client, spec_dir, tmp_path)
+    assert result["status"] == "scheduled" and result["youtube_id"] == "ytOLD"
+    find.assert_not_called(); client.videos.return_value.insert.assert_not_called()
+
+
+def test_from_spec_playlist_hit_skips(spec_dir, tmp_path):
+    client = Mock()
+    result, _ = go(client, spec_dir, tmp_path, existing="ytEARLIER")
+    assert result["youtube_id"] == "ytEARLIER" and result["status"] == "scheduled"
+    client.videos.return_value.insert.assert_not_called()
+
+
+def test_from_spec_timeout_then_retry_finds_upload_no_second_insert(spec_dir, tmp_path):
+    client = Mock()
+    insert = client.videos.return_value.insert
+    insert.return_value.execute.side_effect = OSError("timed out")
+    result, _ = go(client, spec_dir, tmp_path, existing=[None, "ytLANDED"])
+    assert result["youtube_id"] == "ytLANDED"
+    assert insert.call_count == 1 and insert.return_value.execute.call_count == 1
+
+
+def test_from_spec_refuses_one_hour_ahead(spec_dir, tmp_path):
+    client = Mock()
+    with pytest.raises(upload.UploadRefused):
+        go(client, spec_dir, tmp_path, now=PUBLISH - timedelta(hours=1))
+    client.videos.return_value.insert.assert_not_called()
+
+
+def test_from_spec_cap_reached_defers(spec_dir, tmp_path):
+    for i in range(60):  # NOW is 05:00 Pacific on Oct 27
+        ledger.append(tmp_path / "ledger.csv", ledger_row(f"v{i}", updated_at="2026-10-27T08:00:00Z"))
+    ledger.append(tmp_path / "ledger.csv", ledger_row("old", updated_at="2026-10-26T08:00:00Z"))  # other Pacific day: not counted
+    client = Mock()
+    result, _ = go(client, spec_dir, tmp_path)
+    assert result["status"] == "deferred" and result["youtube_id"] == ""
+    client.videos.return_value.insert.assert_not_called()
+
+
+def test_from_spec_under_cap_proceeds(spec_dir, tmp_path):
+    for i in range(59):
+        ledger.append(tmp_path / "ledger.csv", ledger_row(f"v{i}", updated_at="2026-10-27T08:00:00Z"))
+    client = Mock()
+    client.videos.return_value.insert.return_value.execute.return_value = {"id": "yt1"}
+    assert go(client, spec_dir, tmp_path)[0]["status"] == "scheduled"
+
+
+def test_from_spec_thumbnail_failure_leaves_scheduled_needs_repair(spec_dir, tmp_path):
+    client = Mock()
+    client.videos.return_value.insert.return_value.execute.return_value = {"id": "yt1"}
+    client.thumbnails.return_value.set.return_value.execute.side_effect = HttpError(Mock(status=403), b"no")
+    result, _ = go(client, spec_dir, tmp_path)
+    assert result["status"] == "scheduled" and result["needs_repair"] is True and result["youtube_id"] == "yt1"
+    client.playlistItems.return_value.insert.assert_called_once()
+
+
+def test_from_spec_unset_playlist_refused_before_insert(spec_dir, tmp_path):
+    client = Mock()
+    with pytest.raises(upload.UploadRefused, match="playlist"):
+        go(client, spec_dir, tmp_path, cfg={**FAKE_CFG, "playlists": {"legendary_games": None}})
+    client.videos.return_value.insert.assert_not_called()
+
+
+def test_shorts_get_hashtag(spec_dir, tmp_path):
+    spec = json.loads((spec_dir / "video_spec.json").read_text(encoding="utf-8"))
+    spec["template"] = "shorts"
+    (spec_dir / "video_spec.json").write_text(json.dumps(spec), encoding="utf-8")
+    client = Mock()
+    client.videos.return_value.insert.return_value.execute.return_value = {"id": "yt1"}
+    go(client, spec_dir, tmp_path)
+    description = client.videos.return_value.insert.call_args.kwargs["body"]["snippet"]["description"]
+    assert "#Shorts" in description and description.splitlines()[-1] == "ccid: cc-2026-0001-en"
+
+
+def test_repair_reruns_thumbnail_and_playlist_once(spec_dir, tmp_path):
+    ledger.append(tmp_path / "ledger.csv", ledger_row("cc-2026-0001-en", youtube_id="ytOLD"))
+    client = Mock()
+    client.playlistItems.return_value.list.return_value.execute.return_value = {"items": []}
+    result, _ = go(client, spec_dir, tmp_path, repair=True)
+    assert result["status"] == "scheduled" and result["youtube_id"] == "ytOLD" and not result.get("needs_repair")
+    client.videos.return_value.insert.assert_not_called()
+    client.thumbnails.return_value.set.assert_called_once()
+    client.playlistItems.return_value.insert.assert_called_once()
+    client.playlistItems.return_value.list.return_value.execute.return_value = {"items": [{"id": "x"}]}
+    go(client, spec_dir, tmp_path, repair=True)
+    client.playlistItems.return_value.insert.assert_called_once()  # already in the playlist: not added twice
+
+
+def test_repair_requires_scheduled_ledger_row(spec_dir, tmp_path):
+    with pytest.raises(upload.UploadRefused, match="repair"):
+        go(Mock(), spec_dir, tmp_path, repair=True)
+
+
+def test_create_playlists_fills_only_null_ids(tmp_path):
+    path = tmp_path / "youtube.yaml"
+    path.write_text("daily_cap: 60\nplaylists:\n  legendary_games: PLOLD\n  opening_explained: null\n", encoding="utf-8")
+    client = Mock()
+    client.playlists.return_value.insert.return_value.execute.return_value = {"id": "PLNEW"}
+    upload.create_playlists(client, path)
+    body = client.playlists.return_value.insert.call_args.kwargs["body"]
+    assert body["snippet"]["title"] == "Opening Explained" and body["status"]["privacyStatus"] == "public"
+    assert client.playlists.return_value.insert.call_count == 1
+    text = path.read_text(encoding="utf-8")
+    assert "legendary_games: PLOLD" in text and "opening_explained: PLNEW" in text
