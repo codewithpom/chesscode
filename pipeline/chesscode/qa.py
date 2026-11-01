@@ -111,7 +111,8 @@ def check_dead_air(spec_dir: Path, mp4: Path, **_):
 
 def check_black_frames(spec_dir: Path, mp4: Path, **_):
     end = _spec(spec_dir)["duration_ms"] / 1000 - EDGE_S
-    out = _ffmpeg("-i", str(mp4), "-vf", "blackdetect=d=0.1", "-an", "-f", "null", "-")
+    # The default 10% luma threshold mistakes Studio's #0F1115 background for black.
+    out = _ffmpeg("-i", str(mp4), "-vf", "blackdetect=d=0.1:pix_th=0.02", "-an", "-f", "null", "-")
     spans = [(float(a), float(b)) for a, b in re.findall(r"black_start:([\d.]+) black_end:([\d.]+)", out)]
     bad = [(max(a, EDGE_S), min(b, end)) for a, b in spans if min(b, end) - max(a, EDGE_S) >= 0.1]
     if bad: raise ValueError("black frames at " + ", ".join(f"{a:.1f}-{b:.1f}s" for a, b in bad))

@@ -67,6 +67,14 @@ def test_black_segment_fails_but_black_edges_pass(tmp_path):
     qa.check_black_frames(spec_dir=tmp_path, mp4=tmp_path / "ok.mp4")
 
 
+def test_studio_dark_outro_with_small_mascot_is_not_a_black_frame(tmp_path):
+    make_spec(tmp_path, [seg(0, 0, 6000)])
+    ffmpeg("-f", "lavfi", "-i", "color=c=0x0F1115:s=320x180:r=30:d=6",
+           "-vf", "drawbox=x=40:y=110:w=12:h=20:color=0xECEEF2:t=fill",
+           "-c:v", "libx264", "-pix_fmt", "yuv420p", str(tmp_path / "outro.mp4"))
+    qa.check_black_frames(spec_dir=tmp_path, mp4=tmp_path / "outro.mp4")
+
+
 def test_file_format(tmp_path):
     make_spec(tmp_path, [seg(0, 0, 6000)])
     make_mp4(tmp_path / "ok.mp4")
