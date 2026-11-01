@@ -45,6 +45,14 @@ def test_upload_jobs_wait_for_shared_playlist_config():
     assert config["with"] == {"name": "upload-config", "path": "config"}
 
 
+def test_fish_secret_reaches_preflight_and_render_without_old_credit_gate():
+    jobs = load("batch.yml")["jobs"]
+    prepare = next(s for s in jobs["prepare-upload"]["steps"] if "check_access" in s.get("run", ""))
+    render = next(s for s in jobs["video"]["steps"] if "chesscode batch" in s.get("run", ""))
+    assert "FISH_API_KEY" in prepare["env"] and "FISH_API_KEY" in render["env"]
+    assert "check_allowance" not in steps_text(jobs["prepare-upload"])
+
+
 def test_batch_yml_steps():
     job = load("batch.yml")["jobs"]["video"]
     uses = [s.get("uses", "") for s in job["steps"]]

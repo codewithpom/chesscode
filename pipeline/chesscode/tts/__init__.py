@@ -3,11 +3,12 @@ import json
 from pathlib import Path
 
 from chesscode import audio
-from chesscode.tts import azure, elevenlabs, kokoro
+from chesscode.tts import azure, elevenlabs, fish, kokoro
 from chesscode.tts.base import Synth, Word
 
 PROVIDERS: dict[str, Synth] = {
     "elevenlabs": elevenlabs.synthesize,
+    "fish": fish.synthesize,
     "azure": azure.synthesize,
     "kokoro": kokoro.synthesize,
 }

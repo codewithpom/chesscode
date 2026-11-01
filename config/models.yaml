@@ -6,9 +6,9 @@ max_tokens:
   script: 8192
   script_hi: 16384
   checks: 8192
-# Owner picked at the M3 voice checkpoint (Oct 28, 2026): ElevenLabs Multilingual v2 premade voices.
+# Owner switched to Fish Audio S2.1 Pro Free on Nov 1, 2026; fixed licensed voices keep narration consistent.
 tts:
-  provider: elevenlabs
+  provider: fish
   voice:
-    en: JBFqnCBsd6RMkjVDRZzb  # George
-    hi: EXAVITQu4vr4xnSDxMaL  # Sarah
+    en: 6d71c24e892b467ebef21f3dd3f4810a  # Calm Narrator Voice
+    hi: 18e8999c98b746bda58521980d817e8c  # Hashtag agriculture hindi voice
