@@ -1,19 +1,28 @@
-# Fish batch: five long-form videos
+# Five Fish Audio videos: uploaded and verified
 
-Run: https://github.com/codewithpom/chesscode/actions/runs/41324471349
-Branch: `upload/five-long-20261101`
-Channel: Chess Code (`UCtY66nnxSJuW8tT64WvvcFg`)
+All five videos passed all eight automated QA checks, uploaded successfully, and were independently read back from YouTube. Each is private with the intended future publication time, a matching ccid, and an accepted upload status. No thumbnail or playlist repair is pending.
 
-Status: all five videos rendered, but none uploaded. All QA checks passed except `black_frames`: FFmpeg's default 10% luma threshold incorrectly classified the intentional #0F1115 Studio cards/outro as black. Contact sheets and thumbnails were visually checked. A regression test reproduced the false positive; black-pixel threshold is now 2%, and all 12 QA tests pass, including real-black-frame rejection. Five per-video voice caches are saved, so the next run needs no new synthesis. Failed-QA events are preserved in `data/upload_log.csv`.
+- Channel: Chess Code (`UCtY66nnxSJuW8tT64WvvcFg`).
+- Workflow: https://github.com/codewithpom/chesscode/actions/runs/41326509860
+- Rendered commit: `87707c3`; branch: `upload/five-long-20261101`.
+- TTS: Fish Audio `s2.1-pro-free`, fixed licensed English/Hindi voices; credentials remain in GitHub Secrets.
+- YouTube verification receipt: [verified ids and UTC times](five-long-fish-20261101.youtube.json).
+- Ledger: `data/upload_log.csv` retains the failed-QA attempt and the five successful scheduled events.
 
-Earlier run 41322641166 was cancelled after the metadata name-shape bug. Metadata now reads PGN facts; five real-content tests reach a valid spec, and metadata/workflow/E2E checks pass. Current workflow includes a final read-back of YouTube ids, privacy and publish times.
+Publication dates below use **India Standard Time (UTC+05:30)**. English midnight slots fall on the following local date compared with the UTC calendar.
 
-Provider: `fish`, model `s2.1-pro-free`. Credentials are in GitHub Secrets. Both language smoke tests and 356 Python tests passed (1 skipped); 39 targeted tests cover the latest provider edge cases.
+| Video | YouTube | Publication (IST) | Duration |
+| --- | --- | --- | --- |
+| Morphy: Opera Game (Hindi) | https://youtu.be/oGovuQckbVQ | 2026-12-17 19:00 | 8:51 |
+| Gukesh vs Ding, Game 3 (English) | https://youtu.be/pbEEe6ktXGU | 2026-12-23 00:00 | 9:04 |
+| Gukesh vs Ding, Game 3 (Hindi) | https://youtu.be/BOFQqwZ4zBk | 2026-12-24 19:00 | 9:10 |
+| Spassky vs Bronstein (English) | https://youtu.be/4JyE-OuDRLY | 2026-12-30 00:00 | 9:37 |
+| Spassky vs Bronstein (Hindi) | https://youtu.be/U2d8GOW6J3M | 2026-12-31 19:00 | 9:51 |
 
-| video | expected publish time (UTC) |
-| --- | --- |
-| cc-2026-0005-hi | 2026-12-17T13:30:00Z |
-| cc-2026-0006-en | 2026-12-22T18:30:00Z |
-| cc-2026-0006-hi | 2026-12-24T13:30:00Z |
-| cc-2026-0007-en | 2026-12-29T18:30:00Z |
-| cc-2026-0007-hi | 2026-12-31T13:30:00Z |
+QA covered schema/calendar/pacing, SAN legality, mascot line rules, segment loudness, final mixed loudness/true peak, unplanned silence, genuine black frames, and output codec/size/fps/duration. Contact sheets and thumbnails were visually checked; the complete videos have not been watched end to end by a human.
+
+Fish is free under its fair-use and concurrency rules, without a latency guarantee. The Studio black-frame regression was fixed by calibrating black-pixel luma below the intentional dark background; a real black segment still fails the check. No QA override was used.
+
+Audio was restored from per-video caches on the final run. The configured background music remains a silent placeholder. Main has not been merged; the working upload system and these receipts are on the branch above.
+
+Receipts collected: 2026-11-01T16:43:07+00:00.

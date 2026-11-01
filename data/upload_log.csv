@@ -4,3 +4,8 @@ cc-2026-0006-en,failed_qa,,2026-12-22T18:30:00Z,Gukesh Beats Ding in Game 3: The
 cc-2026-0006-hi,failed_qa,,2026-12-24T13:30:00Z,Gukesh ने Game 3 में Ding को हराया: c2 पर फँसा bishop,false,402,five-long-fish-20261101,2026-11-01T16:22:43Z
 cc-2026-0007-en,failed_qa,,2026-12-29T18:30:00Z,The King's Gambit Still Bites: Spassky vs Bronstein,false,426,five-long-fish-20261101,2026-11-01T16:22:43Z
 cc-2026-0007-hi,failed_qa,,2026-12-31T13:30:00Z,King's Gambit में promotion के बाद भी हमला क्यों बचा?,false,509,five-long-fish-20261101,2026-11-01T16:22:43Z
+cc-2026-0005-hi,scheduled,oGovuQckbVQ,2026-12-17T13:30:00Z,Morphy की Opera Game: queen sacrifice जो ज़बरदस्ती जीत देता है,true,469,five-long-fish-20261101,2026-11-01T16:40:26Z
+cc-2026-0006-en,scheduled,pbEEe6ktXGU,2026-12-22T18:30:00Z,Gukesh Beats Ding in Game 3: The Bishop Trapped on c2,true,385,five-long-fish-20261101,2026-11-01T16:40:26Z
+cc-2026-0006-hi,scheduled,BOFQqwZ4zBk,2026-12-24T13:30:00Z,Gukesh ने Game 3 में Ding को हराया: c2 पर फँसा bishop,true,363,five-long-fish-20261101,2026-11-01T16:40:26Z
+cc-2026-0007-en,scheduled,4JyE-OuDRLY,2026-12-29T18:30:00Z,The King's Gambit Still Bites: Spassky vs Bronstein,true,520,five-long-fish-20261101,2026-11-01T16:40:26Z
+cc-2026-0007-hi,scheduled,U2d8GOW6J3M,2026-12-31T13:30:00Z,King's Gambit में promotion के बाद भी हमला क्यों बचा?,true,523,five-long-fish-20261101,2026-11-01T16:40:26Z
