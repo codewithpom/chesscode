@@ -5,6 +5,8 @@ from pathlib import Path
 from types import ModuleType, SimpleNamespace
 from unittest.mock import Mock, patch
 
+import pytest
+
 from chesscode import audio, tts
 from chesscode.tts.base import Word
 
@@ -184,3 +186,27 @@ def test_alignment_interpolates_missing_words_between_neighbors(monkeypatch, tmp
     words = tts.align.align_words(tmp_path / "audio.mp3", "before missing after", "en")
     assert words[1]["start_ms"] == 400
     assert words[1]["end_ms"] == 800
+@pytest.mark.parametrize("remaining,required,passes", [(1000,1000,True),(999,1000,False)])
+def test_elevenlabs_allowance_stops_before_paid_audio(monkeypatch, remaining, required, passes):
+    monkeypatch.setenv("ELEVENLABS_API_KEY", "sentinel-secret")
+    response = Mock()
+    response.ok = True
+    response.json.return_value = {"character_limit": 10000, "character_count": 10000 - remaining}
+    with patch("chesscode.tts.elevenlabs.requests.get", return_value=response), \
+         patch("chesscode.tts.elevenlabs.requests.post") as synthesize:
+        if passes:
+            assert tts.elevenlabs.check_allowance(required) == {"remaining_credits": remaining, "required_characters": required}
+        else:
+            with pytest.raises(RuntimeError, match="credits insufficient"):
+                tts.elevenlabs.check_allowance(required)
+        synthesize.assert_not_called()
+
+
+def test_elevenlabs_allowance_auth_error_never_exposes_key(monkeypatch):
+    monkeypatch.setenv("ELEVENLABS_API_KEY", "sentinel-secret")
+    response = Mock(ok=False, status_code=401)
+    with patch("chesscode.tts.elevenlabs.requests.get", return_value=response):
+        with pytest.raises(RuntimeError, match="HTTP 401") as error:
+            tts.elevenlabs.check_allowance(1000)
+    assert "sentinel-secret" not in str(error.value)
+

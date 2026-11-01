@@ -47,6 +47,23 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -e pipeline
+      - name: Check voice credits without synthesizing audio
+        env:
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          VIDEO_IDS: ${{ inputs.video_ids }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          from chesscode.context import parse_video_id
+          from chesscode.tts.elevenlabs import check_allowance
+          characters = 0
+          for video in json.loads(os.environ['VIDEO_IDS']):
+              parse_video_id(video)
+              script = json.loads((Path('content/scripts') / f'{video}.json').read_text(encoding='utf-8'))
+              characters += sum(len(segment['text']) for segment in script['segments'])
+          print(check_allowance(characters))
+          PY
       - name: Verify channel and resolve playlists
         env:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
@@ -70,7 +87,7 @@ jobs:
       cancel-in-progress: false
     strategy:
       fail-fast: false
-      max-parallel: 16
+      max-parallel: 2
       matrix:
         video_id: ${{ fromJson(inputs.video_ids) }}
     steps:

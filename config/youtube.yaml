@@ -3,7 +3,7 @@ contains_synthetic_media: false
 daily_cap: 60  # uploads per Pacific day, below the 100/day videos.insert bucket and the 10,000-unit pool
 # Public playlists, one per series. null = not created yet: `chesscode upload --create-playlists` fills these in, commit the ids.
 playlists:
-  legendary_games: null
-  indian_chess_heroes: null
-  opening_explained: null
-  blunder_hall_of_fame: null
+  legendary_games: PLVBSgf25IjEI
+  indian_chess_heroes: PLaMxWAfaHzoA
+  opening_explained: PLHTQtM8l0yNQ
+  blunder_hall_of_fame: PLOK7_fx4_4gU

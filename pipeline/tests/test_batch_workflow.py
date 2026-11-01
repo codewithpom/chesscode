@@ -27,7 +27,7 @@ def test_batch_yml_matrix_and_limits():
     assert wf["permissions"] == {"contents": "read"}
     job = wf["jobs"]["video"]
     assert job["timeout-minutes"] == 300
-    assert job["strategy"]["fail-fast"] is False and job["strategy"]["max-parallel"] == 16
+    assert job["strategy"]["fail-fast"] is False and job["strategy"]["max-parallel"] == 2
     assert "fromJson(inputs.video_ids)" in job["strategy"]["matrix"]["video_id"]
     assert job["concurrency"]["group"] == "video-${{ matrix.video_id }}"
     assert job["concurrency"].get("cancel-in-progress") is False

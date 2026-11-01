@@ -7,6 +7,21 @@ import requests
 from chesscode.tts.base import Word
 
 
+def check_allowance(characters: int) -> dict:
+    """Check credit headroom without generating paid audio or exposing account data."""
+    response = requests.get(
+        "https://api.elevenlabs.io/v1/user/subscription",
+        headers={"xi-api-key": os.environ["ELEVENLABS_API_KEY"]}, timeout=30,
+    )
+    if not response.ok:
+        raise RuntimeError(f"ElevenLabs account check failed: HTTP {response.status_code}")
+    account = response.json()
+    remaining = int(account["character_limit"]) - int(account["character_count"])
+    if remaining < characters:
+        raise RuntimeError(f"ElevenLabs credits insufficient: {remaining} remaining; {characters} characters required")
+    return {"remaining_credits": remaining, "required_characters": characters}
+
+
 def chars_to_words(chars: list[str], starts_s: list[float], ends_s: list[float]) -> list[Word]:
     words = []
     current = []
